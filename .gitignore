@@ -1,0 +1,4 @@
+.gitignore
+*.so
+*.[od]
+*.swp
