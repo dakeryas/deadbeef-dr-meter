@@ -69,3 +69,9 @@ double get_analyser_rms(block_analyser_t* analyser, unsigned channel)
 {
     return sqrt(2 * analyser->sum2[channel] / analyser->samples); //DR assumes 0 mean
 }
+
+void free_block_analyser(block_analyser_t* analyser)
+{
+    free(analyser->peak);
+    free(analyser->sum2);
+}

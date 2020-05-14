@@ -94,6 +94,8 @@ static void process_item(DB_playItem_t* item, DB_fileinfo_t* fileinfo, DB_decode
             decode_analyse_block(buffer, buffer_size, fileinfo, decoder, &analyser);
             fill_dr_meter(&dr_meter, &analyser);
         }
+        free_block_analyser(&analyser);
+        free_dr_meter(&dr_meter);
     }
     free(buffer);
 }

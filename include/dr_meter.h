@@ -16,5 +16,6 @@ typedef struct
 
 void init_dr_meter(dr_meter_t* dr_meter);
 void fill_dr_meter(dr_meter_t* dr_meter, struct block_analyser_s* analyser);
+void free_dr_meter(dr_meter_t* dr_meter);
 
 #endif /* DR_METER_H */

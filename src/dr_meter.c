@@ -44,3 +44,9 @@ void fill_dr_meter(dr_meter_t* dr_meter, block_analyser_t* analyser)
     for(unsigned channel_index = 0; channel_index < dr_meter->channels; ++channel_index)
         fill_dr_meter_channel(dr_meter, analyser, channel_index);
 }
+
+void free_dr_meter(dr_meter_t* dr_meter)
+{
+    free(dr_meter->peaks_hist);
+    free(dr_meter->rms_hist);
+}
