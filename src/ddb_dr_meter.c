@@ -11,8 +11,6 @@
 #include "dr_meter.h"
 
 // constants according to DR standard
-const static float DR_MIN_DB = -100.;
-const static float DR_MAX_DB = 0.;
 static const unsigned DR_BLOCK_DURATION = 3;
 
 static DB_functions_t* ddb_api;
@@ -87,9 +85,10 @@ static void process_item(DB_playItem_t* item, DB_fileinfo_t* fileinfo, DB_decode
     {
         block_analyser_t analyser = {.channels = fileinfo->fmt.channels};
         init_block_analyser(&analyser);
-        dr_meter_t dr_meter = {.min_hist = DR_MIN_DB, .max_hist = DR_MAX_DB, .channels = fileinfo->fmt.channels};
+        unsigned nu_blocks = number_of_blocks(item);
+        dr_meter_t dr_meter = {.channels = fileinfo->fmt.channels, .blocks = nu_blocks};
         init_dr_meter(&dr_meter);
-        for(unsigned block_index = 0 ; block_index < number_of_blocks(item); ++block_index)
+        for(unsigned block_index = 0 ; block_index < nu_blocks; ++block_index)
         {
             decode_analyse_block(buffer, buffer_size, fileinfo, decoder, &analyser);
             fill_dr_meter(&dr_meter, &analyser);
