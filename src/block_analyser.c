@@ -2,6 +2,7 @@
 #include <string.h>
 #include <math.h>
 #include "block_analyser.h"
+#include "audio_rms.h"
 #include "channel_interpreter.h"
 
 static unsigned size_analyser_array(block_analyser_t* analyser)
@@ -64,10 +65,9 @@ void analyse_block(block_analyser_t* analyser, char* bytes_begin, unsigned buffe
     }
 }
 
-
-double get_analyser_rms(block_analyser_t* analyser, unsigned channel)
+double get_rms_analyser(block_analyser_t* analyser, unsigned channel)
 {
-    return sqrt(2 * analyser->sum2[channel] / analyser->samples); //DR assumes 0 mean
+    return get_audio_rms(analyser->sum2[channel], analyser->samples);
 }
 
 void free_block_analyser(block_analyser_t* analyser)
@@ -79,6 +79,6 @@ void free_block_analyser(block_analyser_t* analyser)
 void  print_block_analyser(block_analyser_t* analyser, FILE* output)
 {
     for(unsigned cha = 0; cha < analyser->channels; ++cha)
-        fprintf(output, "ch%i: %f %f\t", cha, analyser->peak[cha], get_analyser_rms(analyser, cha));
+        fprintf(output, "ch%i: %f %f\t", cha, analyser->peak[cha], get_rms_analyser(analyser, cha));
     fprintf(output, "%i sp\n", analyser->samples);
 }
