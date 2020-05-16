@@ -1,11 +1,12 @@
 PREFIX := ${HOME}/.local
 OBJDIR := objects
 SRCDIR := src
+INCLDIR := include
 PLUGIN := ddb_dr_meter.so
 
 OPTFLAG := -O3 -flto -DNDEBUG
 CFLAGS += $(OPTFLAG) -std=c99 -Wall -fPIC
-CPPFLAGS += -I./include $(shell pkg-config --cflags gtk+-3.0)
+CPPFLAGS += -I./$(INCLDIR) $(shell pkg-config --cflags gtk+-3.0)
 LDFLAGS += -flto
 LDFLAGS += $(shell pkg-config --libs gtk+-3.0)
 
@@ -22,7 +23,7 @@ $(OBJECTS): | $(OBJDIR)
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
+$(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
 $(PLUGIN): $(OBJECTS)
