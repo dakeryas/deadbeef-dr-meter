@@ -41,7 +41,7 @@ static void analyse_channel_value(block_analyser_t* analyser, double sample_valu
 
 static void analyse_sample(block_analyser_t* analyser, char* sample_begin, int nu_channels, int bytes_per_channel)
 {
-    for(int channel_index = 0; channel_index < nu_channels ; ++channel_index)
+    for(int channel_index = 0; channel_index < nu_channels; ++channel_index)
     {
         char* channel_begin = sample_begin + channel_index * bytes_per_channel;
         double channel_value = get_normalised_channel_value(channel_begin, bytes_per_channel);
@@ -74,4 +74,11 @@ void free_block_analyser(block_analyser_t* analyser)
 {
     free(analyser->peak);
     free(analyser->sum2);
+}
+
+void  print_block_analyser(block_analyser_t* analyser, FILE* output)
+{
+    for(unsigned cha = 0; cha < analyser->channels; ++cha)
+        fprintf(output, "ch%i: %f %f\t", cha, analyser->peak[cha], get_analyser_rms(analyser, cha));
+    fprintf(output, "%i sp\n", analyser->samples);
 }
