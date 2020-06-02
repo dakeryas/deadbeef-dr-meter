@@ -5,6 +5,9 @@
 #include "audio_rms.h"
 #include "block_analyser.h"
 
+// constants according to DR standard
+static const double DR_LOUD_FRACTION = 0.2;
+
 static double decibels(double value)
 {
     return 20. * log10(value);
@@ -97,9 +100,10 @@ double get_rms_dr_meter(dr_meter_t* dr_meter, unsigned channel)
 double get_dr_dr_meter(dr_meter_t* dr_meter, unsigned channel)
 {
     sort_sum2(dr_meter, channel);
-    unsigned last_block = 0.2 * dr_meter->_ana_blocks; //loudest 20%
-    double loudest_20_rms = sqrt(get_sum2_dr_meter(dr_meter, channel, last_block) / (0.2 * dr_meter->_ana_samples));
-    return decibels(dr_meter->second_peaks[channel] / loudest_20_rms);
+    unsigned last_block = DR_LOUD_FRACTION * dr_meter->_ana_blocks;
+    double loud_fraction_sum2 = get_sum2_dr_meter(dr_meter, channel, last_block);
+    double loud_fraction_rms = sqrt(loud_fraction_sum2 / (DR_LOUD_FRACTION * dr_meter->_ana_samples));
+    return decibels(dr_meter->second_peaks[channel] / loud_fraction_rms);
 }
 
 void free_dr_meter(dr_meter_t* dr_meter)
