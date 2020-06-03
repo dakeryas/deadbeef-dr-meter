@@ -110,9 +110,8 @@ double get_dr_dr_meter(dr_meter_t* dr_meter, unsigned channel)
     if(filled(dr_meter))
     {
         sort_sum2(dr_meter, channel);
-        unsigned last_block = DR_LOUD_FRACTION * dr_meter->_ana_blocks;
-        double loud_fraction_sum2 = get_sum2(dr_meter, channel, last_block);
-        double loud_fraction_rms = sqrt(loud_fraction_sum2 / (DR_LOUD_FRACTION * dr_meter->_ana_samples));
+        double loud_sum2 = get_sum2_quantile(dr_meter, channel, DR_LOUD_FRACTION);
+        double loud_rms = get_audio_rms(loud_sum2, DR_LOUD_FRACTION * dr_meter->_ana_samples);
         return decibels(dr_meter->second_peaks[channel] / loud_rms);
     }
     else return 0.;
