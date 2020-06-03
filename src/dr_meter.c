@@ -139,7 +139,7 @@ static void print_channel_values(const char* header, double* values, unsigned ch
 
 static void print_sum2(dr_meter_t* dr_meter, FILE* output)
 {
-    for(unsigned block = 0; block < dr_meter->channels; ++block)
+    for(unsigned block = 0; block < dr_meter->_ana_blocks; ++block)
     {
         fprintf(output, "sum2 %4i:\t", block);
         for(unsigned cha = 0; cha < dr_meter->channels; ++cha)
