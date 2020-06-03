@@ -18,5 +18,6 @@ struct dr_stats_s
 typedef struct dr_stats_s dr_stats_t;
 
 dr_stats_t make_dr_stats(double dr, double second_peak, double rms);
+dr_stats_t make_zero_dr_stats();
 
 #endif /* DR_STATS_H */

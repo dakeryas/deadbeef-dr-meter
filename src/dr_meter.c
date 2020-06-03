@@ -131,12 +131,12 @@ static dr_stats_t get_dr_stats_filled(dr_meter_t* dr_meter, unsigned channel)
 dr_stats_t get_dr_stats_dr_meter(dr_meter_t* dr_meter, unsigned channel)
 {
     if(filled(dr_meter)) return get_dr_stats_filled(dr_meter, channel);
-    else return make_dr_stats(0., -INFINITY, -INFINITY);
+    else return make_zero_dr_stats();
 }
 
 dr_stats_t get_avg_dr_stats_dr_meter(dr_meter_t* dr_meter)
 {
-    dr_stats_t result = make_dr_stats(0., -INFINITY, -INFINITY);
+    dr_stats_t result = make_zero_dr_stats();
     if(filled(dr_meter))
     {
         result.rms = 0.;
