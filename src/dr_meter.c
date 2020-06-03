@@ -48,7 +48,7 @@ static void fill_sum2(dr_meter_t* dr_meter, block_analyser_t* analyser, unsigned
     dr_meter->sum2[channel_index][dr_meter->_ana_blocks] = analyser->sum2[channel_index];
 }
 
-static void fill_dr_meter_channel(dr_meter_t* dr_meter, block_analyser_t* analyser, unsigned channel_index)
+static void fill_channel(dr_meter_t* dr_meter, block_analyser_t* analyser, unsigned channel_index)
 {
     fill_dr_peaks(dr_meter, analyser, channel_index);
     fill_sum2(dr_meter, analyser, channel_index);
@@ -59,7 +59,7 @@ void fill_dr_meter(dr_meter_t* dr_meter, block_analyser_t* analyser)
     assert((dr_meter->_ana_blocks < dr_meter->blocks));
     assert((analyser->channels == dr_meter->channels));
     for(unsigned channel_index = 0; channel_index < dr_meter->channels; ++channel_index)
-        fill_dr_meter_channel(dr_meter, analyser, channel_index);
+        fill_channel(dr_meter, analyser, channel_index);
     dr_meter->_ana_samples += analyser->samples;
     ++dr_meter->_ana_blocks;
 }
@@ -78,13 +78,7 @@ static void sort_sum2(dr_meter_t* dr_meter, unsigned channel)
     qsort(dr_meter->sum2[channel], dr_meter->_ana_blocks, sizeof(double), reverse_comp_samples);
 }
 
-static void sort_all_sum2(dr_meter_t* dr_meter)
-{
-    for(unsigned channel_index = 0; channel_index < dr_meter->channels; ++channel_index)
-        sort_sum2(dr_meter, channel_index);
-}
-
-static double get_sum2_dr_meter(dr_meter_t* dr_meter, unsigned channel, unsigned last_block)
+static double get_sum2(dr_meter_t* dr_meter, unsigned channel, unsigned last_block)
 {
     double sum2 = 0.;
     for(unsigned block_index = 0; block_index < last_block; ++block_index)
@@ -92,24 +86,36 @@ static double get_sum2_dr_meter(dr_meter_t* dr_meter, unsigned channel, unsigned
     return sum2;
 }
 
-static double get_tot_sum2_dr_meter(dr_meter_t* dr_meter, unsigned channel)
+static double get_tot_sum2(dr_meter_t* dr_meter, unsigned channel)
 {
-    return get_sum2_dr_meter(dr_meter, channel, dr_meter->_ana_blocks);
+    return get_sum2(dr_meter, channel, dr_meter->_ana_blocks);
 }
+
+static double get_sum2_quantile(dr_meter_t* dr_meter, unsigned channel, double quantile)
+{
+    unsigned last_block = quantile * dr_meter->_ana_blocks;
+    if(!last_block) last_block = 1; //not enough blocks analysed
+    return get_sum2(dr_meter, channel, last_block);
+}
+
 
 double get_rms_dr_meter(dr_meter_t* dr_meter, unsigned channel)
 {
-    double sum2 = get_tot_sum2_dr_meter(dr_meter, channel);
+    double sum2 = get_tot_sum2(dr_meter, channel);
     return get_audio_rms(sum2, dr_meter->_ana_samples);
 }
 
 double get_dr_dr_meter(dr_meter_t* dr_meter, unsigned channel)
 {
-    sort_sum2(dr_meter, channel);
-    unsigned last_block = DR_LOUD_FRACTION * dr_meter->_ana_blocks;
-    double loud_fraction_sum2 = get_sum2_dr_meter(dr_meter, channel, last_block);
-    double loud_fraction_rms = sqrt(loud_fraction_sum2 / (DR_LOUD_FRACTION * dr_meter->_ana_samples));
-    return decibels(dr_meter->second_peaks[channel] / loud_fraction_rms);
+    if(filled(dr_meter))
+    {
+        sort_sum2(dr_meter, channel);
+        unsigned last_block = DR_LOUD_FRACTION * dr_meter->_ana_blocks;
+        double loud_fraction_sum2 = get_sum2(dr_meter, channel, last_block);
+        double loud_fraction_rms = sqrt(loud_fraction_sum2 / (DR_LOUD_FRACTION * dr_meter->_ana_samples));
+        return decibels(dr_meter->second_peaks[channel] / loud_rms);
+    }
+    else return 0.;
 }
 
 void free_dr_meter(dr_meter_t* dr_meter)
