@@ -5,7 +5,7 @@
 
 struct block_analyser_s;
 
-typedef struct
+struct dr_meter_s
 {
     unsigned channels;
     unsigned blocks; // expected blocks to analyse
@@ -14,7 +14,9 @@ typedef struct
     double** sum2; // sum of squared sample values per block per channel
     unsigned _ana_blocks; // analysed blocks
     unsigned _ana_samples; // analysed samples
-} dr_meter_t;
+};
+
+typedef struct dr_meter_s dr_meter_t;
 
 void init_dr_meter(dr_meter_t* dr_meter);
 void fill_dr_meter(dr_meter_t* dr_meter, struct block_analyser_s* analyser);
