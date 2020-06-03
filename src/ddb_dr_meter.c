@@ -83,11 +83,9 @@ static void process_item(DB_playItem_t* item, DB_fileinfo_t* fileinfo, DB_decode
     int buffer_size = allocate_buffer(&buffer, DR_BLOCK_DURATION, fileinfo);
     if(buffer_size)
     {
-        block_analyser_t analyser = {.channels = fileinfo->fmt.channels};
-        init_block_analyser(&analyser);
+        block_analyser_t analyser = make_block_analyser(fileinfo->fmt.channels);
         unsigned nu_blocks = number_of_blocks(item);
-        dr_meter_t dr_meter = {.channels = fileinfo->fmt.channels, .blocks = nu_blocks};
-        init_dr_meter(&dr_meter);
+        dr_meter_t dr_meter = make_dr_meter(fileinfo->fmt.channels, nu_blocks);
         for(unsigned block_index = 0 ; block_index < nu_blocks; ++block_index)
         {
             decode_analyse_block(buffer, buffer_size, fileinfo, decoder, &analyser);

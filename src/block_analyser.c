@@ -10,10 +10,12 @@ static unsigned size_analyser_array(block_analyser_t* analyser)
     return analyser->channels * sizeof(block_res);
 }
 
-void init_block_analyser(block_analyser_t* analyser)
+block_analyser_t make_block_analyser(unsigned channels)
 {
-    analyser->peak = malloc(size_analyser_array(analyser));
-    analyser->sum2 = malloc(size_analyser_array(analyser));
+    block_analyser_t analyser = {.channels = channels};
+    analyser.peak = malloc(size_analyser_array(&analyser));
+    analyser.sum2 = malloc(size_analyser_array(&analyser));
+    return analyser;
 }
 
 static void reset_block_analyser(block_analyser_t* analyser)

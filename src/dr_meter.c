@@ -14,7 +14,7 @@ static double decibels(double value)
     return 20. * log10(value);
 }
 
-void init_dr_meter(dr_meter_t* dr_meter)
+static void init_dr_meter(dr_meter_t* dr_meter)
 {
     dr_meter->_ana_blocks = 0;
     dr_meter->_ana_samples = 0;
@@ -23,6 +23,13 @@ void init_dr_meter(dr_meter_t* dr_meter)
     dr_meter->sum2 = malloc(dr_meter->channels * sizeof(*dr_meter->sum2));// allocate dr_meter->channels pointers
     for(unsigned cha = 0; cha < dr_meter->channels; ++cha)
         dr_meter->sum2[cha] = malloc(dr_meter->blocks * sizeof(double));//allocate dr_meter->blocks 1D arrays
+}
+
+dr_meter_t make_dr_meter(unsigned channels, unsigned blocks)
+{
+    dr_meter_t dr_meter = {.channels = channels, .blocks = blocks};
+    init_dr_meter(&dr_meter);
+    return dr_meter;
 }
 
 static int filled(dr_meter_t* dr_meter)
