@@ -2,6 +2,7 @@
 #define DR_METER_H
 
 #include <stdio.h>
+#include "dr_stats.h"
 
 struct block_analyser_s;
 
@@ -21,7 +22,7 @@ typedef struct dr_meter_s dr_meter_t;
 void init_dr_meter(dr_meter_t* dr_meter);
 void fill_dr_meter(dr_meter_t* dr_meter, struct block_analyser_s* analyser);
 double get_rms_dr_meter(dr_meter_t* dr_meter, unsigned channel);
-double get_dr_dr_meter(dr_meter_t* dr_meter, unsigned channel);
+dr_stats_t get_dr_stats_dr_meter(dr_meter_t* dr_meter, unsigned channel);
 void free_dr_meter(dr_meter_t* dr_meter);
 void print_dr_meter(dr_meter_t* dr_meter, FILE* output);
 

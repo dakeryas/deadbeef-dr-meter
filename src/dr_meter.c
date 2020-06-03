@@ -105,16 +105,24 @@ double get_rms_dr_meter(dr_meter_t* dr_meter, unsigned channel)
     return get_audio_rms(sum2, dr_meter->_ana_samples);
 }
 
-double get_dr_dr_meter(dr_meter_t* dr_meter, unsigned channel)
+static double get_dr_dr_meter(dr_meter_t* dr_meter, unsigned channel)
+{
+    sort_sum2(dr_meter, channel);
+    double loud_sum2 = get_sum2_quantile(dr_meter, channel, DR_LOUD_FRACTION);
+    double loud_rms = get_audio_rms(loud_sum2, DR_LOUD_FRACTION * dr_meter->_ana_samples);
+    return decibels(dr_meter->second_peaks[channel] / loud_rms);
+}
+
+dr_stats_t get_dr_stats_dr_meter(dr_meter_t* dr_meter, unsigned channel)
 {
     if(filled(dr_meter))
     {
-        sort_sum2(dr_meter, channel);
-        double loud_sum2 = get_sum2_quantile(dr_meter, channel, DR_LOUD_FRACTION);
-        double loud_rms = get_audio_rms(loud_sum2, DR_LOUD_FRACTION * dr_meter->_ana_samples);
-        return decibels(dr_meter->second_peaks[channel] / loud_rms);
+        double dr = get_dr_dr_meter(dr_meter, channel);
+        double second_peak = dr_meter->second_peaks[channel];
+        double rms = get_rms_dr_meter(dr_meter, channel);
+        return make_dr_stats(dr, decibels(second_peak), decibels(rms));
     }
-    else return 0.;
+    else return make_dr_stats(0., 0., 0.);
 }
 
 void free_dr_meter(dr_meter_t* dr_meter)
