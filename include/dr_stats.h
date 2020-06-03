@@ -8,6 +8,8 @@
 #ifndef DR_STATS_H
 #define DR_STATS_H
 
+#include <stdio.h>
+
 struct dr_stats_s
 {
     double dr;
@@ -19,5 +21,6 @@ typedef struct dr_stats_s dr_stats_t;
 
 dr_stats_t make_dr_stats(double dr, double second_peak, double rms);
 dr_stats_t make_zero_dr_stats();
+void print_dr_stats(dr_stats_t* dr_stats, FILE* output);
 
 #endif /* DR_STATS_H */

@@ -11,3 +11,8 @@ dr_stats_t make_zero_dr_stats()
 {
     return make_dr_stats(0., -INFINITY, -INFINITY);
 }
+
+void print_dr_stats(dr_stats_t* dr_stats, FILE* output)
+{
+    fprintf(output, "%.3f\t%.3f\t%.3f\n", dr_stats->dr, dr_stats->second_peak, dr_stats->rms);
+}
