@@ -25,6 +25,11 @@ void init_dr_meter(dr_meter_t* dr_meter)
         dr_meter->sum2[cha] = malloc(dr_meter->blocks * sizeof(double));//allocate dr_meter->blocks 1D arrays
 }
 
+static int filled(dr_meter_t* dr_meter)
+{
+    return dr_meter->_ana_blocks > 0 && dr_meter->_ana_samples > 0;
+}
+
 static void fill_dr_peaks(dr_meter_t* dr_meter, block_analyser_t* analyser, unsigned channel_index)
 {
     double block_peak = analyser->peak[channel_index];
