@@ -120,16 +120,37 @@ static double get_dr_dr_meter(dr_meter_t* dr_meter, unsigned channel)
     return decibels(dr_meter->second_peaks[channel] / loud_rms);
 }
 
+static dr_stats_t get_dr_stats_filled(dr_meter_t* dr_meter, unsigned channel)
+{
+    double dr = get_dr_dr_meter(dr_meter, channel);
+    double second_peak = dr_meter->second_peaks[channel];
+    double rms = get_rms_dr_meter(dr_meter, channel);
+    return make_dr_stats(dr, decibels(second_peak), decibels(rms));
+}
+
 dr_stats_t get_dr_stats_dr_meter(dr_meter_t* dr_meter, unsigned channel)
 {
+    if(filled(dr_meter)) return get_dr_stats_filled(dr_meter, channel);
+    else return make_dr_stats(0., -INFINITY, -INFINITY);
+}
+
+dr_stats_t get_avg_dr_stats_dr_meter(dr_meter_t* dr_meter)
+{
+    dr_stats_t result = make_dr_stats(0., -INFINITY, -INFINITY);
     if(filled(dr_meter))
     {
-        double dr = get_dr_dr_meter(dr_meter, channel);
-        double second_peak = dr_meter->second_peaks[channel];
-        double rms = get_rms_dr_meter(dr_meter, channel);
-        return make_dr_stats(dr, decibels(second_peak), decibels(rms));
+        result.rms = 0.;
+        for(unsigned cha = 0; cha < dr_meter->channels; ++cha)
+        {
+            dr_stats_t current = get_dr_stats_filled(dr_meter, cha);
+            if(current.second_peak > result.second_peak) result.second_peak = current.second_peak;
+            result.rms += current.rms;
+            result.dr += current.dr;
+        }
+        result.rms /= dr_meter->channels;
+        result.dr /= dr_meter->channels;
     }
-    else return make_dr_stats(0., 0., 0.);
+    return result;
 }
 
 void free_dr_meter(dr_meter_t* dr_meter)
