@@ -5,14 +5,10 @@
 #include "audio_rms.h"
 #include "block_analyser.h"
 #include "print_dr_meter.h"
+#include "decibels.h"
 
 // constants according to DR standard
 static const double DR_LOUD_FRACTION = 0.2;
-
-static double decibels(double value)
-{
-    return 20. * log10(value);
-}
 
 static void init_dr_meter(dr_meter_t* dr_meter)
 {
@@ -125,7 +121,7 @@ static dr_stats_t get_dr_stats_filled(dr_meter_t* dr_meter, unsigned channel)
     double dr = get_dr_dr_meter(dr_meter, channel);
     double second_peak = dr_meter->second_peaks[channel];
     double rms = get_rms_dr_meter(dr_meter, channel);
-    return make_dr_stats(dr, decibels(second_peak), decibels(rms));
+    return make_dr_stats(dr, second_peak, rms);
 }
 
 dr_stats_t get_dr_stats_dr_meter(dr_meter_t* dr_meter, unsigned channel)
@@ -139,7 +135,6 @@ dr_stats_t get_avg_dr_stats_dr_meter(dr_meter_t* dr_meter)
     dr_stats_t result = make_zero_dr_stats();
     if(filled(dr_meter))
     {
-        result.rms = 0.;
         for(unsigned cha = 0; cha < dr_meter->channels; ++cha)
         {
             dr_stats_t current = get_dr_stats_filled(dr_meter, cha);
