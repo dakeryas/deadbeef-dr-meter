@@ -9,17 +9,16 @@
 
 #include "block_analyser.h"
 #include "dr_meter.h"
+#include "thread_data.h"
+#include "thread_datum.h"
+#include "thread_runner.h"
+#include "selection.h"
 
 // constants according to DR standard
 static const unsigned DR_BLOCK_DURATION = 3;
 
 static DB_functions_t* ddb_api;
 static ddb_gtkui_t* gtk_ui_plugin;
-
-typedef struct{
-    DB_playItem_t **items;
-    int items_count;
-} selection_t;
 
 typedef struct{
     ddb_gtkui_widget_t* gtk_widget;
@@ -76,7 +75,7 @@ static int allocate_buffer(char** buffer, unsigned duration, DB_fileinfo_t* file
     else return 0;
 }
 
-static void process_item(DB_playItem_t* item, DB_fileinfo_t* fileinfo, DB_decoder_t* decoder)
+static void process_item(DB_playItem_t* item, DB_fileinfo_t* fileinfo, DB_decoder_t* decoder, dr_stats_t* dr_stats)
 {
     decoder->init(fileinfo, item);
     char* buffer = NULL;
@@ -91,27 +90,40 @@ static void process_item(DB_playItem_t* item, DB_fileinfo_t* fileinfo, DB_decode
             decode_analyse_block(buffer, buffer_size, fileinfo, decoder, &analyser);
             fill_dr_meter(&dr_meter, &analyser);
         }
+        fill_avg_dr_stats_dr_meter(&dr_meter, dr_stats);
         free_block_analyser(&analyser);
         free_dr_meter(&dr_meter);
     }
     free(buffer);
 }
 
-static int compute_single_dr(DB_playItem_t* selection_item)
+static void compute_single_dr(DB_playItem_t* selection_item, dr_stats_t* dr_stats)
 {
     DB_decoder_t* decoder = get_decoder(selection_item);
     if(decoder)
     {
         DB_fileinfo_t* fileinfo = decoder->open(DDB_DECODER_HINT_RAW_SIGNAL);
-        if(fileinfo) process_item(selection_item, fileinfo, decoder);
+        if(fileinfo) process_item(selection_item, fileinfo, decoder, dr_stats);
     }
-    return 0;
+}
+
+static void* thread_worker(void* thread_datum)
+{
+    thread_datum_t* datum = (thread_datum_t*) thread_datum;
+    compute_single_dr(datum->item, &datum->dr_stats);
+    return NULL;
 }
 
 static int compute_dr(selection_t* selection)
 {
+    thread_data_t thread_data = make_thread_data(selection);
+    unsigned nu_threads = sysconf(_SC_NPROCESSORS_ONLN);
+    thread_runner_t thread_runner = make_thread_runner(&thread_data, nu_threads);
+    run_batches(&thread_runner, thread_worker);
     for(int k = 0; k < selection->items_count ; ++k)
-        compute_single_dr(selection->items[k]);
+        print_dr_stats(get_dr_stats(&thread_data, k), stdout);
+    free_thread_runner(&thread_runner);
+    free_thread_data(&thread_data);
     return 0;
 }
 
