@@ -119,9 +119,9 @@ static double get_dr_dr_meter(dr_meter_t* dr_meter, unsigned channel)
 static dr_stats_t get_dr_stats_filled(dr_meter_t* dr_meter, unsigned channel)
 {
     double dr = get_dr_dr_meter(dr_meter, channel);
-    double second_peak = dr_meter->second_peaks[channel];
+    double peak = dr_meter->peaks[channel];
     double rms = get_rms_dr_meter(dr_meter, channel);
-    return make_dr_stats(dr, second_peak, rms);
+    return make_dr_stats(dr, peak, rms);
 }
 
 dr_stats_t get_dr_stats_dr_meter(dr_meter_t* dr_meter, unsigned channel)
@@ -138,7 +138,7 @@ dr_stats_t get_avg_dr_stats_dr_meter(dr_meter_t* dr_meter)
         for(unsigned cha = 0; cha < dr_meter->channels; ++cha)
         {
             dr_stats_t current = get_dr_stats_filled(dr_meter, cha);
-            if(current.second_peak > result.second_peak) result.second_peak = current.second_peak;
+            if(current.peak > result.peak) result.peak = current.peak;
             result.rms += current.rms;
             result.dr += current.dr;
         }
