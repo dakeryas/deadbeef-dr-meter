@@ -8,7 +8,6 @@
 #ifndef THREAD_DATUM_H
 #define THREAD_DATUM_H
 
-#include <pthread.h>
 #include "dr_stats.h"
 
 struct DB_playItem_s;
@@ -16,7 +15,6 @@ struct selection_s;
 
 struct thread_datum_s
 {
-    pthread_t id;
     struct DB_playItem_s* item;
     dr_stats_t dr_stats;
 };
