@@ -16,15 +16,13 @@ struct dr_stats_s;
 
 struct thread_data_s
 {
-    unsigned threads;
-    unsigned batches;
     unsigned items;
     struct thread_datum_s* data;
 };
 
 typedef struct thread_data_s thread_data_t;
 
-thread_data_t make_thread_data(struct selection_s* selection, unsigned max_threads);
+thread_data_t make_thread_data(struct selection_s* selection);
 struct dr_stats_s* get_dr_stats(thread_data_t* thread_data, unsigned item_id);
 void free_thread_data(thread_data_t* thread_data);
 
