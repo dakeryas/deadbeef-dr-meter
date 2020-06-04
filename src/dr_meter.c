@@ -130,7 +130,7 @@ dr_stats_t get_dr_stats_dr_meter(dr_meter_t* this, unsigned channel)
     else return make_zero_dr_stats();
 }
 
-void assign_avg_dr_stats_dr_meter(dr_meter_t* this, dr_stats_t* result)
+void fill_avg_dr_stats_dr_meter(dr_meter_t* this, dr_stats_t* result)
 {
     zero_dr_stats(result);
     if(filled(this))
@@ -150,7 +150,7 @@ void assign_avg_dr_stats_dr_meter(dr_meter_t* this, dr_stats_t* result)
 dr_stats_t get_avg_dr_stats_dr_meter(dr_meter_t* this)
 {
     dr_stats_t result;
-    assign_avg_dr_stats_dr_meter(this, &result);
+    fill_avg_dr_stats_dr_meter(this, &result);
     return result;
 }
 
