@@ -158,6 +158,8 @@ void free_dr_meter(dr_meter_t* this)
 {
     free(this->peaks);
     free(this->second_peaks);
+    for(unsigned cha = 0; cha < this->channels; ++cha)
+        free(this->sum2[cha]);
     free(this->sum2);
 }
 
