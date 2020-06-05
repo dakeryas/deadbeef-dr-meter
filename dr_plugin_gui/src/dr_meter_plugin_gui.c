@@ -156,7 +156,7 @@ int dr_meter_gui_connect()
     else return 0;
 }
 
-DB_plugin_t* ddb_dr_meter_load(DB_functions_t* api)
+DB_plugin_t* ddb_dr_meter_gui_load(DB_functions_t* api)
 {
     ddb_api = api;
     static DB_misc_t dr_plugin = {

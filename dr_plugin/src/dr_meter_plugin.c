@@ -112,7 +112,7 @@ int dr_meter_stop()
     return 0;
 }
 
-DB_plugin_t* dr_meter_plugin_load(DB_functions_t* api)
+DB_plugin_t* ddb_dr_meter_load(DB_functions_t* api)
 {
     ddb_api = api;
     static dr_meter_plugin_t dr_meter_plugin = {

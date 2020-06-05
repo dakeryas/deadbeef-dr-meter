@@ -2,7 +2,7 @@ PREFIX := ${HOME}/.local
 OBJDIR := objects
 SRCDIR := src
 INCLDIR := include
-PLUGIN := dr_meter_plugin_gui.so
+PLUGIN := ddb_dr_meter_gui.so
 
 OPTFLAG := -O3 -flto -DNDEBUG
 CFLAGS += $(OPTFLAG) -std=c99 -Wall -fPIC
