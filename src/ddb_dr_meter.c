@@ -213,9 +213,9 @@ DB_plugin_t* ddb_dr_meter_load(DB_functions_t* api)
         .plugin.name            = "Dynamic Range Meter",
         .plugin.descr           = "Measure Dynamic Range",
         .plugin.copyright       =
-        "Copyright(C)2020 Valérian Sibille <vsibille@mit.edu>\n"
+        "Copyright (C) 2020 Valérian Sibille <vsibille@mit.edu>\n"
         ,
-        .plugin.website         = "",
+        .plugin.website         = "https://github.com/dakeryas/deadbeef-dr-meter.git",
         .plugin.start           = dr_meter_start,
         .plugin.connect         = dr_meter_connect,
         .plugin.get_actions     = dr_meter_get_actions,
