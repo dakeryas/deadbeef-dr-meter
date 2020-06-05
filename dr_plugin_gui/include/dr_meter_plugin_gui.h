@@ -1,13 +1,12 @@
 /**************************************************************************
-* @file decibels.h
+* @file dr_meter_plugin_gui.h
 * @author Valérian Sibille <vsibille@mit.edu>
-* @date 04 Jun 2020
-* @brief dB function
+* @date 05 Jun 2020
+* @brief GUI part of the DR meter plugin
 * ************************************************************************/
 
-#ifndef DECIBELS_H
-#define DECIBELS_H
+#ifndef DR_METER_PLUGIN_GUI_H
+#define DR_METER_PLUGIN_GUI_H
 
-double decibels(double value);
 
-#endif /* DECIBELS_H */
+#endif /* DR_METER_PLUGIN_GUI_H */

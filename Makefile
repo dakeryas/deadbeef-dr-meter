@@ -1,36 +1,17 @@
-PREFIX := ${HOME}/.local
-OBJDIR := objects
-SRCDIR := src
-INCLDIR := include
-PLUGIN := ddb_dr_meter.so
-
-OPTFLAG := -O3 -flto -DNDEBUG
-CFLAGS += $(OPTFLAG) -std=c99 -Wall -fPIC
-CPPFLAGS += -I./$(INCLDIR) $(shell pkg-config --cflags gtk+-3.0)
-LDFLAGS += -flto
-LDFLAGS += $(shell pkg-config --libs gtk+-3.0)
-
-OBJECTS := $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(wildcard $(SRCDIR)/*.c))
-
 .PHONY: all debug install clean
 
-all: $(PLUGIN)
+all:
+	$(MAKE) -C dr_plugin/
+	$(MAKE) -C dr_plugin_gui/
 
-debug: OPTFLAG := -O0 -g -DDEBUG
-debug: all
+debug:
+	$(MAKE) -C dr_plugin/ debug
+	$(MAKE) -C dr_plugin_gui/ debug
 
-$(OBJECTS): | $(OBJDIR)
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
-
-$(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-
-$(PLUGIN): $(OBJECTS)
-	$(CXX) -shared -o $@ $^ $(LDFLAGS)
-
-install: $(PLUGIN)
-	install -m 666 -D $(PLUGIN) $(PREFIX)/lib/deadbeef
+install:
+	$(MAKE) -C dr_plugin/ install
+	$(MAKE) -C dr_plugin_gui/ install
 
 clean:
-	rm -f $(OBJECTS) $(PLUGIN)
+	$(MAKE) -C dr_plugin/ clean
+	$(MAKE) -C dr_plugin_gui/ clean
