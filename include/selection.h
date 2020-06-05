@@ -2,7 +2,7 @@
 * @file selection.h
 * @author Valérian Sibille <vsibille@mit.edu>
 * @date 04 Jun 2020
-* @brief
+* @brief Hold selected playlist items
 * ************************************************************************/
 
 #ifndef SELECTION_H
