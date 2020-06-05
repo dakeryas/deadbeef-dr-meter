@@ -2,6 +2,8 @@
 #include "math.h"
 #include "decibels.h"
 
+static const char* DR_FORMAT = "DR %-8.3f %8.3f dB %10.3f dB";
+
 dr_stats_t make_dr_stats(double dr, double peak, double rms)
 {
     dr_stats_t object = {.dr = dr, .peak = peak, .rms = rms};
@@ -22,7 +24,18 @@ dr_stats_t make_zero_dr_stats()
     return dr_stats;
 }
 
-void print_dr_stats(dr_stats_t* dr_stats, FILE* output)
+dr_stats_t make_dB_dr_stats(dr_stats_t* dr_stats)
 {
-    fprintf(output, "%.3f\t%.3f\t%.3f\n", dr_stats->dr, decibels(dr_stats->peak), decibels(dr_stats->rms));
+    return make_dr_stats(dr_stats->dr, decibels(dr_stats->peak), decibels(dr_stats->rms));
+}
+
+int print_buffer_dr_stats(dr_stats_t* dr_stats, char* buffer)
+{
+    dr_stats_t stats = make_dB_dr_stats(dr_stats);
+    return sprintf(buffer, DR_FORMAT, stats.dr, stats.peak, stats.rms);
+}
+int print_dr_stats(dr_stats_t* dr_stats, FILE* output)
+{
+    dr_stats_t stats = make_dB_dr_stats(dr_stats);
+    return fprintf(output, DR_FORMAT, stats.dr, stats.peak, stats.rms);
 }
