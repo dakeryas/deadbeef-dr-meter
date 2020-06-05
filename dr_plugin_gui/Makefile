@@ -26,7 +26,7 @@ $(OBJDIR):
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
-$(PLUGIN): $(OBJECTS)
+$(PLUGIN): $(OBJECTS) ../dr_plugin/ddb_dr_meter.so
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
 install: $(PLUGIN)
