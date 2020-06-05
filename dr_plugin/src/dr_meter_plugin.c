@@ -5,7 +5,6 @@
 #include "block_analyser.h"
 #include "dr_meter.h"
 #include "thread_data.h"
-#include "thread_datum.h"
 #include "thread_runner.h"
 #include "selection.h"
 

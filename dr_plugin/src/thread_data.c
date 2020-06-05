@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include "thread_data.h"
-#include "thread_datum.h"
 #include "selection.h"
 
 static void init_thread_data(thread_data_t* this)

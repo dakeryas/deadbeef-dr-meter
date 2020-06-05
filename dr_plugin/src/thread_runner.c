@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include "thread_runner.h"
 #include "thread_data.h"
-#include "thread_datum.h"
 
 static unsigned number_of_batches(thread_data_t* thread_data, unsigned max_threads)
 {

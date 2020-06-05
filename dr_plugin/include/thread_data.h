@@ -9,15 +9,15 @@
 #define THREAD_DATA_H
 
 #include <pthread.h>
+#include "thread_datum.h"
 
-struct thread_datum_s;
 struct selection_s;
 struct dr_stats_s;
 
 struct thread_data_s
 {
     unsigned items; //length of 'data', i.e. numbef of tracks
-    struct thread_datum_s* data;
+    thread_datum_t* data;
 };
 
 typedef struct thread_data_s thread_data_t;
