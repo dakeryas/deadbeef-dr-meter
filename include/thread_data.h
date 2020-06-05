@@ -16,7 +16,7 @@ struct dr_stats_s;
 
 struct thread_data_s
 {
-    unsigned items;
+    unsigned items; //length of 'data', i.e. numbef of tracks
     struct thread_datum_s* data;
 };
 
