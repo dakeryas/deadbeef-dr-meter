@@ -1,7 +1,8 @@
 ## Description
 Adds a "Dynamic Range" context menu to the selected playlist items.
 Upon clicking, the dynamic range, peak, and total RMS for each selection 
-item is computed and a GTK3 window is opened to with results. The text is selectable and can be copied.
+item is computed and a GTK3 window is opened with results. The text is selectable and can be copied.
+NB: This is work in progress.
 
 ## Requirements
 You need GNU make. The computing plugin relies on a dr_meter library which is also built and
