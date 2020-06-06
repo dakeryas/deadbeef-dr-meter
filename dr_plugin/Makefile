@@ -5,9 +5,9 @@ INCLDIR := include
 PLUGIN := ddb_dr_meter.so
 
 OPTFLAG := -O3 -flto -DNDEBUG
-CFLAGS += $(OPTFLAG) -std=c99 -Wall -fPIC -pthread
+CFLAGS += $(OPTFLAG) -std=c99 -Wall -fPIC
 CPPFLAGS += -I./$(INCLDIR) -I$(DRMETER_DIR)/include
-LDFLAGS += -flto -lpthread
+LDFLAGS += -flto
 LDFLAGS += -L$(DRMETER_DIR)/lib -ldrmeter
 
 OBJECTS := $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(wildcard $(SRCDIR)/*.c))
@@ -31,7 +31,7 @@ $(PLUGIN): $(OBJECTS)
 
 install: LDFLAGS += -Wl,-rpath=.
 install: all
-	install -m 666 -D $(PLUGIN) $(PREFIX)/lib/deadbeef/$(PLUGIN) 
+	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/lib/deadbeef/$(PLUGIN)
 
 clean:
 	rm -f $(OBJECTS) $(PLUGIN)
