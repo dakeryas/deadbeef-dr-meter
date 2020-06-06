@@ -1,20 +1,19 @@
-PREFIX := ${HOME}/.local
+PREFIX := /usr/local
 OBJDIR := objects
 SRCDIR := src
 INCLDIR := include
-PLUGIN := ddb_dr_meter.so
+LIBRARY := libdrmeter.so
 
 OPTFLAG := -O3 -flto -DNDEBUG
 CFLAGS += $(OPTFLAG) -std=c99 -Wall -fPIC -pthread
-CPPFLAGS += -I./$(INCLDIR) -I$(DRMETER_DIR)/include
+CPPFLAGS += -I./$(INCLDIR)
 LDFLAGS += -flto -lpthread
-LDFLAGS += -L$(DRMETER_DIR)/lib -ldrmeter
 
 OBJECTS := $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(wildcard $(SRCDIR)/*.c))
 
 .PHONY: all debug install clean
 
-all: $(PLUGIN)
+all: $(LIBRARY)
 
 debug: OPTFLAG := -O0 -g -DDEBUG
 debug: all
@@ -26,12 +25,11 @@ $(OBJDIR):
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
-$(PLUGIN): $(OBJECTS)
+$(LIBRARY): $(OBJECTS)
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
-install: LDFLAGS += -Wl,-rpath=.
 install: all
-	install -m 666 -D $(PLUGIN) $(PREFIX)/lib/deadbeef/$(PLUGIN) 
+	install -m 666 -D $(LIBRARY) $(DESTDIR)$(PREFIX)/lib/$(LIBRARY)
 
 clean:
-	rm -f $(OBJECTS) $(PLUGIN)
+	rm -f $(OBJECTS) $(LIBRARY)
