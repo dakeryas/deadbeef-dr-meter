@@ -8,11 +8,9 @@
 #ifndef SELECTION_H
 #define SELECTION_H
 
-struct DB_playItem_s;
-
 struct selection_s
 {
-    struct DB_playItem_s **items;
+    void** items;
     int items_count;
 };
 
