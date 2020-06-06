@@ -30,7 +30,7 @@ $(PLUGIN): $(OBJECTS) ../dr_plugin/ddb_dr_meter.so
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
 install: all
-	install -m 666 -D $(PLUGIN) $(PREFIX)/lib/deadbeef
+	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/lib/deadbeef/$(PLUGIN)
 
 clean:
 	rm -f $(OBJECTS) $(PLUGIN)
