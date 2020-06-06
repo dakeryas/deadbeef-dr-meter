@@ -29,7 +29,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h
 $(PLUGIN): $(OBJECTS)
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
-install: LDFLAGS += -Wl,-rpath=.
+install: LDFLAGS += -Wl,-rpath='$$ORIGIN'
 install: all
 	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/lib/deadbeef/$(PLUGIN)
 
