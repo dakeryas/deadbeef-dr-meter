@@ -4,7 +4,7 @@ export DRMETER_DIR=$(PWD)/dr_meter
 TARGETS := all debug install clean
 SUBDIRS := dr_meter dr_plugin dr_plugin_gui
 
-ifeq ($(MAKECMDGOALS),install)
+ifneq (,$(findstring install, $(MAKECMDGOALS)))
 	DRMETER_PREFIX := PREFIX=$(PREFIX)/lib/deadbeef
 endif
 
