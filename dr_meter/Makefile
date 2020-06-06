@@ -2,7 +2,8 @@ PREFIX := /usr/local
 OBJDIR := objects
 SRCDIR := src
 INCLDIR := include
-LIBRARY := libdrmeter.so
+LIBDIR := lib
+LIBRARY := $(LIBDIR)/libdrmeter.so
 
 OPTFLAG := -O3 -flto -DNDEBUG
 CFLAGS += $(OPTFLAG) -std=c99 -Wall -fPIC -pthread
@@ -19,17 +20,17 @@ debug: OPTFLAG := -O0 -g -DDEBUG
 debug: all
 
 $(OBJECTS): | $(OBJDIR)
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
+$(OBJDIR) $(LIBDIR):
+	mkdir -p $@
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
-$(LIBRARY): $(OBJECTS)
+$(LIBRARY): $(OBJECTS) | $(LIBDIR)
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
 install: all
-	install -m 666 -D $(LIBRARY) $(DESTDIR)$(PREFIX)/lib/$(LIBRARY)
+	install -m 666 -D $(LIBRARY) $(DESTDIR)$(PREFIX)/$(LIBRARY)
 
 clean:
 	rm -f $(OBJECTS) $(LIBRARY)
