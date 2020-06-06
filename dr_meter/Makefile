@@ -29,7 +29,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h
 $(LIBRARY): $(OBJECTS) | $(LIBDIR)
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
-install: all
+install: $(LIBRARY)
 	install -m 666 -D $(LIBRARY) $(DESTDIR)$(PREFIX)/$(LIBRARY)
 
 clean:

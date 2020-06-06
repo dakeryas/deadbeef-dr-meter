@@ -30,7 +30,7 @@ $(PLUGIN): $(OBJECTS)
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
 install: LDFLAGS += -Wl,-rpath='$$ORIGIN/lib'
-install: clean_plugin all
+install: clean_plugin $(PLUGIN)
 	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/lib/deadbeef/$(PLUGIN)
 
 clean_plugin:
