@@ -2,11 +2,12 @@ PREFIX := ${HOME}/.local
 OBJDIR := objects
 SRCDIR := src
 INCLDIR := include
+DRPLUG_DIR := ../dr_plugin
 PLUGIN := ddb_dr_meter_gui.so
 
 OPTFLAG := -O3 -flto -DNDEBUG
 CFLAGS += $(OPTFLAG) -std=c99 -Wall -fPIC
-CPPFLAGS += -I./$(INCLDIR) -I$(DRMETER_DIR)/include
+CPPFLAGS += -I./$(INCLDIR) -I$(DRPLUG_DIR)/include -I$(DRMETER_DIR)/include
 CPPFLAGS += $(shell pkg-config --cflags gtk+-3.0)
 LDFLAGS += -flto
 LDFLAGS += -L$(DRMETER_DIR)/lib -ldrmeter
@@ -28,10 +29,10 @@ $(OBJDIR):
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
-$(PLUGIN): $(OBJECTS) ../dr_plugin/ddb_dr_meter.so
+$(PLUGIN): $(OBJECTS)
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
-install: LDFLAGS += -Wl,-rpath=.
+install: LDFLAGS += -Wl,-rpath='$$ORIGIN'
 install: all
 	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/lib/deadbeef/$(PLUGIN)
 
