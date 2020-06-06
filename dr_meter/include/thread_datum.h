@@ -10,12 +10,9 @@
 
 #include "dr_stats.h"
 
-struct DB_playItem_s;
-struct selection_s;
-
 struct thread_datum_s
 {
-    struct DB_playItem_s* item;
+    void* item;
     dr_stats_t dr_stats;
 };
 
