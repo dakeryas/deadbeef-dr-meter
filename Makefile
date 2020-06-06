@@ -1,17 +1,12 @@
-.PHONY: all debug install clean
+export DRMETER_DIR=$(PWD)/dr_meter
 
-all:
-	$(MAKE) -C dr_plugin/
-	$(MAKE) -C dr_plugin_gui/
+TARGETS := all debug install clean
+SUBDIRS := dr_meter dr_plugin dr_plugin_gui
 
-debug:
-	$(MAKE) -C dr_plugin/ debug
-	$(MAKE) -C dr_plugin_gui/ debug
+$(TARGETS): $(SUBDIRS)
+dr_plugin: dr_meter
+dr_plugin_gui: dr_meter
+$(SUBDIRS):
+	$(MAKE) -C $@ $(MAKECMDGOALS)
 
-install:
-	$(MAKE) -C dr_plugin/ install
-	$(MAKE) -C dr_plugin_gui/ install
-
-clean:
-	$(MAKE) -C dr_plugin/ clean
-	$(MAKE) -C dr_plugin_gui/ clean
+.PHONY: $(TARGETS) $(SUBDIRS)
