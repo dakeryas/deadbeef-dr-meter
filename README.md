@@ -1,6 +1,6 @@
 ## Description
 Adds a "Dynamic Range" context menu to the selected playlist items.
-Upon clicking, the dynamic range, peak, and total RMS for each selection 
+Upon clicking, the dynamic range, peak, and total RMS for each selection
 item is computed and a GTK3 window is opened to with results. The text is selectable and can be copied.
 
 ## Requirements
@@ -14,8 +14,10 @@ The GNU Makefiles are Linux-specific for the moment but should be easy to port
 to OSX or FreeBSD.
 
 ## Installion
-In the root folder type
-```make install```
+After having cloned this repository, in the root folder type
+```
+make install
+```
 The default installation location of the plugins is
 `${HOME}/.local/lib/deadbeef`, this may be overriden with the PREFIX GNUmake
 variable, e.g.
