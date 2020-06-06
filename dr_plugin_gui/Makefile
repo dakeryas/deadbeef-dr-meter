@@ -29,7 +29,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h
 $(PLUGIN): $(OBJECTS) ../dr_plugin/ddb_dr_meter.so
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
-install: $(PLUGIN)
+install: all
 	install -m 666 -D $(PLUGIN) $(PREFIX)/lib/deadbeef
 
 clean:

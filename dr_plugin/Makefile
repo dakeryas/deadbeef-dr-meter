@@ -28,7 +28,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h
 $(PLUGIN): $(OBJECTS)
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
-install: $(PLUGIN)
+install: all
 	install -m 666 -D $(PLUGIN) $(PREFIX)/lib/deadbeef
 
 clean:
