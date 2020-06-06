@@ -1,4 +1,4 @@
-PREFIX := ${HOME}/.local
+PREFIX ?= ${HOME}/.local
 export DRMETER_DIR=$(PWD)/dr_meter
 
 TARGETS := all debug install clean

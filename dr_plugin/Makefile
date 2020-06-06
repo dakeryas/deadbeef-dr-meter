@@ -1,4 +1,4 @@
-PREFIX := ${HOME}/.local
+PREFIX ?= ${HOME}/.local
 OBJDIR := objects
 SRCDIR := src
 INCLDIR := include

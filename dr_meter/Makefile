@@ -1,4 +1,4 @@
-PREFIX := /usr/local
+PREFIX ?= /usr/local
 OBJDIR := objects
 SRCDIR := src
 INCLDIR := include
