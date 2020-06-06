@@ -2,7 +2,7 @@
 * @file thread_datum.h
 * @author Valérian Sibille <vsibille@mit.edu>
 * @date 04 Jun 2020
-* @brief  Hold track input and DR stats output for threads
+* @brief Hold track input and DR stats output for threads
 * ************************************************************************/
 
 #ifndef THREAD_DATUM_H
