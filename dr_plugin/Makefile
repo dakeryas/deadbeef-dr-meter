@@ -12,7 +12,7 @@ LDFLAGS += -L$(DRMETER_DIR)/lib -ldrmeter
 
 OBJECTS := $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(wildcard $(SRCDIR)/*.c))
 
-.PHONY: all debug install clean
+.PHONY: all debug install clean clean_plugin
 
 all: $(PLUGIN)
 
@@ -30,8 +30,11 @@ $(PLUGIN): $(OBJECTS)
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
 install: LDFLAGS += -Wl,-rpath='$$ORIGIN/lib'
-install: all
+install: clean_plugin all
 	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/lib/deadbeef/$(PLUGIN)
 
-clean:
-	rm -f $(OBJECTS) $(PLUGIN)
+clean_plugin:
+	rm -f $(PLUGIN)
+
+clean: clean_plugin
+	rm -f $(OBJECTS)
