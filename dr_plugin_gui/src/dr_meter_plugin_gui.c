@@ -27,7 +27,7 @@ static void unreference_selection(selection_t* selection)
 GtkWidget* create_dr_dialog()
 {
     GtkWidget* dialog = gtk_dialog_new();
-    gtk_widget_set_size_request(dialog, 600, 500);
+    gtk_widget_set_size_request(dialog, 600, 400);
     gtk_window_set_title(GTK_WINDOW (dialog), "Dynamic Range");
     gtk_window_set_position(GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
     gtk_window_set_modal(GTK_WINDOW (dialog), TRUE);
