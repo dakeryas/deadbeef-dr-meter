@@ -113,7 +113,7 @@ static gboolean run_meter_job(void* data)
         retrieve_current_selection(&selection);
         thread_data_t thread_data = make_thread_data(&selection);
         dr_meter_plugin->compute_dr(&thread_data);
-        char buffer[thread_data.items * (40 + 10 + 60)];
+        char buffer[thread_data.items * (35 + 10 + 60)];
         write_log(&thread_data, buffer);
         show_dr_log(buffer);
         free_thread_data(&thread_data);
