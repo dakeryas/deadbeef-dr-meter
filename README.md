@@ -1,19 +1,23 @@
 ## Description
-Adds a "Dynamic Range" context menu to the selected playlist items.
-Upon clicking, the dynamic range, peak, and total RMS for each selection
-item is computed and a GTK3 window is opened with results. The text is selectable and can be copied.
+Adds a "Dynamic Range" context menu to the selected playlist items.  Upon
+clicking, the dynamic range, peak, and total RMS for each selection item is
+computed and a GTK3 window is opened with results. The text is selectable and
+can be copied.
 
 NB: This is work in progress.
 
 ## Requirements
-You need GNU make. The computing plugin relies on a `drmeter` library which is also built and
-installed via the top-level `Makefile`. The GTK3-based GUI plugin utilising the computing plugin and displaying its results in a window relies upon `pkg-config` to find
-the `gtk+-3.0` library. On Debian/Ubuntu, you should thus be covered with
+You need GNU make. The computing plugin relies on a `drmeter` library which is
+also built and installed via the top-level `Makefile`. The GTK3-based GUI
+plugin utilising the computing plugin and displaying its results in a window
+relies upon `pkg-config` to find the `gtk+-3.0` library. On Debian/Ubuntu, you
+should thus be covered with
 ```
 sudo apt-get install make libgtk-3-dev
 ```
-The GNU Makefiles are Linux-specific for the moment but should be easy to port
-to OSX or FreeBSD.
+For the moment, the build also works with gtk+-2.0 but you need to swap the
+gtk+-3.0 references for gtk+-2.0 in `dr_plugin_gui/Makefile`. Similarly, the
+GNU Makefiles should be easy to port to OSX (or use macports) or FreeBSD.
 
 ## Installion
 After having cloned this repository, in the root folder type
