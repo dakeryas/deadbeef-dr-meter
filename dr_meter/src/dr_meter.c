@@ -48,7 +48,7 @@ static void fill_dr_peaks(dr_meter_t* this, block_analyser_t* analyser, unsigned
 
 static void fill_sum2(dr_meter_t* this, block_analyser_t* analyser, unsigned channel_index)
 {
-    this->sum2[channel_index][this->_ana_blocks] = analyser->sum2[channel_index];
+    this->sum2[channel_index][this->_ana_blocks] = analyser->sum2[channel_index] / analyser->samples;
 }
 
 static void fill_channel(dr_meter_t* this, block_analyser_t* analyser, unsigned channel_index)
@@ -115,14 +115,14 @@ static double get_sum2_quantile(dr_meter_t* this, unsigned channel, double quant
 double get_rms_dr_meter(dr_meter_t* this, unsigned channel)
 {
     double sum2 = get_tot_sum2(this, channel);
-    return get_audio_rms(sum2, this->_ana_samples);
+    return get_audio_rms(sum2, this->_ana_blocks);
 }
 
 static double get_dr_dr_meter(dr_meter_t* this, unsigned channel)
 {
     sort_sum2(this, channel);
     double loud_sum2 = get_sum2_quantile(this, channel, DR_LOUD_FRACTION);
-    double loud_rms = get_audio_rms(loud_sum2, DR_LOUD_FRACTION * this->_ana_samples);
+    double loud_rms = get_audio_rms(loud_sum2, DR_LOUD_FRACTION * this->_ana_blocks);
     return decibels(this->second_peaks[channel] / loud_rms);
 }
 
