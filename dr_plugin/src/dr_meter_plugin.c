@@ -82,6 +82,7 @@ static void compute_single_dr(DB_playItem_t* selection_item, dr_stats_t* dr_stat
     {
         DB_fileinfo_t* fileinfo = decoder->open(DDB_DECODER_HINT_RAW_SIGNAL);
         if(fileinfo) process_item(selection_item, fileinfo, decoder, dr_stats);
+        decoder->free(fileinfo);
     }
 }
 
