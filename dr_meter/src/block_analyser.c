@@ -72,9 +72,15 @@ void analyse_block(block_analyser_t* this, char* bytes_begin, unsigned read_byte
     }
 }
 
+int filled(block_analyser_t* this)
+{
+    return this->samples > 0;
+}
+
 double get_rms_analyser(block_analyser_t* this, unsigned channel)
 {
-    return get_audio_rms(this->sum2[channel], this->samples);
+    if(filled(this)) return get_audio_rms(this->sum2[channel], this->samples);
+    else return 0.;
 }
 
 void free_block_analyser(block_analyser_t* this)
