@@ -8,7 +8,7 @@ LIBRARY := $(LIBDIR)/libdrmeter.so
 OPTFLAG := -O3 -flto -DNDEBUG
 CFLAGS ?= $(OPTFLAG) -std=c99 -Wall -fPIC -pthread
 CPPFLAGS += -I./$(INCLDIR)
-LDFLAGS += -flto -lpthread
+LDFLAGS += -lpthread
 
 OBJECTS := $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(wildcard $(SRCDIR)/*.c))
 
