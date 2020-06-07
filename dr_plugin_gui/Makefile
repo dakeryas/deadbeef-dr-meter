@@ -8,7 +8,7 @@ PLUGIN := ddb_dr_meter_gui.so
 OPTFLAG := -O3 -flto -DNDEBUG
 CFLAGS ?= $(OPTFLAG) -std=c99 -Wall -fPIC
 CPPFLAGS += -I./$(INCLDIR) -I$(DRPLUG_DIR)/include -I$(DRMETER_DIR)/include
-CPPFLAGS += $(shell pkg-config --cflags gtk+-3.0)
+LDFLAGS += -flto
 LDFLAGS += -L$(DRMETER_DIR)/lib -ldrmeter
 LDFLAGS += $(shell pkg-config --libs gtk+-3.0)
 
