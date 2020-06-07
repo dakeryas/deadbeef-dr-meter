@@ -35,6 +35,10 @@ int32_t get_int_channel_value(char* channel_begin, int bytes_per_channel)
 
 double get_normalised_channel_value(char* channel_begin, int bytes_per_channel)
 {
-    int32_t channel_value = get_int_channel_value(channel_begin, bytes_per_channel);
-    return double_channel_value(channel_value, bytes_per_channel << 3);
+    if(bytes_per_channel < 4) //int for resonnable listeners
+    {
+        int32_t channel_value = get_int_channel_value(channel_begin, bytes_per_channel);
+        return double_channel_value(channel_value, bytes_per_channel << 3);
+    }
+    else return *(float*)channel_begin;
 }
