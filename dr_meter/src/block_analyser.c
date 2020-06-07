@@ -79,7 +79,7 @@ int filled_block_analyser(block_analyser_t* this)
 
 double get_rms_analyser(block_analyser_t* this, unsigned channel)
 {
-    if(filled(this)) return get_audio_rms(this->sum2[channel], this->samples);
+    if(filled_block_analyser(this)) return get_audio_rms(this->sum2[channel], this->samples);
     else return 0.;
 }
 

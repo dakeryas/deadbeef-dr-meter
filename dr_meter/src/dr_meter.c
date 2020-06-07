@@ -57,14 +57,24 @@ static void fill_channel(dr_meter_t* this, block_analyser_t* analyser, unsigned 
     fill_sum2(this, analyser, channel_index);
 }
 
+static void fill_channels(dr_meter_t* this, block_analyser_t* analyser)
+{
+    for(unsigned channel_index = 0; channel_index < this->channels; ++channel_index)
+        fill_channel(this, analyser, channel_index);
+}
+
+static void fill_dr_meter_nocheck(dr_meter_t* this, block_analyser_t* analyser)
+{
+    fill_channels(this, analyser);
+    this->_ana_samples += analyser->samples;
+    ++this->_ana_blocks;
+}
+
 void fill_dr_meter(dr_meter_t* this, block_analyser_t* analyser)
 {
     assert((this->_ana_blocks < this->blocks));
     assert((analyser->channels == this->channels));
-    for(unsigned channel_index = 0; channel_index < this->channels; ++channel_index)
-        fill_channel(this, analyser, channel_index);
-    this->_ana_samples += analyser->samples;
-    ++this->_ana_blocks;
+    if(filled_block_analyser(analyser)) fill_dr_meter_nocheck(this, analyser);
 }
 
 static int reverse_comp_samples(const void* s1, const void* s2)
