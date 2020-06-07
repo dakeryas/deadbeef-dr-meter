@@ -33,11 +33,11 @@ static int filled(dr_meter_t* this)
     return this->_ana_blocks > 0 && this->_ana_samples > 0;
 }
 
-static void fill_dr_peaks(dr_meter_t* this, block_analyser_t* analyser, unsigned channel_index)
+static void fill_dr_peaks(dr_meter_t* this, block_analyser_t* analyser, unsigned channel_id)
 {
-    double block_peak = analyser->peak[channel_index];
-    double* first = &this->peaks[channel_index];
-    double* second = &this->second_peaks[channel_index];
+    double block_peak = analyser->peak[channel_id];
+    double* first = &this->peaks[channel_id];
+    double* second = &this->second_peaks[channel_id];
     if(block_peak > *first)
     {
         *second = *first;
@@ -46,21 +46,21 @@ static void fill_dr_peaks(dr_meter_t* this, block_analyser_t* analyser, unsigned
     else if(block_peak > *second) *second = block_peak;
 }
 
-static void fill_sum2(dr_meter_t* this, block_analyser_t* analyser, unsigned channel_index)
+static void fill_sum2(dr_meter_t* this, block_analyser_t* analyser, unsigned channel_id)
 {
-    this->sum2[channel_index][this->_ana_blocks] = analyser->sum2[channel_index] / analyser->samples;
+    this->sum2[channel_id][this->_ana_blocks] = get_avg_sum_squares(analyser, channel_id);
 }
 
-static void fill_channel(dr_meter_t* this, block_analyser_t* analyser, unsigned channel_index)
+static void fill_channel(dr_meter_t* this, block_analyser_t* analyser, unsigned channel_id)
 {
-    fill_dr_peaks(this, analyser, channel_index);
-    fill_sum2(this, analyser, channel_index);
+    fill_dr_peaks(this, analyser, channel_id);
+    fill_sum2(this, analyser, channel_id);
 }
 
 static void fill_channels(dr_meter_t* this, block_analyser_t* analyser)
 {
-    for(unsigned channel_index = 0; channel_index < this->channels; ++channel_index)
-        fill_channel(this, analyser, channel_index);
+    for(unsigned channel_id = 0; channel_id < this->channels; ++channel_id)
+        fill_channel(this, analyser, channel_id);
 }
 
 static void fill_dr_meter_nocheck(dr_meter_t* this, block_analyser_t* analyser)
