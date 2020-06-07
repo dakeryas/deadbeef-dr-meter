@@ -6,4 +6,4 @@ License: GPL
 Architecture: amd64
 Maintainer: Valérian Sibille <mrdakeryas@gmail.com>
 Source: https://github.com/dakeryas/deadbeef-dr-meter
-Depends: libgtk-3-0 (>= 3.24)
+Depends: libgtk-3-0 (>= 3.22)
