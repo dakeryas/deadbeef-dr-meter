@@ -77,10 +77,14 @@ int filled_block_analyser(block_analyser_t* this)
     return this->samples > 0;
 }
 
+double get_avg_sum_squares(block_analyser_t* this, unsigned channel)
+{
+    return this->sum2[channel] / this->samples;
+}
+
 double get_rms_analyser(block_analyser_t* this, unsigned channel)
 {
-    if(filled_block_analyser(this)) return get_audio_rms(this->sum2[channel], this->samples);
-    else return 0.;
+    return get_audio_rms(this->sum2[channel], this->samples);
 }
 
 void free_block_analyser(block_analyser_t* this)
@@ -91,7 +95,10 @@ void free_block_analyser(block_analyser_t* this)
 
 void print_block_analyser(block_analyser_t* this, FILE* output)
 {
-    for(unsigned cha = 0; cha < this->channels; ++cha)
-        fprintf(output, "ch%i: %f %f\t", cha, this->peak[cha], get_rms_analyser(this, cha));
+    if(filled_block_analyser(this))
+    {
+        for(unsigned cha = 0; cha < this->channels; ++cha)
+            fprintf(output, "ch%i: %f %f\t", cha, this->peak[cha], get_rms_analyser(this, cha));
+    }
     fprintf(output, "%i sp\n", this->samples);
 }
