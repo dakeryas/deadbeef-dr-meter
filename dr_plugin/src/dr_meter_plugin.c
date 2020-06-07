@@ -30,14 +30,15 @@ static DB_decoder_t* get_decoder(DB_playItem_t* selection_item)
 static void decode_analyse_block(char* buffer, int buffer_size, DB_fileinfo_t* fileinfo, DB_decoder_t* decoder, block_analyser_t* analyser)
 {
     int decoded_bytes = decoder->read(fileinfo, buffer, buffer_size);
-    if(decoded_bytes ==  buffer_size)
-        analyse_block(analyser, buffer, buffer_size, fileinfo->fmt.channels, fileinfo->fmt.bps, fileinfo->fmt.samplerate);
-    //else end of file
+    analyse_block(analyser, buffer, decoded_bytes, fileinfo->fmt.channels, fileinfo->fmt.bps, fileinfo->fmt.samplerate);
 }
 
 static unsigned number_of_blocks(DB_playItem_t* item)
 {
-    return  ddb_api->pl_get_item_duration(item) / DR_BLOCK_DURATION;
+    double duration = ddb_api->pl_get_item_duration(item);
+    unsigned nu_blocks = duration / DR_BLOCK_DURATION;
+    if(duration > nu_blocks * DR_BLOCK_DURATION) nu_blocks += 1;
+    return nu_blocks;
 }
 
 static int get_number_of_bytes(unsigned duration, DB_fileinfo_t* fileinfo)

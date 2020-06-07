@@ -58,12 +58,12 @@ static void analyse_sample(block_analyser_t* this, char* sample_begin, int nu_ch
     ++this->samples;
 }
 
-void analyse_block(block_analyser_t* this, char* bytes_begin, unsigned buffer_size, int nu_channels, int bits_per_channel, int sample_rate)
+void analyse_block(block_analyser_t* this, char* bytes_begin, unsigned read_bytes, int nu_channels, int bits_per_channel, int sample_rate)
 {
     reset_block_analyser(this);
     int bytes_per_channel = bits_per_channel >> 3;
     int bytes_per_sample = nu_channels * bytes_per_channel;
-    unsigned nu_samples = buffer_size / bytes_per_sample;
+    unsigned nu_samples = read_bytes / bytes_per_sample;
 
     for(size_t sample_index = 0; sample_index < nu_samples; ++sample_index)
     {
