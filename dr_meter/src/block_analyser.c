@@ -72,7 +72,7 @@ void analyse_block(block_analyser_t* this, char* bytes_begin, unsigned read_byte
     }
 }
 
-int filled(block_analyser_t* this)
+int filled_block_analyser(block_analyser_t* this)
 {
     return this->samples > 0;
 }
