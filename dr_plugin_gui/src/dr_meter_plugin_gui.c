@@ -21,6 +21,7 @@ static void unreference_selection(selection_t* selection)
 {
     for(int k = 0; k < selection->items_count ; ++k)
         ddb_api->pl_item_unref(selection->items[k]);
+    free(selection->items);
 }
 
 GtkWidget* create_dr_dialog()
