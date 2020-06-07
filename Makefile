@@ -1,11 +1,11 @@
-PREFIX ?= ${HOME}/.local
+PREFIX ?= ${HOME}/.local/lib
 export DRMETER_DIR=$(PWD)/dr_meter
 
 TARGETS := all debug install clean
 SUBDIRS := dr_meter dr_plugin dr_plugin_gui
 
 ifneq (,$(findstring install, $(MAKECMDGOALS)))
-	DRMETER_PREFIX := PREFIX=$(PREFIX)/lib/deadbeef
+	DRMETER_PREFIX := PREFIX=$(PREFIX)/deadbeef
 endif
 
 $(TARGETS): $(SUBDIRS)

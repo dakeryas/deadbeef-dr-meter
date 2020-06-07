@@ -1,4 +1,4 @@
-PREFIX ?= ${HOME}/.local
+PREFIX ?= ${HOME}/.local/lib
 OBJDIR := objects
 SRCDIR := src
 INCLDIR := include
@@ -33,7 +33,7 @@ $(PLUGIN): $(OBJECTS)
 
 install: LDFLAGS += -Wl,-rpath='$$ORIGIN/lib'
 install: clean_plugin $(PLUGIN)
-	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/lib/deadbeef/$(PLUGIN)
+	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/deadbeef/$(PLUGIN)
 
 clean_plugin:
 	rm -f $(PLUGIN)
