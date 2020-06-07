@@ -10,8 +10,8 @@ endif
 
 $(TARGETS): $(SUBDIRS)
 dr_meter:
-	$(MAKE) -C $@ $(MAKECMDGOALS) $(DRMETER_PREFIX)
+	@$(MAKE) -C $@ $(MAKECMDGOALS) $(DRMETER_PREFIX)
 dr_plugin dr_plugin_gui: dr_meter
-	$(MAKE) -C $@ $(MAKECMDGOALS)
+	@$(MAKE) -C $@ $(MAKECMDGOALS)
 
 .PHONY: $(TARGETS) $(SUBDIRS)
