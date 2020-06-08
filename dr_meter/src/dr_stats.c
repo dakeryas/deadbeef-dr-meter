@@ -2,8 +2,8 @@
 #include "math.h"
 #include "decibels.h"
 
-static const char* DR_FORMAT = "DR %-8.2f %7.2f dB %9.2f dB";
-static const int DR_FORMAT_LENGTH = 34; //> than actual DR_FORMAT length
+static const char* DR_FORMAT = "DR%-2.0f %7.2f dB %9.2f dB";
+static const int DR_FORMAT_LENGTH = 28; //> than actual DR_FORMAT length
 
 dr_stats_t make_dr_stats(double dr, double peak, double rms)
 {
@@ -33,7 +33,7 @@ dr_stats_t make_dB_dr_stats(dr_stats_t* dr_stats)
 int print_buffer_dr_stats(dr_stats_t* dr_stats, char* buffer)
 {
     dr_stats_t stats = make_dB_dr_stats(dr_stats);
-    return sprintf(buffer, DR_FORMAT, stats.dr, stats.peak, stats.rms);
+    return sprintf(buffer, DR_FORMAT, rint(stats.dr), stats.peak, stats.rms);
 }
 
 int print_dr_stats(dr_stats_t* dr_stats, FILE* output)
