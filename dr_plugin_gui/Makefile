@@ -9,6 +9,11 @@ OPTFLAG := -O3 -flto -DNDEBUG
 CFLAGS ?= $(OPTFLAG) -std=c99 -Wall -fPIC
 CPPFLAGS += -I./$(INCLDIR) -I$(DRPLUG_DIR)/include -I$(DRMETER_DIR)/include
 CPPFLAGS += $(shell pkg-config --cflags gtk+-3.0)
+ifdef RPATH
+	LDFLAGS ?= -Wl,-rpath,$(RPATH)
+else
+	LDFLAGS ?= -Wl,-rpath,$(DRMETER_DIR)/lib
+endif
 LDFLAGS += -flto
 LDFLAGS += -L$(DRMETER_DIR)/lib -ldrmeter
 LDFLAGS += $(shell pkg-config --libs gtk+-3.0)
@@ -32,8 +37,6 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h
 $(PLUGIN): $(OBJECTS)
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
-install: LDFLAGS += -Wl,-rpath='$$ORIGIN/lib'
-install: $(shell rm -f $(PLUGIN))
 install: $(PLUGIN)
 	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/deadbeef/$(PLUGIN)
 
