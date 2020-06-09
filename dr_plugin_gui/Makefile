@@ -15,7 +15,7 @@ LDFLAGS += $(shell pkg-config --libs gtk+-3.0)
 
 OBJECTS := $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(wildcard $(SRCDIR)/*.c))
 
-.PHONY: all debug install clean clean_plugin
+.PHONY: all debug install clean
 
 all: $(PLUGIN)
 
@@ -33,11 +33,9 @@ $(PLUGIN): $(OBJECTS)
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
 install: LDFLAGS += -Wl,-rpath='$$ORIGIN/lib'
-install: clean_plugin $(PLUGIN)
+install: $(shell rm -f $(PLUGIN))
+install: $(PLUGIN)
 	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/deadbeef/$(PLUGIN)
-
-clean_plugin:
-	rm -f $(PLUGIN)
 
 clean:
 	rm -f $(PLUGIN) $(OBJECTS)
