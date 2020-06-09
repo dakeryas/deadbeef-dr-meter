@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <assert.h>
 #include <string.h>
 #include <math.h>
 #include "block_analyser.h"
@@ -60,11 +61,11 @@ static void analyse_sample(block_analyser_t* this, char* sample_begin, int nu_ch
 
 void analyse_block(block_analyser_t* this, char* bytes_begin, unsigned read_bytes, int nu_channels, int bits_per_channel, int sample_rate)
 {
+    assert((this->channels == nu_channels));
     reset_block_analyser(this);
     int bytes_per_channel = bits_per_channel >> 3;
     int bytes_per_sample = nu_channels * bytes_per_channel;
     unsigned nu_samples = read_bytes / bytes_per_sample;
-
     for(size_t sample_index = 0; sample_index < nu_samples; ++sample_index)
     {
         char* sample_begin = bytes_begin + sample_index * bytes_per_sample;

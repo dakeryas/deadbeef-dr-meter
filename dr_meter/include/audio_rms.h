@@ -1,3 +1,11 @@
+/**************************************************************************
+* @file audio_rms.h
+* @author Valérian Sibille <vsibille@mit.edu>
+* @date 09 Jun 2020
+* @brief This RMS assumes zero mean samples to be multiplied by sqrt(2).
+* This means that a 0dB peaking sine-wave has -3dB RMS instead of -6dB.
+* ************************************************************************/
+
 #ifndef AUDIO_RMS_H
 #define AUDIO_RMS_H
 

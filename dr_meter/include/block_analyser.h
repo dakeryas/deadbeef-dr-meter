@@ -1,3 +1,11 @@
+/**************************************************************************
+* @file block_analyser.h
+* @author Valérian Sibille <vsibille@mit.edu>
+* @date 09 Jun 2020
+* @brief Analyse bytes as audio samples to save peak (max) and second
+* moment (sum of samples squared) for each channel
+* ************************************************************************/
+
 #ifndef BLOCK_ANALYSER_H
 #define BLOCK_ANALYSER_H
 
@@ -8,9 +16,9 @@ typedef double block_res;
 struct block_analyser_s
 {
     unsigned channels;
-    block_res* peak;
-    block_res* sum2;
-    unsigned samples;
+    block_res* peak; // max of all (absolute value) samples per channel
+    block_res* sum2; // sum of squared samples per channel
+    unsigned samples; // number of samples analysed
 };
 
 typedef struct block_analyser_s block_analyser_t;

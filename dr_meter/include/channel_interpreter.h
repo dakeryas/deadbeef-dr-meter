@@ -1,3 +1,12 @@
+/**************************************************************************
+* @file channel_interpreter.h
+* @author Valérian Sibille <vsibille@mit.edu>
+* @date 09 Jun 2020
+* @brief Turn single-channel single-sample audio bytes into floating
+* point between -1 and 1 depending on guessed-format according to
+* provided sample size (in bytes).
+* ************************************************************************/
+
 #ifndef CHANNEL_INTERPRETER_H
 #define CHANNEL_INTERPRETER_H
 

@@ -1,3 +1,10 @@
+/**************************************************************************
+* @file dr_meter.h
+* @author Valérian Sibille <vsibille@mit.edu>
+* @date 09 Jun 2020
+* @brief Object to save loudness stats of analysed audio blocks
+* ************************************************************************/
+
 #ifndef DR_METER_H
 #define DR_METER_H
 
