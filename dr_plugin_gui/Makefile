@@ -39,5 +39,5 @@ install: clean_plugin $(PLUGIN)
 clean_plugin:
 	rm -f $(PLUGIN)
 
-clean: clean_plugin
-	rm -f $(OBJECTS)
+clean:
+	rm -f $(PLUGIN) $(OBJECTS)
