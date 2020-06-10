@@ -2,9 +2,10 @@ PREFIX ?= ${HOME}/.local/lib
 OBJDIR := objects
 SRCDIR := src
 INCLDIR := include
-DRPLUG_DIR := ../dr_plugin
+DRPLUGDIR := ../dr_plugin
 GTK ?= 3
-PLUGIN := ddb_dr_meter_gtk$(GTK).so
+PLUGBASE := ddb_dr_meter_gtk
+PLUGIN := $(PLUGBASE)$(GTK).so
 
 ifeq ($(GTK),2)
 	GTKLIB=gtk+-2.0
@@ -16,7 +17,7 @@ OPTFLAG := -O3 -flto -DNDEBUG
 CFLAGS ?= $(OPTFLAG) -std=c99 -Wall -fPIC
 CPPFLAGS += $(shell pkg-config --cflags $(GTKLIB))
 CPPFLAGS += -I./$(INCLDIR)
-CPPFLAGS += -I$(DRPLUG_DIR)/include
+CPPFLAGS += -I$(DRPLUGDIR)/include
 ifdef DRMETER_DIR
 	CPPFLAGS += -I$(DRMETER_DIR)/include
 	LDFLAGS += -L$(DRMETER_DIR)/lib
@@ -51,4 +52,4 @@ install: $(PLUGIN)
 	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/deadbeef/$(PLUGIN)
 
 clean:
-	rm -f $(PLUGIN) $(OBJECTS)
+	rm -f $(PLUGBASE)*.so $(OBJECTS)
