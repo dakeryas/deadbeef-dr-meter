@@ -57,13 +57,18 @@ static int show_dr_log(const char* buffer)
     GtkWidget* main_window = gtk_ui_plugin->get_mainwin();
     gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(main_window));
 
-    GtkWidget* content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-    GtkWidget* grid = gtk_grid_new();
-    gtk_container_add(GTK_CONTAINER (content_area), grid);
-
     GtkWidget* label = gtk_label_new(buffer);
     gtk_label_set_selectable(GTK_LABEL(label), TRUE);
-    gtk_container_add(GTK_CONTAINER(grid), label);
+
+#if GTK_CHECK_VERSION(3,0,0)
+    GtkWidget* label_container = gtk_grid_new();
+#else
+    GtkWidget* label_container = gtk_vbox_new(FALSE, 0);
+    gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
+#endif
+    GtkWidget* content_area = gtk_dialog_get_content_area(GTK_DIALOG (dialog));
+    gtk_container_add(GTK_CONTAINER(content_area), label_container);
+    gtk_container_add(GTK_CONTAINER(label_container), label);
 
     gtk_widget_show_all(dialog);
     return 0;
