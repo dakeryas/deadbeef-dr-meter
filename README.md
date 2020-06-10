@@ -9,17 +9,16 @@ can be copied.
 NB: This is work in progress.
 
 ## Requirements
-You need GNU make. The computing plugin relies on a `drmeter` library which is
-also built and installed via the top-level `Makefile`. The GTK3-based GUI
-plugin utilising the computing plugin and displaying its results in a window
-relies upon `pkg-config` to find the `gtk+-3.0` library. On Debian/Ubuntu, you
-should thus be covered with
+Building is achieved with GNU make. The computing plugin relies on a `drmeter`
+library which is also built and installed via the top-level `Makefile`. The GUI
+plugin utilising the computing plugin and displaying its results in a dialog
+relies upon `pkg-config` to find the GTK library when linking. By default, the
+GTK3 version of the GUI plugin is built (GTK2 is somewhat supported). On
+Debian/Ubuntu, you should thus be covered with
 ```
-sudo apt-get install make libgtk-3-dev
+sudo apt-get install build-essential pkg-config libgtk-3-dev
 ```
-For the moment, the build also works with gtk+-2.0 but you need to swap the
-gtk+-3.0 references for gtk+-2.0 in `dr_plugin_gui/Makefile`. Similarly, the
-GNU Makefiles should be easy to port to OSX (or use macports) or FreeBSD.
+The Makefiles should be easy to port to OSX or FreeBSD.
 
 ## Installion
 After having cloned this repository, in the root folder type
@@ -31,4 +30,9 @@ The default installation location of the plugins is
 variable, e.g.
 ```
 make install PREFIX=/path/where/deadbeef/finds/plugins
+```
+If you insist on using GTK2, try from the root folder
+```
+make clean
+make install GTK=2
 ```
