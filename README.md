@@ -20,13 +20,13 @@ sudo apt-get install build-essential pkg-config libgtk-3-dev
 ```
 The Makefiles should be easy to port to OSX or FreeBSD.
 
-## Installion
+## Installation
 After having cloned this repository, in the root folder type
 ```
 make install
 ```
 The default installation location of the plugins is
-`${HOME}/.local/lib/deadbeef`, this may be overriden with the PREFIX GNUmake
+`${HOME}/.local/lib/deadbeef`, this may be overridden with the PREFIX GNUmake
 variable, e.g.
 ```
 make install PREFIX=/path/where/deadbeef/finds/plugins
