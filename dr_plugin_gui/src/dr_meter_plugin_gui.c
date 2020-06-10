@@ -144,14 +144,10 @@ int dr_meter_gui_connect()
 {
     gtk_ui_plugin =(ddb_gtkui_t*)ddb_api->plug_get_for_id(DDB_GTKUI_PLUGIN_ID);
     dr_meter_plugin = (dr_meter_plugin_t *)ddb_api->plug_get_for_id ("dr_meter");
-    if(!gtk_ui_plugin)
-    {
-        fprintf(stderr, "dr_meter_gui: gtk_ui plugin not found\n");
-        return -1;
-    }
+    if(!gtk_ui_plugin) return -1;
     else if(!dr_meter_plugin)
     {
-        fprintf(stderr, "dr_meter_gui: dr_meter plugin not found\n");
+        fprintf(stderr, "dr_meter_gui: main dr_meter plugin not found\n");
         return -1;
     }
     else return 0;
