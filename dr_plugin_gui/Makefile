@@ -3,18 +3,25 @@ OBJDIR := objects
 SRCDIR := src
 INCLDIR := include
 DRPLUG_DIR := ../dr_plugin
-PLUGIN := ddb_dr_meter_gui.so
+GTK ?= 3
+PLUGIN := ddb_dr_meter_gtk$(GTK).so
+
+ifeq ($(GTK),2)
+	GTKLIB=gtk+-2.0
+else
+	GTKLIB=gtk+-3.0
+endif
 
 OPTFLAG := -O3 -flto -DNDEBUG
 CFLAGS ?= $(OPTFLAG) -std=c99 -Wall -fPIC
-CPPFLAGS += $(shell pkg-config --cflags gtk+-3.0)
+CPPFLAGS += $(shell pkg-config --cflags $(GTKLIB))
 CPPFLAGS += -I./$(INCLDIR)
 CPPFLAGS += -I$(DRPLUG_DIR)/include
 ifdef DRMETER_DIR
 	CPPFLAGS += -I$(DRMETER_DIR)/include
 	LDFLAGS += -L$(DRMETER_DIR)/lib
 endif
-LDFLAGS += $(shell pkg-config --libs gtk+-3.0)
+LDFLAGS += $(shell pkg-config --libs $(GTKLIB))
 LDFLAGS += -ldrmeter
 LDFLAGS += -flto
 ifdef RPATH
