@@ -4,6 +4,7 @@
 #include <deadbeef/deadbeef.h>
 #include <deadbeef/gtkui_api.h>
 
+#include "dr_meter_plugin_gui.h"
 #include "dr_meter_plugin.h"
 #include "thread_data.h"
 #include "selection.h"
