@@ -21,7 +21,7 @@ sudo apt-get install build-essential pkg-config libgtk-3-dev
 The Makefiles should be easy to port to OSX or FreeBSD.
 
 ## Installation
-After having cloned this repository, in the root folder type
+After having installed the aforementionned requirements and cloned this repository, in the root folder of your local copy of the repository, type
 ```
 make install
 ```
@@ -30,6 +30,10 @@ The default installation location of the plugins is
 variable, e.g.
 ```
 make install PREFIX=/path/where/deadbeef/finds/plugins
+```
+You can also combined it with `DESTDIR`, e.g.
+```
+make install DESTDIR=$PWD/temp PREFIX=/usr/lib/x86_64-linux-gnu
 ```
 If you insist on using GTK2, try from the root folder
 ```
