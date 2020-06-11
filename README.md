@@ -21,17 +21,21 @@ sudo apt-get install build-essential pkg-config libgtk-3-dev
 The Makefiles should be easy to port to OSX or FreeBSD.
 
 ## Installation
-After having installed the aforementionned requirements and cloned this repository, in the root folder of your local copy of the repository, type
+After having installed the aforementionned requirements and cloned this
+repository, in the root folder of your local copy of the repository, type
 ```
 make install
 ```
+
+## Custom installation
 The default installation location of the plugins is
 `${HOME}/.local/lib/deadbeef`, this may be overridden with the PREFIX GNUmake
 variable, e.g.
 ```
 make install PREFIX=/path/where/deadbeef/finds/plugins
 ```
-You can also combined it with `DESTDIR` whilst retaining the `RUNPATH` (set so that the plugins find `libdrmeter.so`) set from the `PREFIX` value, e.g.
+You can also combined it with `DESTDIR` whilst retaining the `RUNPATH` (set
+so that the plugins find `libdrmeter.so`) set from the `PREFIX` value, e.g.
 ```
 make install DESTDIR=$PWD/temp PREFIX=/usr/lib/x86_64-linux-gnu
 ```
