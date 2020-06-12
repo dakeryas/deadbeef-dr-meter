@@ -1,4 +1,4 @@
-lib_LTLIBRARIES = libdrmeter.la
+pkglib_LTLIBRARIES = libdrmeter.la
 libdrmeter_la_SOURCES = src/audio_rms.c src/block_analyser.c src/channel_interpreter.c src/decibels.c src/dr_meter.c src/dr_stats.c src/print_dr_meter.c src/thread_data.c src/thread_runner.c
 libdrmeter_la_CPPFLAGS = -I./include 
 libdrmeter_includedir = $(includedir)/drmeter
