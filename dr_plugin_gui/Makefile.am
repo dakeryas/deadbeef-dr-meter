@@ -1,6 +1,6 @@
 PLUGIN_SOURCES = src/dr_meter_plugin_gui.c include/dr_meter_plugin_gui.h
-PLUGIN_CPPFLAGS = -I./include -I$(top_builddir)/dr_plugin/include -I$(top_builddir)/dr_meter/include
-PLUGIN_LDFLAGS = -module -avoid-version 
+PLUGIN_CPPFLAGS = -I$(srcdir)/include -I$(top_builddir)/dr_plugin/include -I$(top_builddir)/dr_meter/include
+PLUGIN_LDFLAGS = -module -avoid-version
 PLUGIN_LIBS = $(top_builddir)/dr_meter/libdrmeter.la
 
 lib_LTLIBRARIES =
