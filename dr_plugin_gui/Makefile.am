@@ -1,9 +1,9 @@
-PLUGIN_SOURCES = src/dr_meter_plugin_gui.c
+PLUGIN_SOURCES = src/dr_meter_plugin_gui.c include/dr_meter_plugin_gui.h
 PLUGIN_CPPFLAGS = -I./include -I$(top_builddir)/dr_plugin/include -I$(top_builddir)/dr_meter/include
 PLUGIN_LDFLAGS = -module -avoid-version 
 PLUGIN_LIBS = $(top_builddir)/dr_meter/libdrmeter.la
 
-lib_LTLIBRARIES = 
+lib_LTLIBRARIES =
 
 if HAS_GTK2
 lib_LTLIBRARIES += ddb_dr_meter_gtk2.la
