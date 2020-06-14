@@ -14,7 +14,7 @@ AM_PROG_AR
 AC_PROG_INSTALL
 
 # Use automake to build shared libraries
-AM_INIT_AUTOMAKE([-Wall foreign subdir-objects])
+AM_INIT_AUTOMAKE([-Wall -Wextra foreign subdir-objects])
 LT_INIT([shared disable-static])
 
 # Checks for libraries.
