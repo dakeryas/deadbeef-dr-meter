@@ -30,7 +30,7 @@ static DB_decoder_t* get_decoder(DB_playItem_t* selection_item)
 static void decode_analyse_block(char* buffer, int buffer_size, DB_fileinfo_t* fileinfo, DB_decoder_t* decoder, block_analyser_t* analyser)
 {
     int decoded_bytes = decoder->read(fileinfo, buffer, buffer_size);
-    analyse_block(analyser, buffer, decoded_bytes, fileinfo->fmt.channels, fileinfo->fmt.bps, fileinfo->fmt.samplerate);
+    analyse_block(analyser, buffer, decoded_bytes, fileinfo->fmt.channels, fileinfo->fmt.bps);
 }
 
 static unsigned number_of_blocks(DB_playItem_t* item)

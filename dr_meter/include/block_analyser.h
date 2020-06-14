@@ -24,7 +24,7 @@ struct block_analyser_s
 typedef struct block_analyser_s block_analyser_t;
 
 block_analyser_t make_block_analyser(unsigned channels);
-void analyse_block(block_analyser_t* analyser, char* bytes_begin, unsigned read_bytes, int nu_channels, int bits_per_channel, int sample_rate);
+void analyse_block(block_analyser_t* analyser, char* bytes_begin, unsigned read_bytes, int nu_channels, int bits_per_channel);
 int filled_block_analyser(block_analyser_t* analyser);
 double get_avg_sum_squares(block_analyser_t* analyser, unsigned channel);
 double get_rms_analyser(block_analyser_t* analyser, unsigned channel);

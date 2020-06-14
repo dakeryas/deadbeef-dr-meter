@@ -59,7 +59,7 @@ static void analyse_sample(block_analyser_t* this, char* sample_begin, int nu_ch
     ++this->samples;
 }
 
-void analyse_block(block_analyser_t* this, char* bytes_begin, unsigned read_bytes, int nu_channels, int bits_per_channel, int sample_rate)
+void analyse_block(block_analyser_t* this, char* bytes_begin, unsigned read_bytes, int nu_channels, int bits_per_channel)
 {
     assert((this->channels == nu_channels));
     reset_block_analyser(this);
