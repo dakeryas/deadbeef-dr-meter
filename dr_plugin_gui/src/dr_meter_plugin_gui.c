@@ -6,6 +6,7 @@
 
 #include "dr_meter_plugin_gui.h"
 #include "dr_meter_plugin.h"
+#include "duration.h"
 #include "thread_data.h"
 #include "selection.h"
 
@@ -43,12 +44,15 @@ static size_t write_log(thread_data_t* thread_data, char* buffer)
     for(int k = 0; k < thread_data->items; ++k)
     {
         begin += print_buffer_dr_stats(get_dr_stats(thread_data, k), begin);
+        begin += sprintf(begin, "      ");
         void* current_item = thread_data->data[k].item;
+        duration_t duration = make_duration(ddb_api->pl_get_item_duration(current_item));
+        begin += print_buffer_duration(&duration, begin);
         int track_number = ddb_api->pl_find_meta_int(current_item, "track", 0);
         ddb_api->pl_lock();
         const char* title = ddb_api->pl_find_meta_raw(current_item, "title");
         ddb_api->pl_unlock();
-        begin += sprintf(begin, "      %02d-%-.60s\n", track_number, title);
+        begin += sprintf(begin, " %02d-%-.60s\n", track_number, title);
     }
     return begin - buffer;
 }
@@ -120,7 +124,7 @@ static gboolean run_meter_job(void* data)
         retrieve_current_selection(&selection);
         thread_data_t thread_data = make_thread_data(&selection);
         dr_meter_plugin->compute_dr(&thread_data);
-        char buffer[thread_data.items * (35 + 10 + 60)];
+        char buffer[thread_data.items * (35 + 8 + 10 + 60)];
         write_log(&thread_data, buffer);
         show_dr_log(buffer);
         free_thread_data(&thread_data);
