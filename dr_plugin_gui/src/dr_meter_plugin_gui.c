@@ -43,9 +43,10 @@ static size_t write_log(thread_data_t* thread_data, char* buffer)
     for(int k = 0; k < thread_data->items; ++k)
     {
         begin += print_buffer_dr_stats(get_dr_stats(thread_data, k), begin);
-        int track_number = ddb_api->pl_find_meta_int(thread_data->data[k].item, "track", 0);
+        void* current_item = thread_data->data[k].item;
+        int track_number = ddb_api->pl_find_meta_int(current_item, "track", 0);
         ddb_api->pl_lock();
-        const char* title = ddb_api->pl_find_meta_raw(thread_data->data[k].item, "title");
+        const char* title = ddb_api->pl_find_meta_raw(current_item, "title");
         ddb_api->pl_unlock();
         begin += sprintf(begin, "      %02d-%-.60s\n", track_number, title);
     }
