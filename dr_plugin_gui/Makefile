@@ -14,7 +14,7 @@ else
 endif
 
 OPTFLAG := -O3 -flto -DNDEBUG
-CFLAGS ?= $(OPTFLAG) -std=c99 -Wall -fPIC
+CFLAGS ?= $(OPTFLAG) -std=c99 -Wall -Wextra -fPIC
 CPPFLAGS += $(shell pkg-config --cflags $(GTKLIB))
 CPPFLAGS += -I./$(INCLDIR)
 CPPFLAGS += -I$(DRPLUGDIR)/include

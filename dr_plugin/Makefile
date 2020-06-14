@@ -5,7 +5,7 @@ INCLDIR := include
 PLUGIN := ddb_dr_meter.so
 
 OPTFLAG := -O3 -flto -DNDEBUG
-CFLAGS ?= $(OPTFLAG) -std=c99 -Wall -fPIC
+CFLAGS ?= $(OPTFLAG) -std=c99 -Wall -Wextra -fPIC
 CPPFLAGS += -I./$(INCLDIR)
 ifdef DRMETER_DIR
 	CPPFLAGS += -I$(DRMETER_DIR)/include

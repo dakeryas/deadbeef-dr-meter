@@ -6,7 +6,7 @@ LIBDIR := lib
 LIBRARY := $(LIBDIR)/libdrmeter.so
 
 OPTFLAG := -O3 -flto -DNDEBUG
-CFLAGS ?= $(OPTFLAG) -std=c99 -Wall -fPIC -pthread
+CFLAGS ?= $(OPTFLAG) -std=c99 -Wall -Wextra -fPIC -pthread
 CPPFLAGS += -I./$(INCLDIR)
 LDFLAGS += -flto -lpthread
 
