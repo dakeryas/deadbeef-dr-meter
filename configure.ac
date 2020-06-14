@@ -27,6 +27,7 @@ AM_CONDITIONAL(HAS_GTK2, test "x$FOUND_GTK2" = "xyes")
 AM_CONDITIONAL(HAS_GTK3, test "x$FOUND_GTK3" = "xyes")
 
 # Checks for header files.
+AC_CHECK_HEADERS([unistd.h])
 AC_CHECK_HEADERS([deadbeef/deadbeef.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
