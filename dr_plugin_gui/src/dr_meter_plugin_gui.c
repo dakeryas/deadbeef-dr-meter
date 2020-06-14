@@ -41,7 +41,7 @@ GtkWidget* create_dr_dialog()
 static size_t write_log(thread_data_t* thread_data, char* buffer)
 {
     char* begin = buffer;
-    for(int k = 0; k < thread_data->items; ++k)
+    for(unsigned k = 0; k < thread_data->items; ++k)
     {
         begin += print_buffer_dr_stats(get_dr_stats(thread_data, k), begin);
         begin += sprintf(begin, "      ");

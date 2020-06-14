@@ -38,7 +38,7 @@ static void run_batch(thread_runner_t* this, thread_worker_t worker, unsigned ba
 {
     unsigned first_item = first_item_id(this, batch_id);
     unsigned last_item = last_item_id(this, batch_id);
-    for(int k = first_item; k < last_item; ++k)
+    for(unsigned k = first_item; k < last_item; ++k)
         pthread_create(&this->pids[k % this->threads], NULL, worker, (void*)&this->thread_data->data[k]);
     join_threads(this, last_item - first_item);
 }
