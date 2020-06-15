@@ -61,6 +61,11 @@ static size_t print_log_item(thread_datum_t* datum, char* begin, char endline)
     return end - begin;
 }
 
+static size_t printl_log_item(thread_datum_t* datum, char* begin)
+{
+    return print_log_item(datum, begin, '\n');
+}
+
 static unsigned print_n(char* begin, char character, unsigned count, char endline)
 {
     char* end = begin;
@@ -70,16 +75,26 @@ static unsigned print_n(char* begin, char character, unsigned count, char endlin
     return end - begin;
 }
 
+static unsigned printl_n(char* begin, char character, unsigned count)
+{
+    return print_n(begin, character, count, '\n');
+}
+
 static unsigned print_column_headers(char* begin, char endline)
 {
     return sprintf(begin, "DR     Peak        RMS         Duration  Track%c", endline);
+}
+
+static unsigned printl_column_headers(char* begin)
+{
+    return print_column_headers(begin, '\n');
 }
 
 static size_t write_log(thread_data_t* thread_data, char* begin)
 {
     char* end = begin;
     for(unsigned k = 0; k < thread_data->items; ++k)
-        end += print_log_item(thread_data->data + k, end, '\n');
+        end += printl_log_item(thread_data->data + k, end);
     return end - begin;
 }
 
