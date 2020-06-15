@@ -93,8 +93,13 @@ static unsigned printl_column_headers(char* begin)
 static size_t write_log(thread_data_t* thread_data, char* begin)
 {
     char* end = begin;
+    unsigned line_length = 105;
+    end += printl_n('-', line_length, end);
+    end += printl_column_headers(end);
+    end += printl_n('-', line_length, end);
     for(unsigned k = 0; k < thread_data->items; ++k)
         end += printl_log_item(thread_data->data + k, end);
+    end += printl_n('-', line_length, end);
     return end - begin;
 }
 
@@ -165,7 +170,7 @@ static gboolean run_meter_job(void* data)
         retrieve_current_selection(&selection);
         thread_data_t thread_data = make_thread_data(&selection);
         dr_meter_plugin->compute_dr(&thread_data);
-        char buffer[thread_data.items * (35 + 8 + 10 + 60)];
+        char buffer[4 * 105 + thread_data.items * (35 + 9 + 10 + 60)];
         write_log(&thread_data, buffer);
         show_dr_log(buffer);
         free_thread_data(&thread_data);
