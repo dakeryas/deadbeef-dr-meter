@@ -6,7 +6,6 @@
 
 #include "dr_meter_plugin_gui.h"
 #include "dr_meter_plugin.h"
-#include "duration.h"
 #include "thread_data.h"
 #include "selection.h"
 
@@ -36,71 +35,6 @@ GtkWidget* create_dr_dialog()
     gtk_window_set_destroy_with_parent(GTK_WINDOW (dialog), TRUE);
     gtk_window_set_type_hint(GTK_WINDOW (dialog), GDK_WINDOW_TYPE_HINT_DIALOG);
     return dialog;
-}
-
-static size_t print_buffer_track_info(DB_playItem_t* item, char* begin)
-{
-    char* end = begin;
-    duration_t duration = make_duration(ddb_api->pl_get_item_duration(item));
-    end += print_buffer_duration(&duration, end);
-    int track_number = ddb_api->pl_find_meta_int(item, "track", 0);
-    ddb_api->pl_lock();
-    const char* title = ddb_api->pl_find_meta_raw(item, "title");
-    ddb_api->pl_unlock();
-    end += sprintf(end, "  %02d-%-.60s", track_number, title);
-    return end - begin;
-}
-
-static size_t print_log_item(thread_datum_t* datum, char* begin, char endline)
-{
-    char* end = begin;
-    end += print_buffer_dr_stats(&datum->dr_stats, end);
-    end += sprintf(end, "      ");
-    end += print_buffer_track_info(datum->item, end);
-    end += sprintf(end, "%c", endline);
-    return end - begin;
-}
-
-static size_t printl_log_item(thread_datum_t* datum, char* begin)
-{
-    return print_log_item(datum, begin, '\n');
-}
-
-static unsigned print_n(char character, unsigned count, char* begin, char endline)
-{
-    char* end = begin;
-    for(unsigned k = 0; k < count; ++k)
-        end += sprintf(end, "%c", character);
-    end += sprintf(end, "%c", endline);
-    return end - begin;
-}
-
-static unsigned printl_n(char character, unsigned count, char* begin)
-{
-    return print_n(character, count, begin, '\n');
-}
-
-static unsigned print_column_headers(char* begin, char endline)
-{
-    return sprintf(begin, "DR     Peak        RMS         Duration  Track%c", endline);
-}
-
-static unsigned printl_column_headers(char* begin)
-{
-    return print_column_headers(begin, '\n');
-}
-
-static size_t write_log(thread_data_t* thread_data, char* begin)
-{
-    char* end = begin;
-    unsigned line_length = 105;
-    end += printl_n('-', line_length, end);
-    end += printl_column_headers(end);
-    end += printl_n('-', line_length, end);
-    for(unsigned k = 0; k < thread_data->items; ++k)
-        end += printl_log_item(thread_data->data + k, end);
-    end += printl_n('-', line_length, end);
-    return end - begin;
 }
 
 static int show_dr_log(const char* buffer)
@@ -171,7 +105,7 @@ static gboolean run_meter_job(void* data)
         thread_data_t thread_data = make_thread_data(&selection);
         dr_meter_plugin->compute_dr(&thread_data);
         char buffer[4 * 105 + thread_data.items * (35 + 9 + 10 + 60)];
-        write_log(&thread_data, buffer);
+        dr_meter_plugin->sprint_dr_log(&thread_data, buffer);
         show_dr_log(buffer);
         free_thread_data(&thread_data);
         unreference_selection(&selection);
