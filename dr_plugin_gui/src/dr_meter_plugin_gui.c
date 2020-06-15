@@ -38,23 +38,35 @@ GtkWidget* create_dr_dialog()
     return dialog;
 }
 
-static size_t write_log(thread_data_t* thread_data, char* buffer)
+static size_t print_buffer_track_info(DB_playItem_t* item, char* begin)
 {
-    char* begin = buffer;
+    char* end = begin;
+    duration_t duration = make_duration(ddb_api->pl_get_item_duration(item));
+    end += print_buffer_duration(&duration, end);
+    int track_number = ddb_api->pl_find_meta_int(item, "track", 0);
+    ddb_api->pl_lock();
+    const char* title = ddb_api->pl_find_meta_raw(item, "title");
+    ddb_api->pl_unlock();
+    end += sprintf(end, " %02d-%-.60s", track_number, title);
+    return end - begin;
+}
+
+static size_t print_log_item(thread_datum_t* datum, char* begin, char endline)
+{
+    char* end = begin;
+    end += print_buffer_dr_stats(&datum->dr_stats, end);
+    end += sprintf(end, "      ");
+    end += print_buffer_track_info(datum->item, end);
+    end += sprintf(end, "%c", endline);
+    return end - begin;
+}
+
+static size_t write_log(thread_data_t* thread_data, char* begin)
+{
+    char* end = begin;
     for(unsigned k = 0; k < thread_data->items; ++k)
-    {
-        begin += print_buffer_dr_stats(get_dr_stats(thread_data, k), begin);
-        begin += sprintf(begin, "      ");
-        void* current_item = thread_data->data[k].item;
-        duration_t duration = make_duration(ddb_api->pl_get_item_duration(current_item));
-        begin += print_buffer_duration(&duration, begin);
-        int track_number = ddb_api->pl_find_meta_int(current_item, "track", 0);
-        ddb_api->pl_lock();
-        const char* title = ddb_api->pl_find_meta_raw(current_item, "title");
-        ddb_api->pl_unlock();
-        begin += sprintf(begin, " %02d-%-.60s\n", track_number, title);
-    }
-    return begin - buffer;
+        end += print_log_item(thread_data->data + k, end, '\n');
+    return end - begin;
 }
 
 static int show_dr_log(const char* buffer)
