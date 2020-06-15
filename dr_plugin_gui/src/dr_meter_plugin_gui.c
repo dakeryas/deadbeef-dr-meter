@@ -66,7 +66,7 @@ static size_t printl_log_item(thread_datum_t* datum, char* begin)
     return print_log_item(datum, begin, '\n');
 }
 
-static unsigned print_n(char* begin, char character, unsigned count, char endline)
+static unsigned print_n(char character, unsigned count, char* begin, char endline)
 {
     char* end = begin;
     for(unsigned k = 0; k < count; ++k)
@@ -75,9 +75,9 @@ static unsigned print_n(char* begin, char character, unsigned count, char endlin
     return end - begin;
 }
 
-static unsigned printl_n(char* begin, char character, unsigned count)
+static unsigned printl_n(char character, unsigned count, char* begin)
 {
-    return print_n(begin, character, count, '\n');
+    return print_n(character, count, begin, '\n');
 }
 
 static unsigned print_column_headers(char* begin, char endline)
