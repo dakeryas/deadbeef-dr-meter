@@ -16,6 +16,7 @@ typedef struct
 {
     DB_misc_t info;
     int (*compute_dr)(struct thread_data_s* thread_data);
+    unsigned (*sprint_dr_log)(struct thread_data_s* thread_data, char* buffer);
 } dr_meter_plugin_t;
 
 #endif /* DR_METER_PLUGIN_H */

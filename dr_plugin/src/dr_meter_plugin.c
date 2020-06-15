@@ -7,6 +7,8 @@
 #include "thread_data.h"
 #include "thread_runner.h"
 #include "selection.h"
+#include "duration.h"
+#include "dr_log_printer.h"
 
 // constants according to DR standard
 static const unsigned DR_BLOCK_DURATION = 3;
@@ -104,6 +106,26 @@ static int compute_dr_impl(thread_data_t* thread_data)
     return 0;
 }
 
+static unsigned sprint_track_info(void* track, char* begin)
+{
+    DB_playItem_t* item = track;
+    char* end = begin;
+    duration_t duration = make_duration(ddb_api->pl_get_item_duration(item));
+    end += sprint_duration(&duration, end);
+    int track_number = ddb_api->pl_find_meta_int(item, "track", 0);
+    ddb_api->pl_lock();
+    const char* title = ddb_api->pl_find_meta_raw(item, "title");
+    ddb_api->pl_unlock();
+    end += sprintf(end, "  %02d-%-.60s", track_number, title);
+    return end - begin;
+}
+
+unsigned sprint_dr_log_impl(thread_data_t* thread_data, char* buffer)
+{
+    dr_log_printer_t log_printer = {.sprint_track_info = sprint_track_info};
+    return sprint_log_dr_log_printer(&log_printer, thread_data, buffer);
+}
+
 int dr_meter_start()
 {
     return 0;
@@ -133,6 +155,7 @@ DB_plugin_t* ddb_dr_meter_load(DB_functions_t* api)
         .info.plugin.start           = dr_meter_start,
         .info.plugin.stop            = dr_meter_stop,
         .compute_dr                  = compute_dr_impl,
+        .sprint_dr_log               = sprint_dr_log_impl,
     };
     return (DB_plugin_t*)&dr_meter_plugin;
 }
