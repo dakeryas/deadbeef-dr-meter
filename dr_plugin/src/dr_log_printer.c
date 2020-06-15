@@ -6,7 +6,7 @@ unsigned sprint_item_dr_log_printer(dr_log_printer_t* self, thread_datum_t* datu
     char* end = begin;
     end += sprint_dr_stats(&datum->dr_stats, end);
     end += sprintf(end, "      ");
-    end += self->sprint_track_info(datum->item, begin);
+    end += self->sprint_track_info(datum->item, end);
     end += sprintf(end, "%c", endline);
     return end - begin;
 }
@@ -46,7 +46,7 @@ unsigned sprintl_col_headers_dr_log_printer(dr_log_printer_t* self, char* begin)
     return sprint_col_headers_dr_log_printer(self, begin, '\n');
 }
 
-unsigned sprint_log_dr_log_printer(dr_log_printer_t* self, struct thread_data_s* thread_data, char* begin)
+unsigned sprint_log_dr_log_printer(dr_log_printer_t* self, thread_data_t* thread_data, char* begin)
 {
     char* end = begin;
     unsigned line_length = 105;
