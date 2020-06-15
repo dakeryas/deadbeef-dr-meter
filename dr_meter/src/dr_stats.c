@@ -30,7 +30,7 @@ dr_stats_t make_dB_dr_stats(dr_stats_t* dr_stats)
     return make_dr_stats(dr_stats->dr, decibels(dr_stats->peak), decibels(dr_stats->rms));
 }
 
-int print_buffer_dr_stats(dr_stats_t* dr_stats, char* buffer)
+int sprint_dr_stats(dr_stats_t* dr_stats, char* buffer)
 {
     dr_stats_t stats = make_dB_dr_stats(dr_stats);
     return sprintf(buffer, DR_FORMAT, rint(stats.dr), stats.peak, stats.rms);
@@ -39,7 +39,7 @@ int print_buffer_dr_stats(dr_stats_t* dr_stats, char* buffer)
 int print_dr_stats(dr_stats_t* dr_stats, FILE* output)
 {
     char buffer[DR_FORMAT_LENGTH];
-    int written_bytes = print_buffer_dr_stats(dr_stats, buffer);
+    int written_bytes = sprint_dr_stats(dr_stats, buffer);
     if(written_bytes > DR_FORMAT_LENGTH)
         fprintf(stderr, "print_dr_stats: %i bytes in %i-wide buffer!\n", written_bytes, DR_FORMAT_LENGTH);
     return fprintf(output, "%s", buffer);
