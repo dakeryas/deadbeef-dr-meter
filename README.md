@@ -4,7 +4,7 @@ clicking, the dynamic range, peak, and total RMS for each selection item is
 computed and a GTK window is opened with results. The text is selectable and
 can be copied.
 
-[![deadbeef-dr-meter.png](https://i.postimg.cc/5tRw2KC2/deadbeef-dr-meter.png)](https://postimg.cc/Mc1csD5C)
+[![dr-meter.png](https://i.postimg.cc/bNFxDMtT/dr-meter.png)](https://postimg.cc/MvVMg9tM)
 
 NB: This is work in progress.
 
