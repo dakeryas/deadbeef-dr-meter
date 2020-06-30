@@ -2,9 +2,9 @@
 #include "thread_data.h"
 #include "selection.h"
 
-static void init_thread_data(thread_data_t* this)
+static void init_thread_data(thread_data_t* self)
 {
-    this->data = malloc(this->items * sizeof(thread_datum_t));
+    self->data = malloc(self->items * sizeof(thread_datum_t));
 }
 
 thread_data_t make_thread_data(selection_t* selection)
@@ -16,12 +16,12 @@ thread_data_t make_thread_data(selection_t* selection)
     return thread_data;
 }
 
-dr_stats_t* get_dr_stats(thread_data_t* this, unsigned item_id)
+dr_stats_t* get_dr_stats(thread_data_t* self, unsigned item_id)
 {
-    return &this->data[item_id].dr_stats;
+    return &self->data[item_id].dr_stats;
 }
 
-void free_thread_data(thread_data_t* this)
+void free_thread_data(thread_data_t* self)
 {
-    free(this->data);
+    free(self->data);
 }
