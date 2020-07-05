@@ -14,7 +14,7 @@ struct thread_data_s;
 struct dr_log_printer_s
 {
     unsigned (*sprint_track_info)(void* track, char* begin);
-    unsigned (*sprint_album_info)(void* track, char* begin);
+    unsigned (*sprint_album_info)(void* first_track, char* begin);
 };
 
 typedef struct dr_log_printer_s dr_log_printer_t;

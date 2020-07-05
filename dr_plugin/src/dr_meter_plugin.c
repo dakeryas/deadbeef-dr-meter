@@ -120,9 +120,21 @@ static unsigned sprint_track_info(void* track, char* begin)
     return end - begin;
 }
 
+static unsigned sprint_album_info(void* track, char* begin)
+{
+    DB_playItem_t* item = track;
+    char* end = begin;
+    ddb_api->pl_lock();
+    const char* artist = ddb_api->pl_find_meta_raw(item, "artist");
+    const char* album = ddb_api->pl_find_meta_raw(item, "album");
+    ddb_api->pl_unlock();
+    end += sprintf(end, "Analysed: %.40s / %.80s", artist, album);
+    return end - begin;
+}
+
 unsigned sprint_dr_log_impl(thread_data_t* thread_data, char* buffer)
 {
-    dr_log_printer_t log_printer = {.sprint_track_info = sprint_track_info};
+    dr_log_printer_t log_printer = {.sprint_track_info = sprint_track_info, .sprint_album_info = sprint_album_info};
     return sprint_log_dr_log_printer(&log_printer, thread_data, buffer);
 }
 

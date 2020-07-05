@@ -1,21 +1,6 @@
 #include "dr_log_printer.h"
 #include "thread_data.h"
 
-unsigned sprint_item_dr_log_printer(dr_log_printer_t* self, thread_datum_t* datum, char* begin, char endline)
-{
-    char* end = begin;
-    end += sprint_dr_stats(&datum->dr_stats, end);
-    end += sprintf(end, "      ");
-    end += self->sprint_track_info(datum->item, end);
-    end += sprintf(end, "%c", endline);
-    return end - begin;
-}
-
-unsigned sprintl_item_dr_log_printer(dr_log_printer_t* self, thread_datum_t* datum, char* begin)
-{
-    return sprint_item_dr_log_printer(self, datum, begin, '\n');
-}
-
 static unsigned sprint_n(char character, unsigned count, char* begin, char endline)
 {
     char* end = begin;
@@ -35,6 +20,38 @@ static unsigned sprintl_line(unsigned line_length, char* begin)
     return sprintl_n('-', line_length, begin);
 }
 
+unsigned sprint_item_dr_log_printer(dr_log_printer_t* self, thread_datum_t* datum, char* begin, char endline)
+{
+    char* end = begin;
+    end += sprint_dr_stats(&datum->dr_stats, end);
+    end += sprintf(end, "      ");
+    end += self->sprint_track_info(datum->item, end);
+    end += sprintf(end, "%c", endline);
+    return end - begin;
+}
+
+unsigned sprintl_item_dr_log_printer(dr_log_printer_t* self, thread_datum_t* datum, char* begin)
+{
+    return sprint_item_dr_log_printer(self, datum, begin, '\n');
+}
+
+static unsigned sprint_album_info(dr_log_printer_t* self, thread_data_t* data, char* begin, char endline)
+{
+    char* end = begin;
+    if(data->items > 1) // sprint_album_info called only for two tracks ore more
+    {
+        void* first_track = data->data[0].item;
+        end += self->sprint_album_info(first_track, begin);
+        end += sprintf(end, "%c", endline);
+    }
+    return end - begin;
+}
+
+static unsigned sprintl_album_info(dr_log_printer_t* self, thread_data_t* data, char* begin)
+{
+    return sprint_album_info(self, data, begin, '\n');
+}
+
 unsigned sprint_col_headers_dr_log_printer(dr_log_printer_t* self, char* begin, char endline)
 {
     (void) self;
@@ -50,6 +67,7 @@ unsigned sprint_log_dr_log_printer(dr_log_printer_t* self, thread_data_t* thread
 {
     char* end = begin;
     unsigned line_length = 105;
+    end += sprintl_album_info(self, thread_data, end);
     end += sprintl_line(line_length, end);
     end += sprintl_col_headers_dr_log_printer(self, end);
     end += sprintl_line(line_length, end);
