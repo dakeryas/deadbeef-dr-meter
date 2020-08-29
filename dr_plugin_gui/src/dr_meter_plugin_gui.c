@@ -113,7 +113,7 @@ static gboolean run_meter_job(void* data)
     return FALSE;
 }
 
-static int run_meter(DB_plugin_action_t* action, int context)
+static int run_meter(DB_plugin_action_t* action, ddb_action_context_t context)
 {
     (void) action;
     gdk_threads_add_idle(run_meter_job, (void *)(intptr_t)context);
