@@ -67,7 +67,7 @@ unsigned sprint_summary_info(dr_log_printer_t* self, unsigned items, double avg_
 {
     (void) self;
     char* end = begin;
-    end += sprintf(end, "Number of tracks: %i\n", items);
+    end += sprintf(end, "Number of tracks:  %i\n", items);
     end += sprintf(end, "Official DR value: DR%.0f%c", avg_dr, endline);
     return end - begin;
 }
