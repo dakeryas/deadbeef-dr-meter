@@ -63,6 +63,20 @@ unsigned sprintl_col_headers_dr_log_printer(dr_log_printer_t* self, char* begin)
     return sprint_col_headers_dr_log_printer(self, begin, '\n');
 }
 
+unsigned sprint_summary_info(dr_log_printer_t* self, unsigned items, double avg_dr, char* begin, char endline)
+{
+    (void) self;
+    char* end = begin;
+    end += sprintf(end, "Number of tracks: %i\n", items);
+    end += sprintf(end, "Official DR value: DR%.0f%c", avg_dr, endline);
+    return end - begin;
+}
+
+unsigned sprintl_summary_info(dr_log_printer_t* self, unsigned items, double avg_dr, char* begin)
+{
+    return sprint_summary_info(self, items, avg_dr, begin, '\n');
+}
+
 unsigned sprint_log_dr_log_printer(dr_log_printer_t* self, thread_data_t* thread_data, char* begin)
 {
     char* end = begin;
@@ -71,8 +85,15 @@ unsigned sprint_log_dr_log_printer(dr_log_printer_t* self, thread_data_t* thread
     end += sprintl_line(line_length, end);
     end += sprintl_col_headers_dr_log_printer(self, end);
     end += sprintl_line(line_length, end);
+    double avg_dr = 0.;
     for(unsigned k = 0; k < thread_data->items; ++k)
-        end += sprintl_item_dr_log_printer(self, thread_data->data + k, end);
+    {
+        thread_datum_t* datum = thread_data->data + k;
+        avg_dr += datum->dr_stats.dr;
+        end += sprintl_item_dr_log_printer(self, datum, end);
+    }
+    avg_dr /= thread_data->items;
     end += sprintl_line(line_length, end);
+    end += sprintl_summary_info(self, thread_data->items, avg_dr, end);
     return end - begin;
 }
