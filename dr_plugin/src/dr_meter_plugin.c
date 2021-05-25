@@ -9,6 +9,7 @@
 #include "selection.h"
 #include "duration.h"
 #include "dr_log_printer.h"
+#include "filepath.h"
 
 // constants according to DR standard
 static const unsigned DR_BLOCK_DURATION = 3;
@@ -106,6 +107,34 @@ static int compute_dr_impl(thread_data_t* thread_data)
     return 0;
 }
 
+static const char* get_track_filename(void* track)
+{
+    DB_playItem_t* item = track;
+    ddb_api->pl_lock();
+    const char* path = ddb_api->pl_find_meta_raw(item, ":URI");
+    ddb_api->pl_unlock();
+    return get_filename(path);
+}
+
+static unsigned sprint_filename(void* track, char* begin)
+{
+    char* end = begin;
+    const char* filename = get_track_filename(track);
+    end += sprintf(end, "  %.83s", filename);
+    return end - begin;
+}
+
+static unsigned sprint_tagged_track_info(void* track, int track_number, char* begin)
+{
+    DB_playItem_t* item = track;
+    char* end = begin;
+    ddb_api->pl_lock();
+    const char* title = ddb_api->pl_find_meta_raw(item, "title");
+    ddb_api->pl_unlock();
+    end += sprintf(end, "  %02d-%-.80s", track_number, title);
+    return end - begin;
+}
+
 static unsigned sprint_track_info(void* track, char* begin)
 {
     DB_playItem_t* item = track;
@@ -113,10 +142,21 @@ static unsigned sprint_track_info(void* track, char* begin)
     duration_t duration = make_duration(ddb_api->pl_get_item_duration(item));
     end += sprint_duration(&duration, end);
     int track_number = ddb_api->pl_find_meta_int(item, "track", 0);
+    if(track_number) end += sprint_tagged_track_info(item, track_number, end);
+    else end += sprint_filename(item, end);
+    return end - begin;
+}
+
+static unsigned sprint_folder_info(void* track, char* begin)
+{
+    DB_playItem_t* item = track;
+    char* end = begin;
     ddb_api->pl_lock();
-    const char* title = ddb_api->pl_find_meta_raw(item, "title");
+    const char* path = ddb_api->pl_find_meta_raw(item, ":URI");
     ddb_api->pl_unlock();
-    end += sprintf(end, "  %02d-%-.80s", track_number, title);
+    char dirname[120];
+    sprint_dirname(dirname, path);
+    end += sprintf(end, "Analysed folder: %.120s", dirname);
     return end - begin;
 }
 
@@ -128,7 +168,8 @@ static unsigned sprint_album_info(void* track, char* begin)
     const char* artist = ddb_api->pl_find_meta_raw(item, "artist");
     const char* album = ddb_api->pl_find_meta_raw(item, "album");
     ddb_api->pl_unlock();
-    end += sprintf(end, "Analysed: %.40s / %.80s", artist, album);
+    if(!artist && !album) end += sprint_folder_info(item, end);
+    else end += sprintf(end, "Analysed: %.40s / %.80s", artist, album);
     return end - begin;
 }
 
