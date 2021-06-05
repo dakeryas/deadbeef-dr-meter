@@ -34,8 +34,8 @@ variable, e.g.
 ```
 make install PREFIX=/path/where/deadbeef/finds/plugins
 ```
-You can also combine it with `DESTDIR` whilst retaining the `RUNPATH` (set
-so that the plugins find `libdrmeter.so`) set from the `PREFIX` value, e.g.
+You can also combine it with `DESTDIR` whilst retaining the `RUNPATH` (which is set
+so that the plugins can find `libdrmeter.so`) set from the `PREFIX` value, e.g.
 ```
 make install DESTDIR=$PWD/temp PREFIX=/usr/lib/x86_64-linux-gnu
 ```
