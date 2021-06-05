@@ -9,7 +9,7 @@ can be copied.
 NB: This is work in progress.
 
 ## Requirements
-Building is achieved with GNU make. The computing plugin relies on a `drmeter`
+The build system relies upon GNU make. The computing plugin relies on a `drmeter`
 library which is also built and installed via the top-level `Makefile`. The GUI
 plugin utilising the computing plugin and displaying its results in a dialog
 relies upon `pkg-config` to find the GTK library when linking. By default, the
