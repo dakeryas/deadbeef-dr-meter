@@ -2,10 +2,9 @@
 #include <math.h>
 #include <stdlib.h>
 #include "dr_meter.h"
-#include "audio_rms.h"
+#include "audio_functions.h"
 #include "block_analyser.h"
 #include "print_dr_meter.h"
-#include "decibels.h"
 
 // constants according to DR standard
 static const double DR_LOUD_FRACTION = 0.2;
@@ -123,13 +122,14 @@ static double get_dr_dr_meter(dr_meter_t* self, unsigned channel)
     sort_sum2(self, channel);
     double loud_sum2 = get_sum2_quantile(self, channel, DR_LOUD_FRACTION);
     double loud_rms = get_audio_rms(loud_sum2, DR_LOUD_FRACTION * self->_ana_blocks);
-    return decibels(self->second_peaks[channel] / loud_rms);
+    double second_max = true_peak(self->second_peaks[channel]);
+    return decibels(second_max / loud_rms);
 }
 
 static dr_stats_t get_dr_stats_filled(dr_meter_t* self, unsigned channel)
 {
     double dr = get_dr_dr_meter(self, channel);
-    double peak = self->peaks[channel];
+    double peak = true_peak(self->peaks[channel]);
     double rms = get_rms_dr_meter(self, channel);
     return make_dr_stats(dr, peak, rms);
 }

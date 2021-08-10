@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include "block_analyser.h"
-#include "audio_rms.h"
+#include "audio_functions.h"
 #include "channel_interpreter.h"
 
 static unsigned size_analyser_array(block_analyser_t* self)

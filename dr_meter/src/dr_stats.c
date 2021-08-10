@@ -1,6 +1,6 @@
 #include "dr_stats.h"
 #include "math.h"
-#include "decibels.h"
+#include "audio_functions.h"
 
 static const char* DR_FORMAT = "DR%-2.0f %7.2f dB %9.2f dB";
 static const int DR_FORMAT_LENGTH = 28; //> than actual DR_FORMAT length
