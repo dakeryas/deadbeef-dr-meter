@@ -9,7 +9,7 @@ can be copied.
 NB: This is work in progress.
 
 ## Requirements
-Building is achieved with GNU make. The computing plugin relies on a `drmeter`
+The build system relies upon GNU make. The computing plugin relies on a `drmeter`
 library which is also built and installed via the top-level `Makefile`. The GUI
 plugin utilising the computing plugin and displaying its results in a dialog
 relies upon `pkg-config` to find the GTK library when linking. By default, the
@@ -34,8 +34,8 @@ variable, e.g.
 ```
 make install PREFIX=/path/where/deadbeef/finds/plugins
 ```
-You can also combine it with `DESTDIR` whilst retaining the `RUNPATH` (set
-so that the plugins find `libdrmeter.so`) set from the `PREFIX` value, e.g.
+You can also combine it with `DESTDIR` whilst retaining the `RUNPATH` (which is set
+so that the plugins can find `libdrmeter.so`) set from the `PREFIX` value, e.g.
 ```
 make install DESTDIR=$PWD/temp PREFIX=/usr/lib/x86_64-linux-gnu
 ```
