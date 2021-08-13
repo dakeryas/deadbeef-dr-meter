@@ -102,6 +102,8 @@ unsigned sprint_log_dr_log_printer(dr_log_printer_t* self, thread_data_t* thread
     }
     avg_dr /= thread_data->items;
     end += sprintl_line(line_length, end);
+    end += sprintl_line(0, end);
     end += sprintl_summary_info(self, thread_data->items, avg_dr, end);
+    end += sprintl_n('=', line_length, end);
     return end - begin;
 }
