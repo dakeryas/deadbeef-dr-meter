@@ -86,7 +86,7 @@ unsigned sprintl_summary_info(dr_log_printer_t* self, unsigned items, double avg
 unsigned sprint_log_dr_log_printer(dr_log_printer_t* self, thread_data_t* thread_data, char* begin)
 {
     char* end = begin;
-    unsigned line_length = 105;
+    unsigned line_length = 80;
     end += sprintl_line(line_length, end);
     end += sprintl_album_info(self, thread_data, end);
     end += sprintl_line(line_length, end);
