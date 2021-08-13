@@ -207,7 +207,7 @@ DB_plugin_t* ddb_dr_meter_load(DB_functions_t* api)
         .info.plugin.version_minor   = 2,
         .info.plugin.id              = "dr_meter",
         .info.plugin.name            = "Dynamic Range Meter",
-        .info.plugin.descr           = "Measure Dynamic Range",
+        .info.plugin.descr           = "Prints Dynamic Range",
         .info.plugin.copyright       =
         "Copyright (C) 2021 Valérian Sibille <mrdakeryas@gmail.com>\n"
         ,

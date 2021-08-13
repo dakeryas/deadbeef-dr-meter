@@ -164,7 +164,7 @@ DB_plugin_t* ddb_dr_meter_gtk2_load(DB_functions_t* api)
 #else
         .plugin.name            = "Dynamic Range Meter GTK2",
 #endif
-        .plugin.descr           = "Measure Dynamic Range",
+        .plugin.descr           = "Displays Dynamic Range",
         .plugin.copyright       =
         "Copyright (C) 2021 Valérian Sibille <mrdakeryas@gmail.com>\n"
         ,
