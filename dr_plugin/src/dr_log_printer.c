@@ -20,10 +20,16 @@ static unsigned sprintl_line(unsigned line_length, char* begin)
     return sprintl_n('-', line_length, begin);
 }
 
+static int sprint_dr_stats(dr_log_printer_t* self, dr_stats_t* dr_stats, char* buffer)
+{
+    dr_stats_t stats = make_dB_dr_stats(dr_stats);
+    return sprintf(buffer, self->dr_format, stats.dr, stats.peak, stats.rms);
+}
+
 unsigned sprint_item_dr_log_printer(dr_log_printer_t* self, thread_datum_t* datum, char* begin, char endline)
 {
     char* end = begin;
-    end += sprint_dr_stats(&datum->dr_stats, end);
+    end += sprint_dr_stats(self, &datum->dr_stats, end);
     end += sprintf(end, "      ");
     end += self->sprint_track_info(datum->item, end);
     end += sprintf(end, "%c", endline);

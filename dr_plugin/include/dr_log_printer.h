@@ -13,6 +13,7 @@ struct thread_data_s;
 
 struct dr_log_printer_s
 {
+    const char* dr_format;
     unsigned (*sprint_track_info)(void* track, char* begin);
     unsigned (*sprint_album_info)(void* first_track, char* begin);
 };

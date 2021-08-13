@@ -23,8 +23,5 @@ dr_stats_t make_dr_stats(double dr, double peak, double rms);
 void zero_dr_stats(dr_stats_t* dr_stats);
 dr_stats_t make_zero_dr_stats();
 dr_stats_t make_dB_dr_stats(dr_stats_t* dr_stats);
-int sprint_dr_stats(dr_stats_t* dr_stats, char* buffer);
-int print_dr_stats(dr_stats_t* dr_stats, FILE* output);
-int printl_dr_stats(dr_stats_t* dr_stats, FILE* output);
 
 #endif /* DR_STATS_H */

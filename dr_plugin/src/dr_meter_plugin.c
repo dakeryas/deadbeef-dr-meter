@@ -13,6 +13,7 @@
 
 // constants according to DR standard
 static const unsigned DR_BLOCK_DURATION = 3;
+static const char* DR_FORMAT = "DR%-2.0f %7.2f dB %9.2f dB";
 
 DB_functions_t* ddb_api;
 
@@ -175,7 +176,7 @@ static unsigned sprint_album_info(void* track, char* begin)
 
 unsigned sprint_dr_log_impl(thread_data_t* thread_data, char* buffer)
 {
-    dr_log_printer_t log_printer = {.sprint_track_info = sprint_track_info, .sprint_album_info = sprint_album_info};
+    dr_log_printer_t log_printer = {.dr_format = DR_FORMAT, .sprint_track_info = sprint_track_info, .sprint_album_info = sprint_album_info};
     return sprint_log_dr_log_printer(&log_printer, thread_data, buffer);
 }
 
