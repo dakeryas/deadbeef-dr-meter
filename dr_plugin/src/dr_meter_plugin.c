@@ -193,7 +193,7 @@ int dr_meter_stop()
 }
 
 static const char settings_dialog[] =
-    "property \"DR Peak RMS printf formatting\" entry dr_meter.format \"" DEFAULT_DR_FORMAT "\";\n"
+    "property \"(DR, Peak, RMS) printf formatting\" entry dr_meter.format \"" DEFAULT_DR_FORMAT "\";\n"
 ;
 
 DB_plugin_t* ddb_dr_meter_load(DB_functions_t* api)
