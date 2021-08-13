@@ -170,7 +170,7 @@ static unsigned sprint_album_info(void* track, char* begin)
     const char* album = ddb_api->pl_find_meta_raw(item, "album");
     ddb_api->pl_unlock();
     if(!artist && !album) end += sprint_folder_info(item, end);
-    else end += sprintf(end, "Analysed: %.40s / %.80s", artist, album);
+    else end += sprintf(end, "Analyzed: %.40s / %.80s", artist, album);
     return end - begin;
 }
 
