@@ -13,7 +13,7 @@
 
 // constants according to DR standard
 static const unsigned DR_BLOCK_DURATION = 3;
-static const char* DR_FORMAT = "DR%-2.0f %7.2f dB %9.2f dB";
+#define DEFAULT_DR_FORMAT "DR%-2.0f %7.2f dB %9.2f dB"
 
 DB_functions_t* ddb_api;
 
@@ -176,7 +176,9 @@ static unsigned sprint_album_info(void* track, char* begin)
 
 unsigned sprint_dr_log_impl(thread_data_t* thread_data, char* buffer)
 {
-    dr_log_printer_t log_printer = {.dr_format = DR_FORMAT, .sprint_track_info = sprint_track_info, .sprint_album_info = sprint_album_info};
+    char dr_format[28];
+    ddb_api->conf_get_str("dr_meter.format", DEFAULT_DR_FORMAT, dr_format, sizeof(dr_format));
+    dr_log_printer_t log_printer = {.dr_format = dr_format, .sprint_track_info = sprint_track_info, .sprint_album_info = sprint_album_info};
     return sprint_log_dr_log_printer(&log_printer, thread_data, buffer);
 }
 
@@ -190,9 +192,8 @@ int dr_meter_stop()
     return 0;
 }
 
-#define DEFAULT_DR_FORMAT_STR "DR%-2.0f %7.2f dB %9.2f dB"
 static const char settings_dialog[] =
-    "property \"DR Peak RMS printf formatting\" entry dr_meter.format " DEFAULT_DR_FORMAT_STR ";\n"
+    "property \"DR Peak RMS printf formatting\" entry dr_meter.format \"" DEFAULT_DR_FORMAT "\";\n"
 ;
 
 DB_plugin_t* ddb_dr_meter_load(DB_functions_t* api)
