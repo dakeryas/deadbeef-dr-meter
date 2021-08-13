@@ -157,7 +157,7 @@ static unsigned sprint_folder_info(void* track, char* begin)
     ddb_api->pl_unlock();
     char dirname[120];
     sprint_dirname(dirname, path);
-    end += sprintf(end, "Analysed folder: %.120s", dirname);
+    end += sprintf(end, "Analyzed folder: %.120s", dirname);
     return end - begin;
 }
 
