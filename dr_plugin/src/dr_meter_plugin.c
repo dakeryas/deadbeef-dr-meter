@@ -190,6 +190,11 @@ int dr_meter_stop()
     return 0;
 }
 
+#define DEFAULT_DR_FORMAT_STR "DR%-2.0f %7.2f dB %9.2f dB"
+static const char settings_dialog[] =
+    "property \"DR Peak RMS printf formatting\" entry dr_meter.format " DEFAULT_DR_FORMAT_STR ";\n"
+;
+
 DB_plugin_t* ddb_dr_meter_load(DB_functions_t* api)
 {
     ddb_api = api;
@@ -198,16 +203,17 @@ DB_plugin_t* ddb_dr_meter_load(DB_functions_t* api)
         .info.plugin.api_vmajor      = 1,
         .info.plugin.api_vminor      = 10,
         .info.plugin.version_major   = 0,
-        .info.plugin.version_minor   = 1,
+        .info.plugin.version_minor   = 2,
         .info.plugin.id              = "dr_meter",
         .info.plugin.name            = "Dynamic Range Meter",
         .info.plugin.descr           = "Measure Dynamic Range",
         .info.plugin.copyright       =
-        "Copyright (C) 2020 Valérian Sibille <vsibille@mit.edu>\n"
+        "Copyright (C) 2021 Valérian Sibille <mrdakeryas@gmail.com>\n"
         ,
         .info.plugin.website         = "https://github.com/dakeryas/deadbeef-dr-meter.git",
         .info.plugin.start           = dr_meter_start,
         .info.plugin.stop            = dr_meter_stop,
+        .info.plugin.configdialog    = settings_dialog,
         .compute_dr                  = compute_dr_impl,
         .sprint_dr_log               = sprint_dr_log_impl,
     };
