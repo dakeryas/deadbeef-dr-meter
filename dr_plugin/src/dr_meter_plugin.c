@@ -176,7 +176,7 @@ static unsigned sprint_album_info(void* track, char* begin)
 
 unsigned sprint_dr_log_impl(thread_data_t* thread_data, char* buffer)
 {
-    char dr_format[28];
+    char dr_format[32];
     ddb_api->conf_get_str("dr_meter.format", DEFAULT_DR_FORMAT, dr_format, sizeof(dr_format));
     dr_log_printer_t log_printer = {.dr_format = dr_format, .sprint_track_info = sprint_track_info, .sprint_album_info = sprint_album_info};
     return sprint_log_dr_log_printer(&log_printer, thread_data, buffer);
