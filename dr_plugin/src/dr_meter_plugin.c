@@ -13,7 +13,7 @@
 
 // constants according to DR standard
 static const unsigned DR_BLOCK_DURATION = 3;
-#define DEFAULT_DR_FORMAT "DR%-2.0f %7.2f dB %9.2f dB"
+#define DEFAULT_DR_FORMAT "DR%-2.0f %10.2f dB %8.2f dB"
 
 DB_functions_t* ddb_api;
 
@@ -132,7 +132,7 @@ static unsigned sprint_tagged_track_info(void* track, int track_number, char* be
     ddb_api->pl_lock();
     const char* title = ddb_api->pl_find_meta_raw(item, "title");
     ddb_api->pl_unlock();
-    end += sprintf(end, "  %02d-%-.80s", track_number, title);
+    end += sprintf(end, " %02d-%-.80s", track_number, title);
     return end - begin;
 }
 

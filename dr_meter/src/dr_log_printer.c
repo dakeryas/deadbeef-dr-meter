@@ -30,7 +30,7 @@ unsigned sprint_item_dr_log_printer(dr_log_printer_t* self, thread_datum_t* datu
 {
     char* end = begin;
     end += sprint_dr_stats(self, &datum->dr_stats, end);
-    end += sprintf(end, "      ");
+    end += sprintf(end, "     ");
     end += self->sprint_track_info(datum->item, end);
     end += sprintf(end, "%c", endline);
     return end - begin;

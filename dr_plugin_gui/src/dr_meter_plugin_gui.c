@@ -104,7 +104,8 @@ static gboolean run_meter_job(void* data)
         retrieve_current_selection(&selection);
         thread_data_t thread_data = make_thread_data(&selection);
         dr_meter_plugin->compute_dr(&thread_data);
-        char buffer[120 + 4 * 105 + thread_data.items * (35 + 9 + 10 + 80) + 21 + 23];
+        const unsigned item_length = 40 + 5 + 5 + 1 + 3 + 80 + 2;//DR info, space, duration, space, track number, title, newline
+        char buffer[120 + 4 * 105 + thread_data.items * item_length + 21 + 23];
         dr_meter_plugin->sprint_dr_log(&thread_data, buffer);
         show_dr_log(buffer);
         free_thread_data(&thread_data);
