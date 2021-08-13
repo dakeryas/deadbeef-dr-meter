@@ -87,8 +87,10 @@ unsigned sprint_log_dr_log_printer(dr_log_printer_t* self, thread_data_t* thread
 {
     char* end = begin;
     unsigned line_length = 105;
+    end += sprintl_line(line_length, end);
     end += sprintl_album_info(self, thread_data, end);
     end += sprintl_line(line_length, end);
+    end += sprintl_line(0, end);
     end += sprintl_col_headers_dr_log_printer(self, end);
     end += sprintl_line(line_length, end);
     double avg_dr = 0.;
