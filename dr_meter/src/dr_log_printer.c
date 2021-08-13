@@ -61,7 +61,7 @@ static unsigned sprintl_album_info(dr_log_printer_t* self, thread_data_t* data, 
 unsigned sprint_col_headers_dr_log_printer(dr_log_printer_t* self, char* begin, char endline)
 {
     (void) self;
-    return sprintf(begin, "DR     Peak        RMS         Duration  Track%c", endline);
+    return sprintf(begin, "DR         Peak         RMS     Duration Track%c", endline);
 }
 
 unsigned sprintl_col_headers_dr_log_printer(dr_log_printer_t* self, char* begin)
