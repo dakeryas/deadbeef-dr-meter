@@ -8,6 +8,8 @@
 #include "dr_meter_plugin.h"
 #include "thread_data.h"
 #include "selection.h"
+#include "save_button.h"
+#include "dr_run_data.h"
 
 DB_functions_t* ddb_api;
 dr_meter_plugin_t* dr_meter_plugin;
@@ -25,7 +27,7 @@ static void unreference_selection(selection_t* selection)
     free(selection->items);
 }
 
-static GtkWindow* create_dr_dialog()
+static GtkWindow* create_dr_dialog(GtkWindow* parent)
 {
     GtkWindow* dialog = GTK_WINDOW(gtk_dialog_new());
     gtk_widget_set_size_request(GTK_WIDGET(dialog), 600, 420);
@@ -34,6 +36,7 @@ static GtkWindow* create_dr_dialog()
     gtk_window_set_modal(dialog, TRUE);
     gtk_window_set_destroy_with_parent((dialog), TRUE);
     gtk_window_set_type_hint(dialog, GDK_WINDOW_TYPE_HINT_DIALOG);
+    gtk_window_set_transient_for(dialog, parent);
     return dialog;
 }
 
@@ -44,69 +47,14 @@ static GtkLabel* create_selectable_label(const char* log_buffer)
     return label;
 }
 
-static void write_log(const char* log_text, const char* filename)
-{
-    FILE* file = fopen(filename, "w");
-    fprintf(file, "%s", log_text);
-    fclose(file);
-}
-
-#if GTK_CHECK_VERSION(3,0,0)
-#define GTK_DOMAIN "gtk30"
-#else
-#define GTK_DOMAIN "gtk20"
-#endif
-static GtkFileChooser* create_save_dialog(GtkWindow* log_dialog)
-{
-    GtkFileChooser* dialog = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new("Save", log_dialog, GTK_FILE_CHOOSER_ACTION_SAVE, g_dgettext(GTK_DOMAIN, "_Cancel"), GTK_RESPONSE_CANCEL, g_dgettext(GTK_DOMAIN, "_Save"), GTK_RESPONSE_ACCEPT, NULL));
-    gtk_file_chooser_set_do_overwrite_confirmation(dialog, TRUE);
-    gtk_window_set_transient_for(GTK_WINDOW(dialog), log_dialog);
-    return dialog;
-}
-#undef GTK_DOMAIN
-
-struct dr_run_data_s
-{
-    int ddb_context;
-    GtkWindow* dr_dialog;
-    char* log;
-};
-
-typedef struct dr_run_data_s dr_run_data_t;
-
-static void open_save_dialog(GtkButton*, gpointer data)
-{
-    dr_run_data_t* run_data = (dr_run_data_t*)data;
-    GtkFileChooser* file_dialog = create_save_dialog(run_data->dr_dialog);
-    if(gtk_dialog_run(GTK_DIALOG(file_dialog)) == GTK_RESPONSE_ACCEPT)
-    {
-        gchar* filename;
-        filename = gtk_file_chooser_get_filename(file_dialog);
-        write_log(run_data->log, filename);
-        g_free(filename);
-    }
-    gtk_widget_destroy(GTK_WIDGET(file_dialog));
-}
-
-static GtkWidget* create_save_button(dr_run_data_t* run_data)
-{
-    GtkWidget* save_button = gtk_button_new_with_label("Save DR log");
-    g_signal_connect(save_button, "clicked", G_CALLBACK(open_save_dialog), run_data);
-    return save_button;
-}
-
 static int show_dr_dialog(dr_run_data_t* run_data)
 {
-    run_data->dr_dialog = create_dr_dialog();
-    gtk_window_set_transient_for(run_data->dr_dialog, GTK_WINDOW(gtk_ui_plugin->get_mainwin()));
-
-    GtkLabel* log_label = create_selectable_label(run_data->log);
+    run_data->dr_dialog = create_dr_dialog(GTK_WINDOW(gtk_ui_plugin->get_mainwin()));
     GtkWidget* content_area = gtk_dialog_get_content_area(GTK_DIALOG(run_data->dr_dialog));
+    GtkLabel* log_label = create_selectable_label(run_data->log);
     gtk_container_add(GTK_CONTAINER(content_area), GTK_WIDGET(log_label));
-
     GtkWidget* save_button = create_save_button(run_data);
     gtk_container_add(GTK_CONTAINER(content_area), save_button);
-
     gtk_widget_show_all(GTK_WIDGET(run_data->dr_dialog));
     return 0;
 }
