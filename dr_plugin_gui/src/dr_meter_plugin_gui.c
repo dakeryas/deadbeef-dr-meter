@@ -1,5 +1,4 @@
 #include <gtk/gtk.h>
-#include <glib.h>
 
 #include <deadbeef/deadbeef.h>
 #include <deadbeef/gtkui_api.h>
@@ -8,8 +7,8 @@
 #include "dr_meter_plugin.h"
 #include "thread_data.h"
 #include "selection.h"
-#include "save_button.h"
 #include "dr_run_data.h"
+#include "dialogue.h"
 
 DB_functions_t* ddb_api;
 dr_meter_plugin_t* dr_meter_plugin;
@@ -25,38 +24,6 @@ static void unreference_selection(selection_t* selection)
     for(int k = 0; k < selection->items_count ; ++k)
         ddb_api->pl_item_unref(selection->items[k]);
     free(selection->items);
-}
-
-static GtkWindow* create_dr_dialog(GtkWindow* parent)
-{
-    GtkWindow* dialog = GTK_WINDOW(gtk_dialog_new());
-    gtk_widget_set_size_request(GTK_WIDGET(dialog), 600, 420);
-    gtk_window_set_title(dialog, "Dynamic Range");
-    gtk_window_set_position(dialog, GTK_WIN_POS_MOUSE);
-    gtk_window_set_modal(dialog, TRUE);
-    gtk_window_set_destroy_with_parent((dialog), TRUE);
-    gtk_window_set_type_hint(dialog, GDK_WINDOW_TYPE_HINT_DIALOG);
-    gtk_window_set_transient_for(dialog, parent);
-    return dialog;
-}
-
-static GtkLabel* create_selectable_label(const char* log_buffer)
-{
-    GtkLabel* label = GTK_LABEL(gtk_label_new(log_buffer));
-    gtk_label_set_selectable(label, TRUE);
-    return label;
-}
-
-static int show_dr_dialog(dr_run_data_t* run_data)
-{
-    run_data->dr_dialog = create_dr_dialog(GTK_WINDOW(gtk_ui_plugin->get_mainwin()));
-    GtkWidget* content_area = gtk_dialog_get_content_area(GTK_DIALOG(run_data->dr_dialog));
-    GtkLabel* log_label = create_selectable_label(run_data->log);
-    gtk_container_add(GTK_CONTAINER(content_area), GTK_WIDGET(log_label));
-    GtkWidget* save_button = create_save_button(run_data);
-    gtk_container_add(GTK_CONTAINER(content_area), save_button);
-    gtk_widget_show_all(GTK_WIDGET(run_data->dr_dialog));
-    return 0;
 }
 
 static void copy_selected_from_main_playlist(selection_t* selection)
@@ -106,7 +73,7 @@ static gboolean run_meter_job(void* data)
         const unsigned item_length = 40 + 5 + 5 + 1 + 3 + 80 + 2;//DR info, space, duration, space, track number, title, newline
         run_data->log = malloc(135 + 48 + 5 * 80 + thread_data.items * item_length + 21 + 23);
         dr_meter_plugin->sprint_dr_log(&thread_data, run_data->log);
-        show_dr_dialog(run_data);
+        show_dr_dialog(run_data, GTK_WINDOW(gtk_ui_plugin->get_mainwin()));
         free_thread_data(&thread_data);
         unreference_selection(&selection);
     }
@@ -121,9 +88,8 @@ static int run_meter(DB_plugin_action_t*, ddb_action_context_t context)
     return 0;
 }
 
-DB_plugin_action_t* dr_meter_gui_get_actions(DB_playItem_t* item)
+DB_plugin_action_t* dr_meter_gui_get_actions(DB_playItem_t*)
 {
-    (void) item;
     static DB_plugin_action_t dr_meter_action = {
         .title = "Dynamic Range",
         .name = "compute_dynamic_range",
