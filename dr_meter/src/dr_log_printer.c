@@ -44,12 +44,9 @@ unsigned sprintl_item_dr_log_printer(dr_log_printer_t* self, thread_datum_t* dat
 static unsigned sprint_album_info(dr_log_printer_t* self, thread_data_t* data, char* begin, char endline)
 {
     char* end = begin;
-    if(data->items > 1) // sprint_album_info called only for two tracks ore more
-    {
-        void* first_track = data->data[0].item;
-        end += self->sprint_album_info(first_track, end);
-        end += sprintf(end, "%c", endline);
-    }
+    void* first_track = data->data[0].item;
+    end += self->sprint_album_info(first_track, end);
+    end += sprintf(end, "%c", endline);
     return end - begin;
 }
 
