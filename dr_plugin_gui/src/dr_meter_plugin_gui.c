@@ -51,9 +51,14 @@ static void write_log(const char* filename, const char* log_text)
     fclose(file);
 }
 
+#if GTK_CHECK_VERSION(3,0,0)
+#define GTK_DOMAIN "gtk30"
+#else
+#define GTK_DOMAIN "gtk20"
+#endif
 static void open_save_dialog(GtkWindow* parent_window, GtkLabel* label)
 {
-    GtkFileChooser* dialog = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new("Save", parent_window, GTK_FILE_CHOOSER_ACTION_SAVE, g_dgettext("gtk30", "_Cancel"), GTK_RESPONSE_CANCEL, g_dgettext("gtk30", "_Save"), GTK_RESPONSE_ACCEPT, NULL));
+    GtkFileChooser* dialog = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new("Save", parent_window, GTK_FILE_CHOOSER_ACTION_SAVE, g_dgettext(GTK_DOMAIN, "_Cancel"), GTK_RESPONSE_CANCEL, g_dgettext(GTK_DOMAIN, "_Save"), GTK_RESPONSE_ACCEPT, NULL));
     gtk_file_chooser_set_do_overwrite_confirmation(dialog, TRUE);
     if(gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
     {
@@ -64,6 +69,7 @@ static void open_save_dialog(GtkWindow* parent_window, GtkLabel* label)
     }
     gtk_widget_destroy(GTK_WIDGET(dialog));
 }
+#undef GTK_DOMAIN
 
 GtkWidget* create_save_button(GtkLabel* log_label)
 {
