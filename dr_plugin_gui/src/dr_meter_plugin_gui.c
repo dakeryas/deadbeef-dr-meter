@@ -25,7 +25,7 @@ static void unreference_selection(selection_t* selection)
     free(selection->items);
 }
 
-GtkWidget* create_dr_dialog()
+static GtkWidget* create_dr_dialog()
 {
     GtkWidget* dialog = gtk_dialog_new();
     gtk_widget_set_size_request(dialog, 600, 400);
@@ -37,24 +37,36 @@ GtkWidget* create_dr_dialog()
     return dialog;
 }
 
-static int show_dr_log(const char* buffer)
+static GtkWidget* create_selectable_label(const char* buffer)
 {
-    GtkWidget* dialog = create_dr_dialog();
-    GtkWidget* main_window = gtk_ui_plugin->get_mainwin();
-    gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(main_window));
-
     GtkWidget* label = gtk_label_new(buffer);
     gtk_label_set_selectable(GTK_LABEL(label), TRUE);
+    return label;
+}
 
+static GtkWidget* create_grid()
+{
 #if GTK_CHECK_VERSION(3,0,0)
-    GtkWidget* label_container = gtk_grid_new();
+    GtkWidget* grid = gtk_grid_new();
 #else
-    GtkWidget* label_container = gtk_vbox_new(FALSE, 0);
+    GtkWidget* grid = gtk_vbox_new(FALSE, 0);
     gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
 #endif
-    GtkWidget* content_area = gtk_dialog_get_content_area(GTK_DIALOG (dialog));
-    gtk_container_add(GTK_CONTAINER(content_area), label_container);
-    gtk_container_add(GTK_CONTAINER(label_container), label);
+    return grid;
+}
+
+static int show_dr_log(const char* buffer)
+{
+    GtkWidget* label = create_selectable_label(buffer);
+    GtkWidget* grid = create_grid();
+    gtk_container_add(GTK_CONTAINER(grid), label);
+
+    GtkWidget* main_window = gtk_ui_plugin->get_mainwin();
+    GtkWidget* dialog = create_dr_dialog();
+    gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(main_window));
+
+    GtkWidget* content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    gtk_container_add(GTK_CONTAINER(content_area), grid);
 
     gtk_widget_show_all(dialog);
     return 0;
