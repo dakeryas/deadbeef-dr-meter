@@ -25,50 +25,37 @@ static void unreference_selection(selection_t* selection)
     free(selection->items);
 }
 
-static GtkWidget* create_dr_dialog()
+static GtkWindow* create_dr_dialog()
 {
-    GtkWidget* dialog = gtk_dialog_new();
-    gtk_widget_set_size_request(dialog, 600, 400);
-    gtk_window_set_title(GTK_WINDOW (dialog), "Dynamic Range");
-    gtk_window_set_position(GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
-    gtk_window_set_modal(GTK_WINDOW (dialog), TRUE);
-    gtk_window_set_destroy_with_parent(GTK_WINDOW (dialog), TRUE);
-    gtk_window_set_type_hint(GTK_WINDOW (dialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+    GtkWindow* dialog = GTK_WINDOW(gtk_dialog_new());
+    gtk_widget_set_size_request(GTK_WIDGET(dialog), 600, 400);
+    gtk_window_set_title(dialog, "Dynamic Range");
+    gtk_window_set_position(dialog, GTK_WIN_POS_MOUSE);
+    gtk_window_set_modal(dialog, TRUE);
+    gtk_window_set_destroy_with_parent((dialog), TRUE);
+    gtk_window_set_type_hint(dialog, GDK_WINDOW_TYPE_HINT_DIALOG);
     return dialog;
 }
 
-static GtkWidget* create_selectable_label(const char* buffer)
+static GtkLabel* create_selectable_label(const char* buffer)
 {
-    GtkWidget* label = gtk_label_new(buffer);
-    gtk_label_set_selectable(GTK_LABEL(label), TRUE);
+    GtkLabel* label = GTK_LABEL(gtk_label_new(buffer));
+    gtk_label_set_justify(label, GTK_JUSTIFY_FILL);
+    gtk_label_set_selectable(label, TRUE);
     return label;
-}
-
-static GtkWidget* create_grid()
-{
-#if GTK_CHECK_VERSION(3,0,0)
-    GtkWidget* grid = gtk_grid_new();
-#else
-    GtkWidget* grid = gtk_vbox_new(FALSE, 0);
-    gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
-#endif
-    return grid;
 }
 
 static int show_dr_log(const char* buffer)
 {
-    GtkWidget* label = create_selectable_label(buffer);
-    GtkWidget* grid = create_grid();
-    gtk_container_add(GTK_CONTAINER(grid), label);
+    GtkWindow* main_window = GTK_WINDOW(gtk_ui_plugin->get_mainwin());
+    GtkWindow* dialog = create_dr_dialog();
+    gtk_window_set_transient_for(dialog, main_window);
 
-    GtkWidget* main_window = gtk_ui_plugin->get_mainwin();
-    GtkWidget* dialog = create_dr_dialog();
-    gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(main_window));
-
+    GtkLabel* label = create_selectable_label(buffer);
     GtkWidget* content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-    gtk_container_add(GTK_CONTAINER(content_area), grid);
+    gtk_container_add(GTK_CONTAINER(content_area), GTK_WIDGET(label));
 
-    gtk_widget_show_all(dialog);
+    gtk_widget_show_all(GTK_WIDGET(dialog));
     return 0;
 }
 
