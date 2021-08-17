@@ -2,7 +2,7 @@
 Adds a "Dynamic Range" context menu to the selected playlist items.  Upon
 clicking, the dynamic range, peak, and total RMS for each selection item is
 computed and a GTK dialogue is opened with results. The log can be saved and
-is compatible with DR online database.
+is compatible with the DR online database.
 
 [![dr-meter.png](https://i.postimg.cc/bNFxDMtT/dr-meter.png)](https://postimg.cc/MvVMg9tM)
 
