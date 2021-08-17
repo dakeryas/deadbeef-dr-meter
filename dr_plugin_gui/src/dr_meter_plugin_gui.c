@@ -63,13 +63,14 @@ static void retrieve_current_selection(selection_t* selection)
 
 static gboolean run_meter_job(void* data)
 {
-    dr_run_data_t* run_data = (dr_run_data_t*)data;
-    if(run_data->ddb_context == DDB_ACTION_CTX_SELECTION)
+    int context = (intptr_t)data;
+    if(context == DDB_ACTION_CTX_SELECTION)
     {
         selection_t selection;
         retrieve_current_selection(&selection);
         thread_data_t thread_data = make_thread_data(&selection);
         dr_meter_plugin->compute_dr(&thread_data);
+        dr_run_data_t* run_data = malloc(sizeof(dr_run_data_t));
         const unsigned item_length = 40 + 5 + 5 + 1 + 3 + 80 + 2;//DR info, space, duration, space, track number, title, newline
         run_data->log = malloc(135 + 48 + 5 * 80 + thread_data.items * item_length + 21 + 23);
         dr_meter_plugin->sprint_dr_log(&thread_data, run_data->log);
@@ -82,9 +83,7 @@ static gboolean run_meter_job(void* data)
 
 static int run_meter(DB_plugin_action_t*, ddb_action_context_t context)
 {
-    dr_run_data_t* run_data = malloc(sizeof(dr_run_data_t));
-    run_data->ddb_context = context;
-    gdk_threads_add_idle(run_meter_job, run_data);
+    gdk_threads_add_idle(run_meter_job, (void*)(intptr_t)context);
     return 0;
 }
 
