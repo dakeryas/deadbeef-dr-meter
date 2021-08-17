@@ -44,7 +44,7 @@ static GtkLabel* create_selectable_label(const char* log_buffer)
     return label;
 }
 
-static void write_log(const char* filename, const char* log_text)
+static void write_log(const char* log_text, const char* filename)
 {
     FILE* file = fopen(filename, "w");
     fprintf(file, "%s", log_text);
@@ -56,42 +56,58 @@ static void write_log(const char* filename, const char* log_text)
 #else
 #define GTK_DOMAIN "gtk20"
 #endif
-static void open_save_dialog(GtkWindow* parent_window, GtkLabel* label)
+static GtkFileChooser* create_save_dialog(GtkWindow* log_dialog)
 {
-    GtkFileChooser* dialog = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new("Save", parent_window, GTK_FILE_CHOOSER_ACTION_SAVE, g_dgettext(GTK_DOMAIN, "_Cancel"), GTK_RESPONSE_CANCEL, g_dgettext(GTK_DOMAIN, "_Save"), GTK_RESPONSE_ACCEPT, NULL));
+    GtkFileChooser* dialog = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new("Save", log_dialog, GTK_FILE_CHOOSER_ACTION_SAVE, g_dgettext(GTK_DOMAIN, "_Cancel"), GTK_RESPONSE_CANCEL, g_dgettext(GTK_DOMAIN, "_Save"), GTK_RESPONSE_ACCEPT, NULL));
     gtk_file_chooser_set_do_overwrite_confirmation(dialog, TRUE);
-    if(gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
-    {
-        gchar* filename;
-        filename = gtk_file_chooser_get_filename(dialog);
-        write_log(filename, gtk_label_get_text(label));
-        g_free(filename);
-    }
-    gtk_widget_destroy(GTK_WIDGET(dialog));
+    gtk_window_set_transient_for(GTK_WINDOW(dialog), log_dialog);
+    return dialog;
 }
 #undef GTK_DOMAIN
 
-GtkWidget* create_save_button(GtkLabel* log_label)
+struct dr_run_data_s
+{
+    int ddb_context;
+    GtkWindow* dr_dialog;
+    char* log;
+};
+
+typedef struct dr_run_data_s dr_run_data_t;
+
+static void open_save_dialog(GtkButton*, gpointer data)
+{
+    dr_run_data_t* run_data = (dr_run_data_t*)data;
+    GtkFileChooser* file_dialog = create_save_dialog(run_data->dr_dialog);
+    if(gtk_dialog_run(GTK_DIALOG(file_dialog)) == GTK_RESPONSE_ACCEPT)
+    {
+        gchar* filename;
+        filename = gtk_file_chooser_get_filename(file_dialog);
+        write_log(run_data->log, filename);
+        g_free(filename);
+    }
+    gtk_widget_destroy(GTK_WIDGET(file_dialog));
+}
+
+static GtkWidget* create_save_button(dr_run_data_t* run_data)
 {
     GtkWidget* save_button = gtk_button_new_with_label("Save DR log");
-    g_signal_connect(save_button, "clicked", G_CALLBACK(open_save_dialog), log_label);
+    g_signal_connect(save_button, "clicked", G_CALLBACK(open_save_dialog), run_data);
     return save_button;
 }
 
-static int show_dr_dialog(const char* log_buffer)
+static int show_dr_dialog(dr_run_data_t* run_data)
 {
-    GtkWindow* main_window = GTK_WINDOW(gtk_ui_plugin->get_mainwin());
-    GtkWindow* dialog = create_dr_dialog();
-    gtk_window_set_transient_for(dialog, main_window);
+    run_data->dr_dialog = create_dr_dialog();
+    gtk_window_set_transient_for(run_data->dr_dialog, GTK_WINDOW(gtk_ui_plugin->get_mainwin()));
 
-    GtkLabel* log_label = create_selectable_label(log_buffer);
-    GtkWidget* content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    GtkLabel* log_label = create_selectable_label(run_data->log);
+    GtkWidget* content_area = gtk_dialog_get_content_area(GTK_DIALOG(run_data->dr_dialog));
     gtk_container_add(GTK_CONTAINER(content_area), GTK_WIDGET(log_label));
 
-    GtkWidget* save_button = create_save_button(log_label);
+    GtkWidget* save_button = create_save_button(run_data);
     gtk_container_add(GTK_CONTAINER(content_area), save_button);
 
-    gtk_widget_show_all(GTK_WIDGET(dialog));
+    gtk_widget_show_all(GTK_WIDGET(run_data->dr_dialog));
     return 0;
 }
 
@@ -132,27 +148,28 @@ static void retrieve_current_selection(selection_t* selection)
 
 static gboolean run_meter_job(void* data)
 {
-    int context = (intptr_t)data;
-    if(context == DDB_ACTION_CTX_SELECTION)
+    dr_run_data_t* run_data = (dr_run_data_t*)data;
+    if(run_data->ddb_context == DDB_ACTION_CTX_SELECTION)
     {
         selection_t selection;
         retrieve_current_selection(&selection);
         thread_data_t thread_data = make_thread_data(&selection);
         dr_meter_plugin->compute_dr(&thread_data);
         const unsigned item_length = 40 + 5 + 5 + 1 + 3 + 80 + 2;//DR info, space, duration, space, track number, title, newline
-        char buffer[135 + 48 + 5 * 80 + thread_data.items * item_length + 21 + 23];
-        dr_meter_plugin->sprint_dr_log(&thread_data, buffer);
-        show_dr_dialog(buffer);
+        run_data->log = malloc(135 + 48 + 5 * 80 + thread_data.items * item_length + 21 + 23);
+        dr_meter_plugin->sprint_dr_log(&thread_data, run_data->log);
+        show_dr_dialog(run_data);
         free_thread_data(&thread_data);
         unreference_selection(&selection);
     }
     return FALSE;
 }
 
-static int run_meter(DB_plugin_action_t* action, ddb_action_context_t context)
+static int run_meter(DB_plugin_action_t*, ddb_action_context_t context)
 {
-    (void) action;
-    gdk_threads_add_idle(run_meter_job, (void*)(intptr_t)context);
+    dr_run_data_t* run_data = malloc(sizeof(dr_run_data_t));
+    run_data->ddb_context = context;
+    gdk_threads_add_idle(run_meter_job, run_data);
     return 0;
 }
 
