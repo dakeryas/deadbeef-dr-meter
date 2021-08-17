@@ -37,10 +37,9 @@ static GtkWindow* create_dr_dialog()
     return dialog;
 }
 
-static GtkLabel* create_selectable_label(const char* buffer)
+static GtkLabel* create_selectable_label(const char* log_buffer)
 {
-    GtkLabel* label = GTK_LABEL(gtk_label_new(buffer));
-    gtk_label_set_justify(label, GTK_JUSTIFY_FILL);
+    GtkLabel* label = GTK_LABEL(gtk_label_new(log_buffer));
     gtk_label_set_selectable(label, TRUE);
     return label;
 }
