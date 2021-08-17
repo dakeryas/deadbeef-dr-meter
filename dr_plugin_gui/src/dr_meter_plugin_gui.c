@@ -53,7 +53,7 @@ static void write_log(const char* filename, const char* log_text)
 
 static void open_save_dialog(GtkWindow* parent_window, GtkLabel* label)
 {
-    GtkFileChooser* dialog = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new("Save", parent_window, GTK_FILE_CHOOSER_ACTION_SAVE, g_dgettext("gtk30", "_Cancel"), GTK_RESPONSE_CANCEL, g_dgettext("gtk30", "_Open"), GTK_RESPONSE_ACCEPT, NULL));
+    GtkFileChooser* dialog = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new("Save", parent_window, GTK_FILE_CHOOSER_ACTION_SAVE, g_dgettext("gtk30", "_Cancel"), GTK_RESPONSE_CANCEL, g_dgettext("gtk30", "_Save"), GTK_RESPONSE_ACCEPT, NULL));
     gtk_file_chooser_set_do_overwrite_confirmation(dialog, TRUE);
     if(gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
     {
