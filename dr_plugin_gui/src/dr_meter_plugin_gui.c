@@ -44,6 +44,34 @@ static GtkLabel* create_selectable_label(const char* log_buffer)
     return label;
 }
 
+static void write_log(const char* filename, const char* log_text)
+{
+    FILE* file = fopen(filename, "w");
+    fprintf(file, "%s", log_text);
+    fclose(file);
+}
+
+static void open_save_dialog(GtkWindow* parent_window, GtkLabel* label)
+{
+    GtkFileChooser* dialog = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new("Save", parent_window, GTK_FILE_CHOOSER_ACTION_SAVE, g_dgettext("gtk30", "_Cancel"), GTK_RESPONSE_CANCEL, g_dgettext("gtk30", "_Open"), GTK_RESPONSE_ACCEPT, NULL));
+    gtk_file_chooser_set_do_overwrite_confirmation(dialog, TRUE);
+    if(gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
+    {
+        gchar* filename;
+        filename = gtk_file_chooser_get_filename(dialog);
+        write_log(filename, gtk_label_get_text(label));
+        g_free(filename);
+    }
+    gtk_widget_destroy(GTK_WIDGET(dialog));
+}
+
+GtkWidget* create_save_button(GtkLabel* log_label)
+{
+    GtkWidget* save_button = gtk_button_new_with_label("Save DR log");
+    g_signal_connect(save_button, "clicked", G_CALLBACK(open_save_dialog), log_label);
+    return save_button;
+}
+
 static int show_dr_dialog(const char* log_buffer)
 {
     GtkWindow* main_window = GTK_WINDOW(gtk_ui_plugin->get_mainwin());
@@ -53,6 +81,9 @@ static int show_dr_dialog(const char* log_buffer)
     GtkLabel* log_label = create_selectable_label(log_buffer);
     GtkWidget* content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
     gtk_container_add(GTK_CONTAINER(content_area), GTK_WIDGET(log_label));
+
+    GtkWidget* save_button = create_save_button(log_label);
+    gtk_container_add(GTK_CONTAINER(content_area), save_button);
 
     gtk_widget_show_all(GTK_WIDGET(dialog));
     return 0;
