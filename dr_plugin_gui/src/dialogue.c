@@ -4,6 +4,12 @@
 #include "dr_run_data.h"
 #include "save_button.h"
 
+static void free_run_data(GtkWindow*, gpointer data)
+{
+    dr_run_data_t* run_data = (dr_run_data_t*)data;
+    free_dr_run_data(run_data);
+}
+
 static GtkWindow* create_dr_dialog(GtkWindow* parent)
 {
     GtkWindow* dialog = GTK_WINDOW(gtk_dialog_new());
@@ -27,6 +33,7 @@ static GtkLabel* create_selectable_label(const char* log_buffer)
 int show_dr_dialog(dr_run_data_t* run_data, GtkWindow* main_window)
 {
     run_data->dr_dialog = create_dr_dialog(main_window);
+    g_signal_connect(run_data->dr_dialog, "destroy", G_CALLBACK(free_run_data), run_data);
     GtkWidget* content_area = gtk_dialog_get_content_area(GTK_DIALOG(run_data->dr_dialog));
     GtkLabel* log_label = create_selectable_label(run_data->log);
     gtk_container_add(GTK_CONTAINER(content_area), GTK_WIDGET(log_label));

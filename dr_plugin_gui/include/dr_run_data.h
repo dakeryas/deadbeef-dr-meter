@@ -5,8 +5,8 @@
 * @brief Struct to save the log data for the "save log" callback
 * ************************************************************************/
 
-#ifndef DR_RUN_DATA_H
-#define DR_RUN_DATA_H
+#ifndef DR_METER_DR_RUN_DATA_H
+#define DR_METER_DR_RUN_DATA_H
 
 struct GtkWindow;
 
@@ -19,4 +19,6 @@ struct dr_run_data_s
 
 typedef struct dr_run_data_s dr_run_data_t;
 
-#endif /* DR_RUN_DATA_H */
+void free_dr_run_data(struct dr_run_data_s* self);
+
+#endif /* DR_METER_DR_RUN_DATA_H */
