@@ -1,12 +1,10 @@
 ## Description
 Adds a "Dynamic Range" context menu to the selected playlist items.  Upon
 clicking, the dynamic range, peak, and total RMS for each selection item is
-computed and a GTK window is opened with results. The text is selectable and
-can be copied.
+computed and a GTK dialogue is opened with results. The log can be saved and
+is compatible with DR online database.
 
 [![dr-meter.png](https://i.postimg.cc/bNFxDMtT/dr-meter.png)](https://postimg.cc/MvVMg9tM)
-
-NB: This is work in progress.
 
 ## Requirements
 The build system relies upon GNU make. The computing plugin relies on a `drmeter`
@@ -44,3 +42,11 @@ If you insist on using GTK2, try from the root folder
 make clean
 make install GTK=2
 ```
+
+## Configuration
+The printing of the dynamic range values can be customised by changing the default
+formatting string in "Plugins/Dynamic Range Meter", e.g.
+```
+DR%-2.2f %10.2f dB %8.2f dB
+```
+would print the DR value with two significant digits.
