@@ -132,7 +132,7 @@ static void retrieve_current_selection(selection_t* selection)
 
 static gboolean run_meter_job(void* data)
 {
-    int context =(intptr_t)data;
+    int context = (intptr_t)data;
     if(context == DDB_ACTION_CTX_SELECTION)
     {
         selection_t selection;
@@ -152,7 +152,7 @@ static gboolean run_meter_job(void* data)
 static int run_meter(DB_plugin_action_t* action, ddb_action_context_t context)
 {
     (void) action;
-    gdk_threads_add_idle(run_meter_job, (void *)(intptr_t)context);
+    gdk_threads_add_idle(run_meter_job, (void*)(intptr_t)context);
     return 0;
 }
 
