@@ -8,8 +8,9 @@
 #ifndef DR_RUN_DATA_H
 #define DR_RUN_DATA_H
 
-struct dr_run_data_s
+struct GtkWindow;
 
+struct dr_run_data_s
 {
     int ddb_context;
     GtkWindow* dr_dialog;
