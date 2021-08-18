@@ -54,7 +54,7 @@ static int allocate_buffer(char** buffer, unsigned duration, DB_fileinfo_t* file
 {
     int buffer_size = get_number_of_bytes(duration, fileinfo);
     *buffer = malloc(buffer_size);
-    if(buffer) return buffer_size;
+    if(*buffer) return buffer_size;
     else return 0;
 }
 
