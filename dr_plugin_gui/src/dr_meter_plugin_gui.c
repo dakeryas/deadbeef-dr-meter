@@ -124,7 +124,7 @@ DB_plugin_t* ddb_dr_meter_gtk2_load(DB_functions_t* api)
         .plugin.api_vmajor      = 1,
         .plugin.api_vminor      = 10,
         .plugin.version_major   = 0,
-        .plugin.version_minor   = 1,
+        .plugin.version_minor   = 3,
 #if GTK_CHECK_VERSION(3,0,0)
         .plugin.name            = "Dynamic Range Meter GTK3",
 #else
