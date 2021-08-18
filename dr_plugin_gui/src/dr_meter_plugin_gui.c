@@ -69,7 +69,7 @@ static gboolean run_meter_job(void* data)
         selection_t selection;
         retrieve_current_selection(&selection);
         thread_data_t thread_data = make_thread_data(&selection);
-        dr_meter_plugin->compute_dr(&thread_data);
+        dr_meter_plugin->compute_dr(&thread_data, ddb_api->conf_get_int("dr_meter.threads", 1));
         dr_run_data_t* run_data = malloc(sizeof(dr_run_data_t));
         const unsigned item_length = 40 + 5 + 5 + 1 + 3 + 80 + 2;//DR info, space, duration, space, track number, title, newline
         run_data->log = malloc(135 + 48 + 5 * 80 + thread_data.items * item_length + 21 + 23);

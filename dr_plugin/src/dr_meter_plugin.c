@@ -98,11 +98,9 @@ static void* thread_worker(void* thread_datum)
     return NULL;
 }
 
-static int compute_dr_impl(thread_data_t* thread_data)
+static int compute_dr_impl(thread_data_t* thread_data, unsigned max_threads)
 {
-    int nu_threads = sysconf(_SC_NPROCESSORS_ONLN) - 1;
-    if(nu_threads <= 0) nu_threads = 1;
-    thread_runner_t thread_runner = make_thread_runner(thread_data, nu_threads);
+    thread_runner_t thread_runner = make_thread_runner(thread_data, max_threads);
     run_batches(&thread_runner, thread_worker);
     free_thread_runner(&thread_runner);
     return 0;
@@ -194,6 +192,7 @@ int dr_meter_stop()
 
 static const char settings_dialog[] =
     "property \"(DR, Peak, RMS) printf formatting\" entry dr_meter.format \"" DEFAULT_DR_FORMAT "\";\n"
+    "property \"Number of threads\" entry dr_meter.threads 4;\n"
 ;
 
 DB_plugin_t* ddb_dr_meter_load(DB_functions_t* api)
