@@ -18,6 +18,7 @@ struct dr_run_data_s
 
 typedef struct dr_run_data_s dr_run_data_t;
 
-void free_dr_run_data(struct dr_run_data_s* self);
+dr_run_data_t* create_dr_run_data(unsigned selected_items);
+void free_dr_run_data(dr_run_data_t* self);
 
 #endif /* DR_METER_DR_RUN_DATA_H */
