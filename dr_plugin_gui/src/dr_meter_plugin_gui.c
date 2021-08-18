@@ -68,6 +68,16 @@ static int get_number_of_threads()
     return number_of_threads;
 }
 
+static void display_dr_results(dr_meter_plugin_t* dr_meter_plugin, thread_data_t* thread_data)
+{
+    dr_run_data_t* run_data = create_dr_run_data(thread_data->items);
+    if(run_data)
+    {
+        dr_meter_plugin->sprint_dr_log(thread_data, run_data->log);
+        show_dr_dialog(run_data, GTK_WINDOW(gtk_ui_plugin->get_mainwin()));
+    }
+}
+
 static gboolean run_meter_job(void* data)
 {
     int context = (intptr_t)data;
@@ -77,11 +87,7 @@ static gboolean run_meter_job(void* data)
         retrieve_current_selection(&selection);
         thread_data_t thread_data = make_thread_data(&selection);
         dr_meter_plugin->compute_dr(&thread_data, get_number_of_threads());
-        dr_run_data_t* run_data = malloc(sizeof(dr_run_data_t));
-        const unsigned item_length = 40 + 5 + 5 + 1 + 3 + 80 + 2;//DR info, space, duration, space, track number, title, newline
-        run_data->log = malloc(135 + 48 + 5 * 80 + thread_data.items * item_length + 21 + 23);
-        dr_meter_plugin->sprint_dr_log(&thread_data, run_data->log);
-        show_dr_dialog(run_data, GTK_WINDOW(gtk_ui_plugin->get_mainwin()));
+        display_dr_results(dr_meter_plugin, &thread_data);
         free_thread_data(&thread_data);
         unreference_selection(&selection);
     }
