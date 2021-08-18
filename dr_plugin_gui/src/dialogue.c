@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 #include <glib.h>
+#include <stdlib.h>
 #include "dialogue.h"
 #include "dr_run_data.h"
 #include "save_button.h"
@@ -8,6 +9,7 @@ static void free_run_data(GtkWindow*, gpointer data)
 {
     dr_run_data_t* run_data = (dr_run_data_t*)data;
     free_dr_run_data(run_data);
+    free(run_data);
 }
 
 static GtkWindow* create_dr_dialog(GtkWindow* parent)
