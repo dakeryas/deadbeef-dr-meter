@@ -24,8 +24,9 @@ static GtkFileChooser* create_save_dialog(GtkWindow* log_dialog)
 }
 #undef GTK_DOMAIN
 
-static void open_save_dialog(GtkButton*, gpointer data)
+static void open_save_dialog(GtkButton* unused, gpointer data)
 {
+    (void) unused;
     dr_display_data_t* display_data = (dr_display_data_t*)data;
     GtkFileChooser* file_dialog = create_save_dialog(display_data->dr_dialog);
     if(gtk_dialog_run(GTK_DIALOG(file_dialog)) == GTK_RESPONSE_ACCEPT)

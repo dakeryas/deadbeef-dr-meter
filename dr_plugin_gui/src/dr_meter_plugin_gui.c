@@ -94,14 +94,16 @@ static gboolean run_meter_job(void* data)
     return FALSE;
 }
 
-static int run_meter(DB_plugin_action_t*, ddb_action_context_t context)
+static int run_meter(DB_plugin_action_t* self, ddb_action_context_t context)
 {
+    (void) self;
     gdk_threads_add_idle(run_meter_job, (void*)(intptr_t)context);
     return 0;
 }
 
-DB_plugin_action_t* dr_meter_gui_get_actions(DB_playItem_t*)
+DB_plugin_action_t* dr_meter_gui_get_actions(DB_playItem_t* unused)
 {
+    (void) unused;
     static DB_plugin_action_t dr_meter_action = {
         .title = "Dynamic Range",
         .name = "compute_dynamic_range",

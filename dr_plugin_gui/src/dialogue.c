@@ -5,8 +5,9 @@
 #include "dr_display_data.h"
 #include "save_button.h"
 
-static void free_display_data(GtkWindow*, gpointer data)
+static void free_display_data(GtkWindow* unused, gpointer data)
 {
+    (void) unused;
     dr_display_data_t* display_data = (dr_display_data_t*)data;
     free_dr_display_data(display_data);
     free(display_data);
