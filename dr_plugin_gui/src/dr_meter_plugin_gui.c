@@ -8,7 +8,6 @@
 #include "thread_data.h"
 #include "selection.h"
 #include "dr_display_data.h"
-#include "dialogue.h"
 
 DB_functions_t* ddb_api;
 dr_meter_plugin_t* dr_meter_plugin;
