@@ -10,8 +10,8 @@
 
 struct GtkWindow;
 struct GtkLabel;
-struct dr_run_data_s;
+struct dr_display_data_s;
 
-int show_dr_dialog(struct dr_run_data_s* run_data, GtkWindow* main_window);
+int show_dr_dialog(struct dr_display_data_s* display_data, GtkWindow* main_window);
 
 #endif /* DR_METER_DIALOGUE_H */

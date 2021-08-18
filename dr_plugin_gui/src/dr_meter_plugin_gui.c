@@ -7,7 +7,7 @@
 #include "dr_meter_plugin.h"
 #include "thread_data.h"
 #include "selection.h"
-#include "dr_run_data.h"
+#include "dr_display_data.h"
 #include "dialogue.h"
 
 DB_functions_t* ddb_api;
@@ -70,11 +70,11 @@ static int get_number_of_threads()
 
 static void display_dr_results(dr_meter_plugin_t* dr_meter_plugin, thread_data_t* thread_data)
 {
-    dr_run_data_t* run_data = create_dr_run_data(thread_data->items);
-    if(run_data)
+    dr_display_data_t* display_data = create_dr_display_data(thread_data->items);
+    if(display_data)
     {
-        dr_meter_plugin->sprint_dr_log(thread_data, run_data->log);
-        show_dr_dialog(run_data, GTK_WINDOW(gtk_ui_plugin->get_mainwin()));
+        dr_meter_plugin->sprint_dr_log(thread_data, display_data->log);
+        show_dr_dialog(display_data, GTK_WINDOW(gtk_ui_plugin->get_mainwin()));
     }
 }
 

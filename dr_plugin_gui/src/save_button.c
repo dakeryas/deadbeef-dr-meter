@@ -1,7 +1,7 @@
 #include <gtk/gtk.h>
 #include <glib.h>
 #include "save_button.h"
-#include "dr_run_data.h"
+#include "dr_display_data.h"
 
 static void write_log(const char* log_text, const char* filename)
 {
@@ -26,21 +26,21 @@ static GtkFileChooser* create_save_dialog(GtkWindow* log_dialog)
 
 static void open_save_dialog(GtkButton*, gpointer data)
 {
-    dr_run_data_t* run_data = (dr_run_data_t*)data;
-    GtkFileChooser* file_dialog = create_save_dialog(run_data->dr_dialog);
+    dr_display_data_t* display_data = (dr_display_data_t*)data;
+    GtkFileChooser* file_dialog = create_save_dialog(display_data->dr_dialog);
     if(gtk_dialog_run(GTK_DIALOG(file_dialog)) == GTK_RESPONSE_ACCEPT)
     {
         gchar* filename;
         filename = gtk_file_chooser_get_filename(file_dialog);
-        write_log(run_data->log, filename);
+        write_log(display_data->log, filename);
         g_free(filename);
     }
     gtk_widget_destroy(GTK_WIDGET(file_dialog));
 }
 
-GtkWidget* create_save_button(dr_run_data_t* run_data)
+GtkWidget* create_save_button(dr_display_data_t* display_data)
 {
     GtkWidget* save_button = gtk_button_new_with_label("Save DR log");
-    g_signal_connect(save_button, "clicked", G_CALLBACK(open_save_dialog), run_data);
+    g_signal_connect(save_button, "clicked", G_CALLBACK(open_save_dialog), display_data);
     return save_button;
 }
