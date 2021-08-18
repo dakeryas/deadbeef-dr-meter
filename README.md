@@ -50,3 +50,4 @@ formatting string in "Plugins/Dynamic Range Meter", e.g.
 DR%-2.2f %10.2f dB %8.2f dB
 ```
 would print the DR value with two significant digits.
+The number of DR computing threads can be changed via the `dr_meter.threads` variable.
