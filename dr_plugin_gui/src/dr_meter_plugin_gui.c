@@ -109,7 +109,7 @@ DB_plugin_action_t* dr_meter_gui_get_actions(DB_playItem_t*)
 int dr_meter_gui_connect()
 {
     gtk_ui_plugin =(ddb_gtkui_t*)ddb_api->plug_get_for_id(DDB_GTKUI_PLUGIN_ID);
-    dr_meter_plugin = (dr_meter_plugin_t *)ddb_api->plug_get_for_id ("dr_meter");
+    dr_meter_plugin = (dr_meter_plugin_t*)ddb_api->plug_get_for_id ("dr_meter");
     if(!gtk_ui_plugin) return -1;
     else if(!dr_meter_plugin)
     {

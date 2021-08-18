@@ -45,14 +45,14 @@ static unsigned number_of_blocks(DB_playItem_t* item)
     return nu_blocks;
 }
 
-static int get_number_of_bytes(unsigned duration, DB_fileinfo_t* fileinfo)
+static unsigned get_number_of_bytes(unsigned duration, DB_fileinfo_t* fileinfo)
 {
     return duration * fileinfo->fmt.samplerate * fileinfo->fmt.channels * (fileinfo->fmt.bps >> 3);
 }
 
-static int allocate_buffer(char** buffer, unsigned duration, DB_fileinfo_t* fileinfo)
+static unsigned allocate_buffer(char** buffer, unsigned duration, DB_fileinfo_t* fileinfo)
 {
-    int buffer_size = get_number_of_bytes(duration, fileinfo);
+    unsigned buffer_size = get_number_of_bytes(duration, fileinfo);
     *buffer = malloc(buffer_size);
     if(*buffer) return buffer_size;
     else return 0;
@@ -62,7 +62,7 @@ static void process_item(DB_playItem_t* item, DB_fileinfo_t* fileinfo, DB_decode
 {
     decoder->init(fileinfo, item);
     char* buffer = NULL;
-    int buffer_size = allocate_buffer(&buffer, DR_BLOCK_DURATION, fileinfo);
+    unsigned buffer_size = allocate_buffer(&buffer, DR_BLOCK_DURATION, fileinfo);
     if(buffer_size)
     {
         block_analyser_t analyser = make_block_analyser(fileinfo->fmt.channels);
