@@ -12,7 +12,6 @@ struct GtkWindow;
 
 struct dr_run_data_s
 {
-    int ddb_context;
     GtkWindow* dr_dialog;
     char* log;
 };
