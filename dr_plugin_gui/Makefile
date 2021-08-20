@@ -4,6 +4,8 @@ SRCDIR := src
 INCLDIR := include
 DRPLUGDIR := ../dr_plugin
 GTK ?= 3
+GTKCACHEBASE := gtk_version_cache_
+GTKCACHE := $(GTKCACHEBASE)$(GTK)
 PLUGBASE := ddb_dr_meter_gtk
 PLUGIN := $(PLUGBASE)$(GTK).so
 
@@ -38,18 +40,22 @@ all: $(PLUGIN)
 debug: OPTFLAG := -O0 -g -DDEBUG
 debug: all
 
+$(GTKCACHE):
+	rm -f $(GTKCACHEBASE)*
+	touch $(GTKCACHE)
+
 $(OBJECTS): | $(OBJDIR)
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h
+$(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h $(GTKCACHE)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
-$(PLUGIN): $(OBJECTS)
+$(PLUGIN): $(OBJECTS) $(GTKCACHE)
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
 install: $(PLUGIN)
 	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/$(PLUGIN)
 
 clean:
-	rm -f $(PLUGBASE)*.so $(OBJECTS)
+	rm -f $(PLUGBASE)*.so $(OBJECTS) $(GTKCACHEBASE)*
