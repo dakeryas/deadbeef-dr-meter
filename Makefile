@@ -1,5 +1,5 @@
 export PREFIX ?= ${HOME}/.local/lib/deadbeef
-export DRMETER_DIR = $(PWD)/dr_meter
+DRMETER_DIR ?= $(PWD)/dr_meter
 
 TARGETS := all debug install clean
 SUBDIRS := dr_meter dr_plugin dr_plugin_gui
@@ -13,6 +13,6 @@ $(TARGETS): $(SUBDIRS)
 dr_meter:
 	@$(MAKE) -C $@ $(MAKECMDGOALS)
 dr_plugin dr_plugin_gui: dr_meter
-	@$(MAKE) -C $@ $(MAKECMDGOALS) $(SET_RPATH)
+	@$(MAKE) -C $@ $(MAKECMDGOALS) DRMETER_DIR=$(DRMETER_DIR) $(SET_RPATH)
 
 .PHONY: $(TARGETS) $(SUBDIRS)
