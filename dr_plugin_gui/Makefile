@@ -42,11 +42,11 @@ debug: all
 
 $(GTKCACHE):
 	rm -f $(GTKCACHEBASE)*
-	touch $(GTKCACHE)
+	touch $@
 
 $(OBJECTS): | $(OBJDIR)
 $(OBJDIR):
-	mkdir -p $(OBJDIR)
+	mkdir -p $@
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h $(GTKCACHE)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
