@@ -6,7 +6,9 @@ SUBDIRS := dr_meter dr_plugin dr_plugin_gui
 
 # for installation of plugins, copy libdrmeter and set rpath
 ifneq (,$(findstring install, $(MAKECMDGOALS)))
+ifndef RPATH
 	SET_RPATH ?= RPATH=$(PREFIX)/lib
+endif
 endif
 
 $(TARGETS): $(SUBDIRS)
