@@ -28,7 +28,7 @@ debug: all
 
 $(OBJECTS): | $(OBJDIR)
 $(OBJDIR):
-	mkdir -p $(OBJDIR)
+	mkdir -p $@
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
