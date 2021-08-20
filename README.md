@@ -39,7 +39,6 @@ make install DESTDIR=$PWD/temp PREFIX=/usr/lib/x86_64-linux-gnu
 ```
 If you insist on using GTK2, try from the root folder
 ```
-make clean
 make install GTK=2
 ```
 
