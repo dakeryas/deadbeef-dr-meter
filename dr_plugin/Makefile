@@ -1,4 +1,4 @@
-PREFIX ?= ${HOME}/.local/lib
+PREFIX ?= ${HOME}/.local/lib/deadbeef
 OBJDIR := objects
 SRCDIR := src
 INCLDIR := include
@@ -37,7 +37,7 @@ $(PLUGIN): $(OBJECTS)
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
 install: $(PLUGIN)
-	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/deadbeef/$(PLUGIN)
+	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/$(PLUGIN)
 
 clean:
 	rm -f $(PLUGIN) $(OBJECTS)
