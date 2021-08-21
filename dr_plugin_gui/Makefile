@@ -7,7 +7,12 @@ GTK ?= 3
 GTKCACHEBASE := gtk_version_cache_
 GTKCACHE := $(GTKCACHEBASE)$(GTK)
 PLUGBASE := ddb_dr_meter_gtk
-PLUGIN := $(PLUGBASE)$(GTK).so
+ifeq ($(OS), Windows_NT)
+	EXT := dll
+else
+	EXT := so
+endif
+PLUGIN := $(PLUGBASE)$(GTK).$(EXT)
 
 ifeq ($(GTK),2)
 	GTKLIBNAME=gtk+-2.0

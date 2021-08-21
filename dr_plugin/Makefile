@@ -2,7 +2,12 @@ PREFIX ?= ${HOME}/.local/lib/deadbeef
 OBJDIR := objects
 SRCDIR := src
 INCLDIR := include
-PLUGIN := ddb_dr_meter.so
+ifeq ($(OS), Windows_NT)
+	EXT := dll
+else
+	EXT := so
+endif
+PLUGIN := ddb_dr_meter.$(EXT)
 
 OPTFLAG := -O3 -flto -DNDEBUG
 CFLAGS += $(OPTFLAG) -std=c99 -Wall -Wextra -fPIC
