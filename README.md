@@ -10,13 +10,12 @@ is compatible with the DR online database.
 The build system relies upon GNU make. The computing plugin relies on a `drmeter`
 library which is also built and installed via the top-level `Makefile`. The GUI
 plugin utilising the computing plugin and displaying its results in a dialog
-relies upon `pkg-config` to find the GTK library when linking. By default, the
-GTK3 version of the GUI plugin is built (GTK2 is somewhat supported). On
-Debian/Ubuntu, you should thus be covered with
+relies upon `pkg-config` to find the GTK library for linking. By default, the
+GTK3 version of the GUI plugin is built. On Debian/Ubuntu, you should thus be
+covered with
 ```
 sudo apt-get install build-essential pkg-config libgtk-3-dev
 ```
-The Makefiles should be easy to port to OSX or FreeBSD.
 
 ## Installation
 After having installed the aforementionned requirements and cloned this
