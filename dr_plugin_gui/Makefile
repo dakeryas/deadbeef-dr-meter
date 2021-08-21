@@ -10,21 +10,24 @@ PLUGBASE := ddb_dr_meter_gtk
 PLUGIN := $(PLUGBASE)$(GTK).so
 
 ifeq ($(GTK),2)
-	GTKLIB=gtk+-2.0
+	GTKLIBNAME=gtk+-2.0
 else
-	GTKLIB=gtk+-3.0
+	GTKLIBNAME=gtk+-3.0
 endif
+
+GTKCFLAGS ?= $(shell pkg-config --cflags $(GTKLIBNAME))
+GTKLIBS ?= $(shell pkg-config --libs $(GTKLIBNAME))
 
 OPTFLAG := -O3 -flto -DNDEBUG
 CFLAGS += $(OPTFLAG) -std=c99 -Wall -Wextra -fPIC
-CPPFLAGS += $(shell pkg-config --cflags $(GTKLIB))
+CFLAGS += $(GTKCFLAGS)
 CPPFLAGS += -I./$(INCLDIR)
 CPPFLAGS += -I$(DRPLUGDIR)/include
 ifdef DRMETER_DIR
 	CPPFLAGS += -I$(DRMETER_DIR)/include
 	LDFLAGS += -L$(DRMETER_DIR)/lib
 endif
-LDFLAGS += $(shell pkg-config --libs $(GTKLIB))
+LDFLAGS += $(GTKLIBS)
 LDFLAGS += -ldrmeter
 LDFLAGS += -flto
 ifdef RPATH
