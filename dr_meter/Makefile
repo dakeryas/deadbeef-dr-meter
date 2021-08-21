@@ -3,7 +3,12 @@ OBJDIR := objects
 SRCDIR := src
 INCLDIR := include
 LIBDIR := lib
-LIBRARY := $(LIBDIR)/libdrmeter.so
+ifeq ($(OS), Windows_NT)
+	EXT := dll
+else
+	EXT := so
+endif
+LIBRARY := $(LIBDIR)/libdrmeter.$(EXT)
 
 OPTFLAG := -O3 -flto -DNDEBUG
 CFLAGS += $(OPTFLAG) -std=c99 -Wall -Wextra -fPIC -pthread
