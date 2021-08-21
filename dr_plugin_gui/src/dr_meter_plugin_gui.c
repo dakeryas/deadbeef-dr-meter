@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <gtk/gtk.h>
 
 #include <deadbeef/deadbeef.h>
