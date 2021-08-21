@@ -128,10 +128,10 @@ int dr_meter_gui_connect()
 }
 
 #if GTK_CHECK_VERSION(3,0,0)
-#define DR_METER_GUI_PLUGIN_NAME "Dynamic Range Meter GTK3"
+#define DR_METER_GUI_PLUGIN_ID "dynamic-range-meter-gtk3"
 DB_plugin_t* ddb_dr_meter_gtk3_load(DB_functions_t* api)
 #else
-#define DR_METER_GUI_PLUGIN_NAME "Dynamic Range Meter GTK2"
+#define DR_METER_GUI_PLUGIN_ID "dynamic-range-meter-gtk2"
 DB_plugin_t* ddb_dr_meter_gtk2_load(DB_functions_t* api)
 #endif
 {
@@ -142,7 +142,8 @@ DB_plugin_t* ddb_dr_meter_gtk2_load(DB_functions_t* api)
         .plugin.api_vminor      = 10,
         .plugin.version_major   = 0,
         .plugin.version_minor   = 3,
-        .plugin.name            = DR_METER_GUI_PLUGIN_NAME,
+        .plugin.id              = DR_METER_GUI_PLUGIN_ID,
+        .plugin.name            = "Dynamic Range Meter GUI",
         .plugin.descr           = "Displays Dynamic Range",
         .plugin.copyright       =
         "Copyright (C) 2021 Valérian Sibille <mrdakeryas@gmail.com>\n"
