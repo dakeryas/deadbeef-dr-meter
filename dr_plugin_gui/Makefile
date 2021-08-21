@@ -52,7 +52,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h $(GTKCACHE)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
 $(PLUGIN): $(OBJECTS) $(GTKCACHE)
-	$(CC) -shared -o $@ $^ $(LDFLAGS)
+	$(CC) -shared -o $@ $(OBJECTS) $(LDFLAGS)
 
 install: $(PLUGIN)
 	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/$(PLUGIN)
