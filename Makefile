@@ -13,7 +13,7 @@ endif
 
 $(TARGETS): $(SUBDIRS)
 dr_meter:
-	@$(MAKE) -C $@ $(MAKECMDGOALS)
+	$(MAKE) -C $@ $(MAKECMDGOALS)
 dr_plugin dr_plugin_gui: dr_meter
 	@$(MAKE) -C $@ $(MAKECMDGOALS) DRMETER_DIR=$(DRMETER_DIR) $(SET_RPATH)
 
