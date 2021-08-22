@@ -5,6 +5,7 @@ computed and a GTK dialogue is opened with results. The log can be saved and
 is compatible with the DR online database.
 
 [![Screenshot-20210817-225753.png](https://i.postimg.cc/HxKF3x92/Screenshot-20210817-225753.png)](https://postimg.cc/mzYdgTqz)
+[![windows7.png](https://i.postimg.cc/Qtbz3b8b/windows7.png)](https://postimg.cc/zby7wTRb)
 
 ## Requirements
 ### Linux
