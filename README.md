@@ -7,13 +7,16 @@ compatible with the DR online database.
 <img src="https://i.postimg.cc/D0bfpQMy/linux-mono.png" width="876">
 <img src="https://i.postimg.cc/bvJRDd59/windows7-mono.png" width="876">
 
-## Requirements
-### Linux
-The rudimentary build system relies upon GNU make. The computing plugin relies
-on a `drmeter` library which is also built and installed via the top-level
-`Makefile`. The GUI plugin utilising the computing plugin and displaying its
-results in a dialog relies upon `pkg-config` to find the GTK library for
-linking. By default, the GTK3 version of the GUI plugin is built.
+## Installation
+### Arch Linux
+See the [Arch User Repository](https://aur.archlinux.org/packages/deadbeef-dr-meter-gtk3-git/).
+### Others
+Either build from source or download builds from [DeaDBeeF's sourceforge](https://deadbeef.sourceforge.io/plugins.html).
+
+## Building from source
+### Requirements
+The build relies upon GNU make. By default, GTK is picked up via `pkg-config`
+and the GTK3 version of the GUI plugin is built.
 
 On Debian/Ubuntu, you should thus be covered with
 ```
@@ -22,20 +25,13 @@ sudo apt-get install build-essential pkg-config libgtk-3-dev
 For non-standard GTK installs, the build configuration can be overriden via the
 `GTKCFLAGS` and `GTKLIBS` variables.
 
-### Windows
-The plugin builds on Windows with MSYS2 (MinGW64...), the resulting binaries
-were also tested on Windows 7 x64. See
-[deadbeef-plugin-builder](https://github.com/DeaDBeeF-Player/deadbeef-plugin-builder)
-for configuration.
-
-## Installation
+### Installation
 After having installed the aforementionned requirements and cloned this
 repository, in the root folder of your local copy of the repository, type
 ```
 make install
 ```
-
-## Custom installation
+### Custom installation
 The default installation location of the plugins is
 `${HOME}/.local/lib/deadbeef`, this may be overridden with the PREFIX GNUmake
 variable, e.g.
