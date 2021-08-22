@@ -36,7 +36,7 @@ static GtkLabel* set_monospace(GtkLabel* label)
     gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 #else
     PangoFontDescription *descr = pango_font_description_from_string("monospace");
-    gtk_widget_override_font(GTK_WIDGET(label), descr);
+    gtk_widget_modify_font(GTK_WIDGET(label), descr);
     pango_font_description_free(descr);
 #endif
 }
