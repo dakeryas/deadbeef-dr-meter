@@ -7,15 +7,25 @@ is compatible with the DR online database.
 [![Screenshot-20210817-225753.png](https://i.postimg.cc/HxKF3x92/Screenshot-20210817-225753.png)](https://postimg.cc/mzYdgTqz)
 
 ## Requirements
-The build system relies upon GNU make. The computing plugin relies on a `drmeter`
-library which is also built and installed via the top-level `Makefile`. The GUI
-plugin utilising the computing plugin and displaying its results in a dialog
-relies upon `pkg-config` to find the GTK library for linking. By default, the
-GTK3 version of the GUI plugin is built. On Debian/Ubuntu, you should thus be
-covered with
+### Linux
+The rudimentary build system relies upon GNU make. The computing plugin relies
+on a `drmeter` library which is also built and installed via the top-level
+`Makefile`. The GUI plugin utilising the computing plugin and displaying its
+results in a dialog relies upon `pkg-config` to find the GTK library for
+linking. By default, the GTK3 version of the GUI plugin is built.
+
+On Debian/Ubuntu, you should thus be covered with
 ```
 sudo apt-get install build-essential pkg-config libgtk-3-dev
 ```
+For non-standard GTK installs, the build configuration can be overriden via the
+GTKCFLAGS and GTKLIBS variables.
+
+### Windows
+The plugin builds on Windows with MSYS2 (MinGW64...), the resulting binaries
+were also tested on Windows 7 x64. See
+[eadbeef-plugin-builder](https://github.com/DeaDBeeF-Player/deadbeef-plugin-builder)
+for configration.
 
 ## Installation
 After having installed the aforementionned requirements and cloned this
@@ -41,7 +51,7 @@ If you insist on using GTK2, try from the root folder
 make install GTK=2
 ```
 
-## Configuration
+## Runtime configuration
 The printing of the dynamic range values can be customised by changing the default
 formatting string in "Plugins/Dynamic Range Meter", e.g.
 ```
