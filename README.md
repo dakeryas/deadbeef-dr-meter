@@ -1,8 +1,9 @@
 ## Description
-Adds a "Dynamic Range" context menu to the selected playlist items.  Upon
+Adds a "Dynamic Range" context menu to the selected playlist items. Upon
 clicking, the dynamic range, peak, and total RMS for each selection item is
-computed and a GTK dialogue is opened with results. The log can be saved and
-is compatible with the DR online database.
+computed and a GTK dialogue is opened with results. The log can be saved and is
+compatible with the DR online database (the character renndering in pango/GTK
+looks a bit different form the actual text you can copy or save).
 
 <img src="https://i.postimg.cc/d0rprMM0/linux.png" width="879">
 <img src="https://i.postimg.cc/Qtbz3b8b/windows7.png" width="879">
