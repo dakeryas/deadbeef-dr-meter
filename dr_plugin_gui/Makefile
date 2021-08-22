@@ -4,8 +4,6 @@ SRCDIR := src
 INCLDIR := include
 DRPLUGDIR := ../dr_plugin
 GTK ?= 3
-GTKCACHEBASE := gtk_version_cache_
-GTKCACHE := $(GTKCACHEBASE)$(GTK)
 PLUGBASE := ddb_dr_meter_gtk
 ifeq ($(OS), Windows_NT)
 	EXT := dll
@@ -19,7 +17,6 @@ ifeq ($(GTK),2)
 else
 	GTKLIBNAME=gtk+-3.0
 endif
-
 GTKCFLAGS ?= $(shell pkg-config --cflags $(GTKLIBNAME))
 GTKLIBS ?= $(shell pkg-config --libs $(GTKLIBNAME))
 
@@ -35,9 +32,14 @@ endif
 LDFLAGS += $(GTKLIBS)
 LDFLAGS += -ldrmeter
 LDFLAGS += -flto
+
+RPATHCACHE_BASE := rpath_cache
 ifdef RPATH
 	LDFLAGS += -Wl,-rpath,$(RPATH)
+	RPATHCACHE := $(RPATHCACHE_BASE).$(shell echo $(RPATH) | md5sum | cut -d ' ' -f 1)
 endif
+GTKCACHE_BASE := gtk_version_cache
+GTKCACHE := $(GTKCACHE_BASE).$(GTK)
 
 OBJECTS := $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(wildcard $(SRCDIR)/*.c))
 
@@ -48,8 +50,12 @@ all: $(PLUGIN)
 debug: OPTFLAG := -O0 -g -DDEBUG
 debug: all
 
+$(RPATHCACHE):
+	rm -f $(RPATHCACHE_BASE).*
+	touch $@
+
 $(GTKCACHE):
-	rm -f $(GTKCACHEBASE)*
+	rm -f $(GTKCACHE_BASE).*
 	touch $@
 
 $(OBJECTS): | $(OBJDIR)
@@ -66,4 +72,4 @@ install: $(PLUGIN)
 	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/$(PLUGIN)
 
 clean:
-	rm -f $(PLUGBASE)*.so $(OBJECTS) $(GTKCACHEBASE)*
+	rm -f $(PLUGBASE)*.so $(OBJECTS) $(RPATHCACHE_BASE).* $(GTKCACHE_BASE).*
