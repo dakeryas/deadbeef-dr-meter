@@ -1,14 +1,14 @@
 # Maintainer: Dakeryas <mrdakeryas@gmail.com>
 pkgname=deadbeef-dr-meter-gtk3-git
-pkgver=r232.afda229
+pkgver=r239.89e0be2
 pkgrel=1
 epoch=
 pkgdesc="Dynamic Range meter plugin for the GTK3 DeaDBeeF audio player (devel)"
 arch=('i686' 'x86_64')
 url="https://github.com/dakeryas/deadbeef-dr-meter"
-license=('Apache-2.0')
-depends=('deadbeef')
-makedepends=('git' 'pkg-config' 'gtk3')
+license=('Apache')
+depends=('deadbeef' 'gtk3')
+makedepends=('git' 'pkg-config')
 provides=('deadbeef-dr-meter')
 conflicts=('deadbeef-dr-meter')
 source=("git+https://github.com/dakeryas/deadbeef-dr-meter.git")
