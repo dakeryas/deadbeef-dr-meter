@@ -4,8 +4,8 @@ clicking, the dynamic range, peak, and total RMS for each selection item is
 computed and a GTK dialogue is opened with results. The log can be saved and is
 compatible with the DR online database.
 
-<img src="https://i.postimg.cc/D0bfpQMy/linux-mono.png" width="879">
-<img src="https://i.postimg.cc/Qtbz3b8b/windows7.png" width="879">
+<img src="https://i.postimg.cc/D0bfpQMy/linux-mono.png" width="876">
+<img src="https://i.postimg.cc/bvJRDd59/windows7-mono.png" width="876">
 
 ## Requirements
 ### Linux
