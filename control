@@ -1,9 +1,0 @@
-Package: deadbeef-dr-meter
-Description: DeaDBeeF plugin to measure Dynamic Range
-Version: 0.1
-Release: 1
-License: GPL
-Architecture: amd64
-Maintainer: Valérian Sibille <mrdakeryas@gmail.com>
-Source: https://github.com/dakeryas/deadbeef-dr-meter
-Depends: libgtk-3-0 (>= 3.22)
