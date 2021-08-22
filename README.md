@@ -20,13 +20,13 @@ On Debian/Ubuntu, you should thus be covered with
 sudo apt-get install build-essential pkg-config libgtk-3-dev
 ```
 For non-standard GTK installs, the build configuration can be overriden via the
-GTKCFLAGS and GTKLIBS variables.
+`GTKCFLAGS` and `GTKLIBS` variables.
 
 ### Windows
 The plugin builds on Windows with MSYS2 (MinGW64...), the resulting binaries
 were also tested on Windows 7 x64. See
-[eadbeef-plugin-builder](https://github.com/DeaDBeeF-Player/deadbeef-plugin-builder)
-for configration.
+[deadbeef-plugin-builder](https://github.com/DeaDBeeF-Player/deadbeef-plugin-builder)
+for configuration.
 
 ## Installation
 After having installed the aforementionned requirements and cloned this
