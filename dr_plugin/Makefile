@@ -20,6 +20,7 @@ LDFLAGS += -ldrmeter
 LDFLAGS += -flto
 ifdef RPATH
 	LDFLAGS += -Wl,-rpath,$(RPATH)
+	RPATH_HASH := $(shell echo $RPATH | md5sum | awk '{print $1}')
 endif
 
 OBJECTS := $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(wildcard $(SRCDIR)/*.c))
@@ -38,8 +39,11 @@ $(OBJDIR):
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
-$(PLUGIN): $(OBJECTS)
+$(PLUGIN): $(OBJECTS) $(RPATH_HASH)
 	$(CC) -shared -o $@ $(OBJECTS) $(LDFLAGS)
+
+$(RPATH_HASH):
+	touch $@
 
 install: $(PLUGIN)
 	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/$(PLUGIN)

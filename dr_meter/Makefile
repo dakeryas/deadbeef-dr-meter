@@ -32,7 +32,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
 $(LIBRARY): $(OBJECTS) | $(LIBDIR)
-	$(CC) -shared -o $@ $^ $(LDFLAGS)
+	$(CC) -shared -o $@ $(OBJECTS) $(LDFLAGS)
 
 install: $(LIBRARY)
 	install -m 666 -D $(LIBRARY) $(DESTDIR)$(PREFIX)/$(LIBRARY)
