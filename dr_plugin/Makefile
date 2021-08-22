@@ -18,9 +18,11 @@ ifdef DRMETER_DIR
 endif
 LDFLAGS += -ldrmeter
 LDFLAGS += -flto
+
+RPATHCACHE_BASE := rpath_cache
 ifdef RPATH
 	LDFLAGS += -Wl,-rpath,$(RPATH)
-	RPATH_HASH := $(shell echo $RPATH | md5sum | awk '{print $1}')
+	RPATHCACHE := $(RPATHCACHE_BASE).$(shell echo $(RPATH) | md5sum | cut -d ' ' -f 1)
 endif
 
 OBJECTS := $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(wildcard $(SRCDIR)/*.c))
@@ -39,14 +41,15 @@ $(OBJDIR):
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
-$(PLUGIN): $(OBJECTS) $(RPATH_HASH)
+$(PLUGIN): $(OBJECTS) $(RPATHCACHE)
 	$(CC) -shared -o $@ $(OBJECTS) $(LDFLAGS)
 
-$(RPATH_HASH):
+$(RPATHCACHE):
+	rm -f $(RPATHCACHE_BASE).*
 	touch $@
 
 install: $(PLUGIN)
 	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/$(PLUGIN)
 
 clean:
-	rm -f $(PLUGIN) $(OBJECTS)
+	rm -f $(PLUGIN) $(OBJECTS) $(RPATHCACHE_BASE).*
