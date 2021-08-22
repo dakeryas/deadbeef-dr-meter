@@ -49,7 +49,7 @@ $(RPATHCACHE):
 	touch $@
 
 install: $(PLUGIN)
-	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/$(PLUGIN)
+	install -m 644 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/$(PLUGIN)
 
 clean:
 	rm -f $(PLUGIN) $(OBJECTS) $(RPATHCACHE_BASE).*

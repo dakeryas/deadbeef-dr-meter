@@ -35,7 +35,7 @@ $(LIBRARY): $(OBJECTS) | $(LIBDIR)
 	$(CC) -shared -o $@ $(OBJECTS) $(LDFLAGS)
 
 install: $(LIBRARY)
-	install -m 666 -D $(LIBRARY) $(DESTDIR)$(PREFIX)/$(LIBRARY)
+	install -m 644 -D $(LIBRARY) $(DESTDIR)$(PREFIX)/$(LIBRARY)
 
 clean:
 	rm -f $(OBJECTS) $(LIBRARY)

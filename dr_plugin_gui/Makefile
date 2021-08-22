@@ -69,7 +69,7 @@ $(PLUGIN): $(OBJECTS) $(GTKCACHE)
 	$(CC) -shared -o $@ $(OBJECTS) $(LDFLAGS)
 
 install: $(PLUGIN)
-	install -m 666 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/$(PLUGIN)
+	install -m 644 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/$(PLUGIN)
 
 clean:
 	rm -f $(PLUGBASE)*.so $(OBJECTS) $(RPATHCACHE_BASE).* $(GTKCACHE_BASE).*
