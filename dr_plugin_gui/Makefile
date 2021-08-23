@@ -65,7 +65,7 @@ $(OBJDIR):
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h $(GTKCACHE)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
-$(PLUGIN): $(OBJECTS) $(GTKCACHE)
+$(PLUGIN): $(OBJECTS) $(RPATHCACHE) $(GTKCACHE)
 	$(CC) -shared -o $@ $(OBJECTS) $(LDFLAGS)
 
 install: $(PLUGIN)
