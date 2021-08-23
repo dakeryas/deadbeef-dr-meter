@@ -20,7 +20,7 @@ endif
 GTKCFLAGS ?= $(shell pkg-config --cflags $(GTKLIBNAME))
 GTKLIBS ?= $(shell pkg-config --libs $(GTKLIBNAME))
 
-OPTFLAG := -O3 -flto -DNDEBUG
+OPTFLAG := -O3 -DNDEBUG
 CFLAGS += $(OPTFLAG) -std=c99 -Wall -Wextra -fPIC
 CFLAGS += $(GTKCFLAGS)
 CPPFLAGS += -I./$(INCLDIR)
@@ -31,11 +31,10 @@ ifdef DRMETER_DIR
 endif
 LDFLAGS += $(GTKLIBS)
 LDFLAGS += -ldrmeter
-LDFLAGS += -flto
 
 RPATHCACHE_BASE := rpath_cache
 ifdef RPATH
-	LDFLAGS += -Wl,-rpath=$(RPATH)
+	LDFLAGS += -rpath=$(RPATH)
 	RPATHCACHE := $(RPATHCACHE_BASE).$(shell echo $(RPATH) | md5sum | cut -d ' ' -f 1)
 endif
 GTKCACHE_BASE := gtk_version_cache
@@ -66,7 +65,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h $(GTKCACHE)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
 $(PLUGIN): $(OBJECTS) $(RPATHCACHE) $(GTKCACHE)
-	$(CC) -shared -o $@ $(OBJECTS) $(LDFLAGS)
+	$(LD) -shared -o $@ $(OBJECTS) $(LDFLAGS)
 
 install: $(PLUGIN)
 	install -m 644 -D $(PLUGIN) $(DESTDIR)$(PREFIX)/$(PLUGIN)

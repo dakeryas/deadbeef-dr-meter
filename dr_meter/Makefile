@@ -10,10 +10,10 @@ else
 endif
 LIBRARY := $(LIBDIR)/libdrmeter.$(EXT)
 
-OPTFLAG := -O3 -flto -DNDEBUG
+OPTFLAG := -O3 -DNDEBUG
 CFLAGS += $(OPTFLAG) -std=c99 -Wall -Wextra -fPIC -pthread
 CPPFLAGS += -I./$(INCLDIR)
-LDFLAGS += -flto -lm -lpthread
+LDFLAGS += -lm -lpthread
 
 OBJECTS := $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(wildcard $(SRCDIR)/*.c))
 
@@ -32,7 +32,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
 $(LIBRARY): $(OBJECTS) | $(LIBDIR)
-	$(CC) -shared -o $@ $(OBJECTS) $(LDFLAGS)
+	$(LD) -shared -o $@ $(OBJECTS) $(LDFLAGS)
 
 install: $(LIBRARY)
 	install -m 644 -D $(LIBRARY) $(DESTDIR)$(PREFIX)/$(LIBRARY)

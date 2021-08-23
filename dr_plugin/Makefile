@@ -9,7 +9,7 @@ else
 endif
 PLUGIN := ddb_dr_meter.$(EXT)
 
-OPTFLAG := -O3 -flto -DNDEBUG
+OPTFLAG := -O3 -DNDEBUG
 CFLAGS += $(OPTFLAG) -std=c99 -Wall -Wextra -fPIC
 CPPFLAGS += -I./$(INCLDIR)
 ifdef DRMETER_DIR
@@ -17,11 +17,10 @@ ifdef DRMETER_DIR
 	LDFLAGS += -L$(DRMETER_DIR)/lib
 endif
 LDFLAGS += -ldrmeter
-LDFLAGS += -flto
 
 RPATHCACHE_BASE := rpath_cache
 ifdef RPATH
-	LDFLAGS += -Wl,-rpath=$(RPATH)
+	LDFLAGS += -rpath=$(RPATH)
 	RPATHCACHE := $(RPATHCACHE_BASE).$(shell echo $(RPATH) | md5sum | cut -d ' ' -f 1)
 endif
 
@@ -42,7 +41,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLDIR)/%.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
 $(PLUGIN): $(OBJECTS) $(RPATHCACHE)
-	$(CC) -shared -o $@ $(OBJECTS) $(LDFLAGS)
+	$(LD) -shared -o $@ $(OBJECTS) $(LDFLAGS)
 
 $(RPATHCACHE):
 	rm -f $(RPATHCACHE_BASE).*
