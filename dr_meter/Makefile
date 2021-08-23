@@ -13,6 +13,7 @@ LIBRARY := $(LIBDIR)/libdrmeter.$(EXT)
 OPTFLAG := -O3 -DNDEBUG
 CFLAGS += $(OPTFLAG) -std=c99 -Wall -Wextra -fPIC -pthread
 CPPFLAGS += -I./$(INCLDIR)
+LDFLAGS += --sort-common --as-needed -z relro
 LDFLAGS += -lm -lpthread
 
 OBJECTS := $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(wildcard $(SRCDIR)/*.c))

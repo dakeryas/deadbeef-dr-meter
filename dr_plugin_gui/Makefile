@@ -30,6 +30,7 @@ ifdef DRMETER_DIR
 	LDFLAGS += -L$(DRMETER_DIR)/lib
 endif
 LDFLAGS += $(GTKLIBS)
+LDFLAGS += --sort-common --as-needed -z relro
 LDFLAGS += -ldrmeter
 
 RPATHCACHE_BASE := rpath_cache
