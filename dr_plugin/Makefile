@@ -16,7 +16,7 @@ ifdef DRMETER_DIR
 	CPPFLAGS += -I$(DRMETER_DIR)/include
 	LDFLAGS += -L$(DRMETER_DIR)/lib
 endif
-LDFLAGS += -ldrmeter -Wl,-O1,--sort-common,--as-needed,-z,relro -flto
+LDFLAGS += -ldrmeter -Wl,-O1,--sort-common,--as-needed -flto
 
 RPATHCACHE_BASE := rpath_cache
 ifdef RPATH
