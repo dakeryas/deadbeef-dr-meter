@@ -35,7 +35,7 @@ LDFLAGS += -flto
 
 RPATHCACHE_BASE := rpath_cache
 ifdef RPATH
-	LDFLAGS += -Wl,-rpath,$(RPATH)
+	LDFLAGS += -Wl,-rpath=$(RPATH)
 	RPATHCACHE := $(RPATHCACHE_BASE).$(shell echo $(RPATH) | md5sum | cut -d ' ' -f 1)
 endif
 GTKCACHE_BASE := gtk_version_cache
