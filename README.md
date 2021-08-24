@@ -11,7 +11,8 @@ compatible with the DR online database.
 ### Arch Linux
 See the [Arch User Repository](https://aur.archlinux.org/packages/deadbeef-dr-meter-gtk3-git/).
 ### Others
-Either build from source or download builds from [DeaDBeeF's sourceforge](https://deadbeef.sourceforge.io/plugins.html).
+Either build from source or download builds from [Releases](https://github.com/dakeryas/deadbeef-dr-meter/releases) or
+[DeaDBeeF's sourceforge](https://deadbeef.sourceforge.io/plugins.html).
 
 ## Building from source
 ### Requirements
