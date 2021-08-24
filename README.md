@@ -1,4 +1,4 @@
-## Description
+## Description ![Build status](https://github.com/dakeryas/deadbeef-dr-meter/actions/workflows/ubuntu.yml/badge.svg?branch=master)
 Adds a "Dynamic Range" context menu to the selected playlist items. Upon
 clicking, the dynamic range, peak, and total RMS for each selection item is
 computed and a GTK dialogue is opened with results. The log can be saved and is
