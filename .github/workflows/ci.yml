@@ -52,9 +52,19 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu, windows]
+        include:
+          - os: windows
+            shell: msys2
+          - os: ubuntu
+            shell: bash
+    defaults:
+      run:
+        shell: ${{ matrix.shell }} {0}
     needs: build
     if: github.ref == 'refs/heads/windows_ci'
     steps:
+      - if: matrix.os == 'windows'
+        uses: msys2/setup-msys2@v2
       - name: Fetch release
         uses: actions/download-artifact@master
         with:
@@ -67,13 +77,10 @@ jobs:
           echo "::set-output name=NAME::deadbeef_dr_meter_${RUNNER_OS}_$(echo $GITHUB_SHA | cut -c1-7)"
       - name: Pack Ubuntu release
         if: matrix.os == 'ubuntu'
-        run: |
-          tar -cf ${{ steps.define_release.outputs.NAME }}.tar.gz -C release/ .
+        run: tar -cf ${{ steps.define_release.outputs.NAME }}.tar.gz -C release/ .
       - name: Pack Windows release
         if: matrix.os == 'windows'
-        shell: msys2 {0}
-        run: |
-          zip -rj ${{ steps.define_release.outputs.NAME }}.zip release/*
+        run: zip -rj ${{ steps.define_release.outputs.NAME }}.zip release/*
       - name:  Publish release
         uses: ncipollo/release-action@v1
         with:
