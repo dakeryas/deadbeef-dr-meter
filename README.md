@@ -13,12 +13,15 @@ compatible with the DR online database.
 ### Arch Linux
 See the [Arch User Repository](https://aur.archlinux.org/packages/deadbeef-dr-meter-gtk3-git/).
 ### Other Linux distributions
-Download Ubuntu builds from
-[Releases](https://github.com/dakeryas/deadbeef-dr-meter/releases) or
-[DeaDBeeF's sourceforge](https://deadbeef.sourceforge.io/plugins.html)
+Download the latest Ubuntu builds from
+[Releases](https://github.com/dakeryas/deadbeef-dr-meter/releases) or from the
+slightly out-of-sync [DeaDBeeF sourceforge](https://deadbeef.sourceforge.io/plugins.html),
 or build from source.
 ### Windows
-Download builds from [DeaDBeeF's sourceforge](https://deadbeef.sourceforge.io/plugins.html).
+Download the latest builds from
+[Releases](https://github.com/dakeryas/deadbeef-dr-meter/releases) or from the
+slightly out-of-sync [DeaDBeeF sourceforge](https://deadbeef.sourceforge.io/plugins.html),
+or build from source.
 
 ## Building from source
 ### Requirements
