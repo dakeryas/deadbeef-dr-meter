@@ -61,7 +61,7 @@ jobs:
       run:
         shell: ${{ matrix.shell }} {0}
     needs: build
-    if: github.ref == 'refs/heads/windows_ci'
+    if: github.ref == 'refs/heads/master'
     steps:
       - if: matrix.os == 'windows'
         uses: msys2/setup-msys2@v2
