@@ -65,6 +65,8 @@ jobs:
     steps:
       - if: matrix.os == 'windows'
         uses: msys2/setup-msys2@v2
+        with:
+          install: zip
       - name: Fetch release
         uses: actions/download-artifact@master
         with:
