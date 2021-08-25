@@ -17,13 +17,11 @@ jobs:
       run:
         shell: ${{ matrix.shell }} {0}
     steps:
-      - uses: actions/checkout@v2
       - name: Install Ubuntu dependencies
         if: matrix.os == 'ubuntu'
         run: |
-          sudo add-apt-repository -y ppa:alex-p/deadbeef
           sudo apt-get -qq update
-          sudo apt-get -qq install deadbeef-dev build-essential pkg-config libgtk2.0-dev libgtk-3-dev
+          sudo apt-get -qq install build-essential pkg-config libgtk2.0-dev libgtk-3-dev
       - name: Install Windows dependencies
         if: matrix.os == 'windows'
         uses: msys2/setup-msys2@v2
@@ -31,45 +29,55 @@ jobs:
           update: true
           install: >-
             mingw-w64-x86_64-toolchain make
-            mingw-w64-x86_64-pkg-config mingw-w64-x86_64-gtk2 mingw-w64-x86_64-gtk3
-      - name: Build
+            mingw-w64-x86_64-gtk2 mingw-w64-x86_64-gtk3
+      - uses: actions/checkout@v2
+      - name: Install Deadbeef headers
         run: |
-          make
-          make GTK=2
-      - name: Install
+          wget -O headers.tar.bz2 http://sourceforge.net/projects/deadbeef/files/staticdeps/ddb-headers-latest.tar.bz2/download
+          mkdir "${HOME}/ddb_install"
+          tar xf headers.tar.bz2 -C "${HOME}/ddb_install"
+      - name: Install this
         run: |
-          make install DESTDIR=../release PREFIX="" RPATH='\$$ORIGIN/lib'
-          make install DESTDIR=../release PREFIX="" RPATH='\$$ORIGIN/lib' GTK=2
+          CPPFLAGS="-I${HOME}/ddb_install" make install DESTDIR=../release PREFIX="" RPATH='\$$ORIGIN/lib'
+          CPPFLAGS="-I${HOME}/ddb_install" make install DESTDIR=../release PREFIX="" RPATH='\$$ORIGIN/lib' GTK=2
       - name: Upload installed build
         uses: actions/upload-artifact@master
         with:
-          name: release
+          name: release_${{ matrix.os }}
           path: release/
           if-no-files-found: error
 
   publish:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      matrix:
+        os: [ubuntu, windows]
     needs: build
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/windows_ci'
     steps:
       - name: Fetch release
         uses: actions/download-artifact@master
         with:
-          name: release
+          name: release_${{ matrix.os }}
           path: release/
       - name: Define release
         id: define_release
         run: |
           echo "::set-output name=TAG::v$(date +'%Y%m%d.%H%M%S')"
-          echo "::set-output name=NAME::deadbeef_dr_meter_${RUNNER_OS}_$(echo $GITHUB_SHA | cut -c1-7).tar.gz"
-      - name: Pack release
+          echo "::set-output name=NAME::deadbeef_dr_meter_${RUNNER_OS}_$(echo $GITHUB_SHA | cut -c1-7)"
+      - name: Pack Ubuntu release
+        if: matrix.os == 'ubuntu'
         run: |
-          cd release
-          tar cf ../${{ steps.define_release.outputs.NAME }} *
-      - name: Publish release
+          tar -cf ${{ steps.define_release.outputs.NAME }}.tar.gz -C release/ .
+      - name: Pack Windows release
+        if: matrix.os == 'windows'
+        shell: msys2 {0}
+        run: |
+          zip -rj ${{ steps.define_release.outputs.NAME }}.zip release/*
+      - name:  Publish release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: ${{ steps.define_release.outputs.NAME }}
+          artifacts: "${{ steps.define_release.outputs.NAME }}*"
           commit: ${{ github.sha }}
           tag: ${{ steps.define_release.outputs.TAG }}
           token: ${{ secrets.GITHUB_TOKEN }}
