@@ -1,4 +1,4 @@
-![Build status](https://github.com/dakeryas/deadbeef-dr-meter/actions/workflows/ubuntu.yml/badge.svg?branch=master)
+![Build status](https://github.com/dakeryas/deadbeef-dr-meter/actions/workflows/ci.yml/badge.svg?branch=master)
 
 ## Description
 Adds a "Dynamic Range" context menu to the selected playlist items. Upon

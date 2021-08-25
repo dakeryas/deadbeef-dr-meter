@@ -1,4 +1,4 @@
-name: CI
+name: Ubuntu and Windows CI
 
 on: [push, pull_request, workflow_dispatch]
 
