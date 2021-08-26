@@ -1,3 +1,4 @@
+
 ![Build status](https://github.com/dakeryas/deadbeef-dr-meter/actions/workflows/ci.yml/badge.svg?branch=master)
 
 ## Description
@@ -6,8 +7,8 @@ clicking, the dynamic range, peak, and total RMS for each selection item is
 computed and a GTK dialogue is opened with results. The log can be saved and is
 compatible with the DR online database.
 
-<img src="https://i.postimg.cc/D0bfpQMy/linux-mono.png" width="876">
-<img src="https://i.postimg.cc/bvJRDd59/windows7-mono.png" width="876">
+<img src="https://user-images.githubusercontent.com/10599557/130930047-c293d3a1-157c-41bb-bddd-1d75ad32ee6f.png" width="876">
+<img src="https://user-images.githubusercontent.com/10599557/130930091-6f2597f4-4936-4f13-b4c2-e1701b83bdb7.png" width="876">
 
 ## Installation
 ### Arch Linux
