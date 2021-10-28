@@ -119,7 +119,7 @@ static unsigned sprint_filename(void* track, char* begin)
 {
     char* end = begin;
     const char* filename = get_track_filename(track);
-    end += sprintf(end, "  %.83s", filename);
+    end += sprintf(end, " %.83s", filename);
     return end - begin;
 }
 
