@@ -98,10 +98,10 @@ static void* thread_worker(void* thread_datum)
     return NULL;
 }
 
-static int compute_dr_impl(thread_data_t* thread_data, unsigned max_threads)
+static int compute_dr_impl(thread_data_t* thread_data, unsigned threads)
 {
-    thread_runner_t thread_runner = make_thread_runner(thread_data, max_threads);
-    run_batches(&thread_runner, thread_worker);
+    thread_runner_t thread_runner = make_thread_runner(thread_data, threads);
+    run_worker(&thread_runner, thread_worker);
     free_thread_runner(&thread_runner);
     return 0;
 }

@@ -2,54 +2,92 @@
 #include "thread_runner.h"
 #include "thread_data.h"
 
-static unsigned number_of_batches(thread_data_t* thread_data, unsigned max_threads)
-{
-    unsigned batches = thread_data->items / max_threads;
-    if(thread_data->items % max_threads) batches += 1;
-    return batches;
-}
-
-thread_runner_t make_thread_runner(thread_data_t* thread_data, unsigned max_threads)
+thread_runner_t make_thread_runner(thread_data_t* thread_data, unsigned threads)
 {
     thread_runner_t runner =
-    {.threads = max_threads, .batches = number_of_batches(thread_data, max_threads), .thread_data = thread_data};
-    runner.pids = malloc(runner.threads * sizeof(pthread_t));
+    {.threads = threads, .thread_data = thread_data, .next_data_id = 0};
+    pthread_mutex_init(&runner.mutex, NULL);
     return runner;
 }
 
-static unsigned first_item_id(thread_runner_t* self, unsigned batch_id)
+static unsigned work_items(thread_runner_t* self)
 {
-    return batch_id * self->threads;
+    return self->thread_data->items;
 }
 
-static unsigned last_item_id(thread_runner_t* self, unsigned batch_id)
+static int is_data_id_valid(thread_runner_t* self, unsigned data_id)
 {
-    unsigned next = batch_id + 1;
-    return next == self->batches ? self->thread_data->items : next * self->threads;
+    return data_id < work_items(self);
 }
 
-static void join_threads(thread_runner_t* self, int spawned_threads)
+static int is_next_data_id_valid(thread_runner_t* self)
 {
-    for(int j = 0; j < spawned_threads; ++j)
-        pthread_join(self->pids[j], NULL);
+    return is_data_id_valid(self, self->next_data_id);
 }
 
-static void run_batch(thread_runner_t* self, thread_worker_t worker, unsigned batch_id)
+static int is_work_left(thread_runner_t* self)
 {
-    unsigned first_item = first_item_id(self, batch_id);
-    unsigned last_item = last_item_id(self, batch_id);
-    for(unsigned k = first_item; k < last_item; ++k)
-        pthread_create(&self->pids[k % self->threads], NULL, worker, (void*)&self->thread_data->data[k]);
-    join_threads(self, last_item - first_item);
+    return is_data_id_valid(self, self->next_data_id);
 }
 
-void run_batches(thread_runner_t* self, thread_worker_t worker)
+static unsigned get_next_data_id(thread_runner_t* self)
 {
-    for(unsigned batch_id = 0; batch_id < self->batches; ++batch_id)
-        run_batch(self, worker, batch_id);
+    unsigned current_data_id = work_items(self);
+    if(is_work_left(self))
+    {
+        current_data_id = self->next_data_id;
+        ++self->next_data_id;
+    }
+    return current_data_id;
+}
+
+static void* thread_data(thread_runner_t* self, unsigned data_id)
+{
+    return &self->thread_data->data[data_id];
+}
+
+static void* pool_worker(void* pool_arg)
+{
+    thread_runner_t* pool = (thread_runner_t*)pool_arg;
+    while(1)
+    {
+        pthread_mutex_lock(&pool->mutex);
+        unsigned current_data_id = get_next_data_id(pool);
+        pthread_mutex_unlock(&pool->mutex);
+        if(is_next_data_id_valid(pool))
+            pool->thread_worker(thread_data(pool, current_data_id));//should the shared thead_worker be copied?
+    }
+    return NULL;
+}
+
+static void create_pool_threads(thread_runner_t* self)
+{
+    for(unsigned k = 0; k < self->threads; ++k)
+    {
+        pthread_t current_pid;
+        pthread_create(&current_pid, NULL, &pool_worker, (void*)self);
+        pthread_detach(current_pid);
+    }
+}
+
+static void wait_work_end(thread_runner_t* self)
+{
+    pthread_mutex_lock(&self->mutex);
+    while(1)
+    {
+        if(!is_next_data_id_valid(self)) break;
+    }
+    pthread_mutex_unlock(&self->mutex);
+}
+
+void run_worker(thread_runner_t* self, thread_worker_t worker)
+{
+    self->thread_worker = worker;
+    create_pool_threads(self);
+    wait_work_end(self);
 }
 
 void free_thread_runner(thread_runner_t* self)
 {
-    free(self->pids);
+    pthread_mutex_destroy(&self->mutex);
 }
