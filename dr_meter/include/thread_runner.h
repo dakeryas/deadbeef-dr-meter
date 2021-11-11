@@ -18,9 +18,10 @@ struct thread_runner_s
 {
     unsigned threads;
     struct thread_data_s* thread_data;
-    thread_worker_t thread_worker;
+    thread_worker_t thread_worker; //function to apply to each thread_datum
     pthread_mutex_t mutex;
-    unsigned next_data_id;
+    pthread_cond_t no_item_left;
+    unsigned next_data_id; //id of next thread_datum to process with thread_worker
 };
 
 typedef struct thread_runner_s thread_runner_t;

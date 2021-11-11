@@ -7,6 +7,7 @@ thread_runner_t make_thread_runner(thread_data_t* thread_data, unsigned threads)
     thread_runner_t runner =
     {.threads = threads, .thread_data = thread_data, .next_data_id = 0};
     pthread_mutex_init(&runner.mutex, NULL);
+    pthread_cond_init(&runner.no_item_left, NULL);
     return runner;
 }
 
@@ -56,6 +57,7 @@ static void* pool_worker(void* pool_arg)
         pthread_mutex_unlock(&pool->mutex);
         if(is_next_data_id_valid(pool))
             pool->thread_worker(thread_data(pool, current_data_id));//should the shared thead_worker be copied?
+        else pthread_cond_signal(&pool->no_item_left);
     }
     return NULL;
 }
@@ -73,10 +75,8 @@ static void create_pool_threads(thread_runner_t* self)
 static void wait_work_end(thread_runner_t* self)
 {
     pthread_mutex_lock(&self->mutex);
-    while(1)
-    {
-        if(!is_next_data_id_valid(self)) break;
-    }
+    while(is_next_data_id_valid(self))
+        pthread_cond_wait(&self->no_item_left, &self->mutex);
     pthread_mutex_unlock(&self->mutex);
 }
 
@@ -90,4 +90,5 @@ void run_worker(thread_runner_t* self, thread_worker_t worker)
 void free_thread_runner(thread_runner_t* self)
 {
     pthread_mutex_destroy(&self->mutex);
+    pthread_cond_destroy(&self->no_item_left);
 }
