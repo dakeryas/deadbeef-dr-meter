@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <time.h>
 #include <gtk/gtk.h>
 
 #include <deadbeef/deadbeef.h>
@@ -91,7 +92,10 @@ static void* meter_job(void* data)
         selection_t selection;
         retrieve_current_selection(&selection);
         tagged_dr_data_t tagged_dr_data = make_tagged_dr_data(&selection);
+        time_t before = time(NULL);
         dr_meter_plugin->compute_dr(&tagged_dr_data);
+        time_t duration = time(NULL) - before;
+        fprintf(stderr, "compute_dr ran in %ld seconds\n", duration);
         display_dr_results(dr_meter_plugin->sprint_dr_log, &tagged_dr_data);
         free_tagged_dr_data_members(&tagged_dr_data);
         unreference_selection(&selection);
