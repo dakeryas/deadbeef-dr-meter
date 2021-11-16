@@ -10,9 +10,10 @@
 
 #include <pthread.h>
 
+struct thread_datum_s;
 struct thread_data_s;
 
-typedef void* (*thread_worker_t)(void* thread_datum);
+typedef void (*thread_worker_t)(struct thread_datum_s* thread_datum);
 
 struct thread_runner_s
 {

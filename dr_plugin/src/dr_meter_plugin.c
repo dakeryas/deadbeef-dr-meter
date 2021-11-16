@@ -91,11 +91,9 @@ static void compute_single_dr(DB_playItem_t* selection_item, dr_stats_t* dr_stat
     }
 }
 
-static void* thread_worker(void* thread_datum)
+static void thread_worker(thread_datum_t* datum)
 {
-    thread_datum_t* datum = (thread_datum_t*) thread_datum;
     compute_single_dr(datum->item, &datum->dr_stats);
-    return NULL;
 }
 
 static int compute_dr_impl(thread_data_t* thread_data, unsigned threads)
