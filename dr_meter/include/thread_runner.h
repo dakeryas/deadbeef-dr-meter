@@ -26,7 +26,6 @@ struct thread_runner_s
 
 typedef struct thread_runner_s thread_runner_t;
 
-
 thread_runner_t make_thread_runner(struct thread_data_s* thread_data, unsigned threads);
 void run_worker(thread_runner_t* runner, thread_worker_t worker);
 void free_thread_runner(thread_runner_t* runner);

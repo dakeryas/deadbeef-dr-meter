@@ -26,15 +26,10 @@ static int is_next_data_id_valid(thread_runner_t* self)
     return is_data_id_valid(self, self->next_data_id);
 }
 
-static int is_work_left(thread_runner_t* self)
-{
-    return is_data_id_valid(self, self->next_data_id);
-}
-
 static unsigned get_next_data_id(thread_runner_t* self)
 {
     unsigned current_data_id = work_items(self);
-    if(is_work_left(self))
+    if(is_next_data_id_valid(self))
     {
         current_data_id = self->next_data_id;
         ++self->next_data_id;
@@ -55,7 +50,7 @@ static void* pool_worker(void* pool_arg)
         pthread_mutex_lock(&pool->mutex);
         unsigned current_data_id = get_next_data_id(pool);
         pthread_mutex_unlock(&pool->mutex);
-        if(is_next_data_id_valid(pool))
+        if(is_data_id_valid(pool, current_data_id))
             pool->thread_worker(thread_data(pool, current_data_id));//should the shared thead_worker be copied?
         else pthread_cond_signal(&pool->no_item_left);
     }
