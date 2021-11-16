@@ -2,7 +2,7 @@
 * @file thread_runner.h
 * @author Valérian Sibille <vsibille@mit.edu>
 * @date 04 Jun 2020
-* @brief Handles thread creation and fills thread_data
+* @brief Handles thread creation and fills thread_data, works as a pool
 * ************************************************************************/
 
 #ifndef THREAD_RUNNER_H

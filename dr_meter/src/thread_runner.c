@@ -42,7 +42,7 @@ static thread_datum_t* thread_data(thread_runner_t* self, unsigned data_id)
     return &self->thread_data->data[data_id];
 }
 
-static void* pool_worker(void* pool_arg)
+static void* thread_work(void* pool_arg)
 {
     thread_runner_t* pool = (thread_runner_t*)pool_arg;
     while(is_next_data_id_valid(pool))
@@ -59,7 +59,7 @@ static void* pool_worker(void* pool_arg)
 static void create_pool_threads(thread_runner_t* self)
 {
     for(unsigned k = 0; k < self->threads; ++k)
-        pthread_create(&self->pids[k], NULL, &pool_worker, (void*)self);
+        pthread_create(&self->pids[k], NULL, &thread_work, (void*)self);
 }
 
 static void join_pool_threads(thread_runner_t* self)
