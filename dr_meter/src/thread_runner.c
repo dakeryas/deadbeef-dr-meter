@@ -42,16 +42,16 @@ static thread_datum_t* thread_data(thread_runner_t* self, unsigned data_id)
     return &self->thread_data->data[data_id];
 }
 
-static void* thread_work(void* pool_arg)
+static void* thread_work(void* runner_arg)
 {
-    thread_runner_t* pool = (thread_runner_t*)pool_arg;
-    while(is_next_data_id_valid(pool))
+    thread_runner_t* runner = (thread_runner_t*)runner_arg;
+    while(is_next_data_id_valid(runner))
     {
-        pthread_mutex_lock(&pool->mutex);
-        unsigned current_data_id = pop_next_data_id(pool);
-        pthread_mutex_unlock(&pool->mutex);
-        if(is_data_id_valid(pool, current_data_id))
-            pool->datum_work(thread_data(pool, current_data_id));
+        pthread_mutex_lock(&runner->mutex);
+        unsigned current_data_id = pop_next_data_id(runner);
+        pthread_mutex_unlock(&runner->mutex);
+        if(is_data_id_valid(runner, current_data_id))
+            runner->datum_work(thread_data(runner, current_data_id));
     }
     return NULL;
 }
