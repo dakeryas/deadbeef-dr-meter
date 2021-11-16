@@ -17,12 +17,12 @@ typedef void (*thread_worker_t)(struct thread_datum_s* thread_datum);
 
 struct thread_runner_s
 {
-    unsigned threads;
     struct thread_data_s* thread_data;
-    thread_worker_t thread_worker; //function to apply to each thread_datum
+    unsigned threads;
+    pthread_t* pids;
     pthread_mutex_t mutex;
-    pthread_cond_t no_item_left;
     unsigned next_data_id; //id of next thread_datum to process with thread_worker
+    thread_worker_t thread_worker; //function to apply to each thread_datum
 };
 
 typedef struct thread_runner_s thread_runner_t;
