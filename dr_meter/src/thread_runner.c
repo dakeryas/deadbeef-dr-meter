@@ -37,7 +37,7 @@ static unsigned get_next_data_id(thread_runner_t* self)
     return current_data_id;
 }
 
-static void* thread_data(thread_runner_t* self, unsigned data_id)
+static thread_datum_t* thread_data(thread_runner_t* self, unsigned data_id)
 {
     return &self->thread_data->data[data_id];
 }
@@ -77,9 +77,12 @@ static void wait_work_end(thread_runner_t* self)
 
 void run_worker(thread_runner_t* self, thread_worker_t worker)
 {
-    self->thread_worker = worker;
-    create_pool_threads(self);
-    wait_work_end(self);
+    if(worker)
+    {
+        self->thread_worker = worker;
+        create_pool_threads(self);
+        wait_work_end(self);
+    }
 }
 
 void free_thread_runner(thread_runner_t* self)
