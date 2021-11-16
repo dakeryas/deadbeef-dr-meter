@@ -51,7 +51,7 @@ static void* pool_worker(void* pool_arg)
         unsigned current_data_id = pop_next_data_id(pool);
         pthread_mutex_unlock(&pool->mutex);
         if(is_data_id_valid(pool, current_data_id))
-            pool->thread_worker(thread_data(pool, current_data_id));
+            pool->datum_work(thread_data(pool, current_data_id));
     }
     return NULL;
 }
@@ -68,11 +68,11 @@ static void join_pool_threads(thread_runner_t* self)
         pthread_join(self->pids[k], NULL);
 }
 
-void run_worker(thread_runner_t* self, thread_worker_t worker)
+void run_work(thread_runner_t* self, datum_work_t datum_work)
 {
-    if(worker)
+    if(datum_work)
     {
-        self->thread_worker = worker;
+        self->datum_work = datum_work;
         create_pool_threads(self);
         join_pool_threads(self);
     }
