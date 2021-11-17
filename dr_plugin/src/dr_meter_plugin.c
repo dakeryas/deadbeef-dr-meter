@@ -45,12 +45,12 @@ static unsigned number_of_blocks(DB_playItem_t* item)
     return nu_blocks;
 }
 
-static unsigned get_number_of_bytes(unsigned duration, DB_fileinfo_t* fileinfo)
+static unsigned get_number_of_bytes(unsigned duration, const DB_fileinfo_t* fileinfo)
 {
     return duration * fileinfo->fmt.samplerate * fileinfo->fmt.channels * (fileinfo->fmt.bps >> 3);
 }
 
-static unsigned allocate_buffer(char** buffer, unsigned duration, DB_fileinfo_t* fileinfo)
+static unsigned allocate_buffer(char** buffer, unsigned duration, const DB_fileinfo_t* fileinfo)
 {
     unsigned buffer_size = get_number_of_bytes(duration, fileinfo);
     *buffer = malloc(buffer_size);
