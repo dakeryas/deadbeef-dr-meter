@@ -2,17 +2,31 @@
 #include "thread_data.h"
 #include "selection.h"
 
-static void init_thread_data(thread_data_t* self)
+static void update_data_size(thread_data_t* self)
 {
+    free_thread_data(self);
     self->data = malloc(self->items * sizeof(thread_datum_t));
+}
+
+static void copy_data(thread_data_t* self, selection_t* selection)
+{
+    self->items = selection->items_count;
+    update_data_size(self);
+    for(int k = 0; k < selection->items_count ; ++k)
+        self->data[k].item = selection->items[k];
 }
 
 thread_data_t make_thread_data(selection_t* selection)
 {
-    thread_data_t thread_data = {.items = selection->items_count};
-    init_thread_data(&thread_data);
-    for(int k = 0; k < selection->items_count ; ++k)
-        thread_data.data[k].item = selection->items[k];
+    thread_data_t thread_data;
+    copy_data(&thread_data, selection);
+    return thread_data;
+}
+
+thread_data_t* create_thread_data(selection_t* selection)
+{
+    thread_data_t* thread_data = malloc(sizeof(*thread_data));
+    copy_data(thread_data, selection);
     return thread_data;
 }
 
