@@ -5,7 +5,7 @@
 thread_runner_t make_thread_runner(thread_data_t* thread_data, unsigned threads)
 {
     thread_runner_t runner =
-    {.thread_data = thread_data, .threads = threads, .next_data_id = 0};
+    {.thread_data = thread_data, .threads = threads};
     runner.pids = malloc(runner.threads * sizeof(pthread_t));
     pthread_mutex_init(&runner.mutex, NULL);
     return runner;
@@ -14,6 +14,11 @@ thread_runner_t make_thread_runner(thread_data_t* thread_data, unsigned threads)
 static unsigned work_items(thread_runner_t* self)
 {
     return self->thread_data->items;
+}
+
+static void reset_next_data_id(thread_runner_t* self)
+{
+    self->next_data_id = 0;
 }
 
 static int is_data_id_valid(thread_runner_t* self, unsigned data_id)
@@ -28,13 +33,7 @@ static int is_next_data_id_valid(thread_runner_t* self)
 
 static unsigned pop_next_data_id(thread_runner_t* self)
 {
-    unsigned current_data_id = work_items(self);
-    if(is_next_data_id_valid(self))
-    {
-        current_data_id = self->next_data_id;
-        ++self->next_data_id;
-    }
-    return current_data_id;
+    return self->next_data_id++;
 }
 
 static thread_datum_t* thread_data(thread_runner_t* self, unsigned data_id)
@@ -73,6 +72,7 @@ void run_work(thread_runner_t* self, datum_work_t datum_work)
     if(datum_work)
     {
         self->datum_work = datum_work;
+        reset_next_data_id(self);
         create_pool_threads(self);
         join_pool_threads(self);
     }
