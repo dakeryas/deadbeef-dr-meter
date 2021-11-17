@@ -6,7 +6,7 @@
 
 #include "dr_meter_plugin_gui.h"
 #include "dr_meter_plugin.h"
-#include "thread_data.h"
+#include "tagged_dr_data.h"
 #include "selection.h"
 #include "dr_display_data.h"
 #include "dialogue.h"
@@ -69,20 +69,20 @@ static int get_number_of_threads()
     return number_of_threads;
 }
 
-static void display_dr_results(const thread_data_t* thread_data)
+static void display_dr_results(const tagged_dr_data_t* tagged_dr_data)
 {
-    dr_display_data_t* display_data = create_dr_display_data(thread_data->items);
+    dr_display_data_t* display_data = create_dr_display_data(tagged_dr_data->items);
     if(display_data)
     {
-        dr_meter_plugin->sprint_dr_log(thread_data, display_data->log);
+        dr_meter_plugin->sprint_dr_log(tagged_dr_data, display_data->log);
         show_dr_dialog(display_data, GTK_WINDOW(gtk_ui_plugin->get_mainwin()));
     }
 }
-static int display_dr_results_and_free_thread_data(void* thread_data)
+static int display_dr_results_and_free_tagged_dr_data(void* tagged_dr_data)
 {
-    display_dr_results((thread_data_t*)thread_data);
-    free_thread_data((thread_data_t*)thread_data);
-    free(thread_data);
+    display_dr_results((tagged_dr_data_t*)tagged_dr_data);
+    free_tagged_dr_data((tagged_dr_data_t*)tagged_dr_data);
+    free(tagged_dr_data);
     return 0;
 }
 
@@ -93,9 +93,9 @@ static void* meter_job(void* data)
     {
         selection_t selection;
         retrieve_current_selection(&selection);
-        thread_data_t* thread_data = create_thread_data(&selection);
-        dr_meter_plugin->compute_dr(thread_data, get_number_of_threads());
-        g_idle_add(display_dr_results_and_free_thread_data, thread_data);
+        tagged_dr_data_t* tagged_dr_data = create_tagged_dr_data(&selection);
+        dr_meter_plugin->compute_dr(tagged_dr_data, get_number_of_threads());
+        g_idle_add(display_dr_results_and_free_tagged_dr_data, tagged_dr_data);
         unreference_selection(&selection);
     }
     return NULL;

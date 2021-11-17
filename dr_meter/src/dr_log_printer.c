@@ -1,5 +1,5 @@
 #include "dr_log_printer.h"
-#include "thread_data.h"
+#include "tagged_dr_data.h"
 
 static unsigned sprint_n(char character, unsigned count, char* begin, char endline)
 {
@@ -26,7 +26,7 @@ static int sprint_dr_stats(const dr_log_printer_t* self, dr_stats_t* dr_stats, c
     return sprintf(buffer, self->dr_format, stats.dr, stats.peak, stats.rms);
 }
 
-unsigned sprint_item_dr_log_printer(const dr_log_printer_t* self, thread_datum_t* datum, char* begin, char endline)
+unsigned sprint_item_dr_log_printer(const dr_log_printer_t* self, tagged_dr_datum_t* datum, char* begin, char endline)
 {
     char* end = begin;
     end += sprint_dr_stats(self, &datum->dr_stats, end);
@@ -36,12 +36,12 @@ unsigned sprint_item_dr_log_printer(const dr_log_printer_t* self, thread_datum_t
     return end - begin;
 }
 
-unsigned sprintl_item_dr_log_printer(const dr_log_printer_t* self, thread_datum_t* datum, char* begin)
+unsigned sprintl_item_dr_log_printer(const dr_log_printer_t* self, tagged_dr_datum_t* datum, char* begin)
 {
     return sprint_item_dr_log_printer(self, datum, begin, '\n');
 }
 
-static unsigned sprint_album_info(const dr_log_printer_t* self, const thread_data_t* data, char* begin, char endline)
+static unsigned sprint_album_info(const dr_log_printer_t* self, const tagged_dr_data_t* data, char* begin, char endline)
 {
     char* end = begin;
     void* first_track = data->data[0].item;
@@ -50,7 +50,7 @@ static unsigned sprint_album_info(const dr_log_printer_t* self, const thread_dat
     return end - begin;
 }
 
-static unsigned sprintl_album_info(const dr_log_printer_t* self, const thread_data_t* data, char* begin)
+static unsigned sprintl_album_info(const dr_log_printer_t* self, const tagged_dr_data_t* data, char* begin)
 {
     return sprint_album_info(self, data, begin, '\n');
 }
@@ -80,27 +80,27 @@ unsigned sprintl_summary_info(const dr_log_printer_t* self, unsigned items, doub
     return sprint_summary_info(self, items, avg_dr, begin, '\n');
 }
 
-unsigned sprint_log_dr_log_printer(const dr_log_printer_t* self, const thread_data_t* thread_data, char* begin)
+unsigned sprint_log_dr_log_printer(const dr_log_printer_t* self, const tagged_dr_data_t* tagged_dr_data, char* begin)
 {
     char* end = begin;
     unsigned line_length = 80;
     end += sprintl_line(line_length, end);
-    end += sprintl_album_info(self, thread_data, end);
+    end += sprintl_album_info(self, tagged_dr_data, end);
     end += sprintl_line(line_length, end);
     end += sprintl_line(0, end);
     end += sprintl_col_headers_dr_log_printer(self, end);
     end += sprintl_line(line_length, end);
     double avg_dr = 0.;
-    for(unsigned k = 0; k < thread_data->items; ++k)
+    for(unsigned k = 0; k < tagged_dr_data->items; ++k)
     {
-        thread_datum_t* datum = thread_data->data + k;
+        tagged_dr_datum_t* datum = tagged_dr_data->data + k;
         avg_dr += datum->dr_stats.dr;
         end += sprintl_item_dr_log_printer(self, datum, end);
     }
-    avg_dr /= thread_data->items;
+    avg_dr /= tagged_dr_data->items;
     end += sprintl_line(line_length, end);
     end += sprintl_line(0, end);
-    end += sprintl_summary_info(self, thread_data->items, avg_dr, end);
+    end += sprintl_summary_info(self, tagged_dr_data->items, avg_dr, end);
     end += sprintl_n('=', line_length, end);
     return end - begin;
 }

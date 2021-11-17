@@ -4,7 +4,7 @@
 #include "dr_meter_plugin.h"
 #include "block_analyser.h"
 #include "dr_meter.h"
-#include "thread_data.h"
+#include "tagged_dr_data.h"
 #include "thread_runner.h"
 #include "selection.h"
 #include "duration.h"
@@ -91,14 +91,14 @@ static void compute_single_dr(DB_playItem_t* selection_item, dr_stats_t* dr_stat
     }
 }
 
-static void datum_work(thread_datum_t* datum)
+static void datum_work(tagged_dr_datum_t* datum)
 {
     compute_single_dr(datum->item, &datum->dr_stats);
 }
 
-static int compute_dr_impl(thread_data_t* thread_data, unsigned threads)
+static int compute_dr_impl(tagged_dr_data_t* tagged_dr_data, unsigned threads)
 {
-    thread_runner_t thread_runner = make_thread_runner(thread_data, threads);
+    thread_runner_t thread_runner = make_thread_runner(tagged_dr_data, threads);
     run_work(&thread_runner, datum_work);
     free_thread_runner(&thread_runner);
     return 0;
@@ -170,12 +170,12 @@ static unsigned sprint_album_info(void* track, char* begin)
     return end - begin;
 }
 
-unsigned sprint_dr_log_impl(const thread_data_t* thread_data, char* buffer)
+unsigned sprint_dr_log_impl(const tagged_dr_data_t* tagged_dr_data, char* buffer)
 {
     char dr_format[32];
     ddb_api->conf_get_str("dr_meter.format", DEFAULT_DR_FORMAT, dr_format, sizeof(dr_format));
     dr_log_printer_t log_printer = {.dr_format = dr_format, .sprint_track_info = sprint_track_info, .sprint_album_info = sprint_album_info};
-    return sprint_log_dr_log_printer(&log_printer, thread_data, buffer);
+    return sprint_log_dr_log_printer(&log_printer, tagged_dr_data, buffer);
 }
 
 int dr_meter_start()

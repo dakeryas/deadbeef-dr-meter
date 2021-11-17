@@ -1,16 +1,16 @@
 #include <stdlib.h>
 #include "thread_runner.h"
-#include "thread_data.h"
+#include "tagged_dr_data.h"
 
-static unsigned get_number_of_threads(const thread_data_t* thread_data, unsigned threads)
+static unsigned get_number_of_threads(const tagged_dr_data_t* tagged_dr_data, unsigned threads)
 {
-    return threads < thread_data->items ? threads : thread_data->items;
+    return threads < tagged_dr_data->items ? threads : tagged_dr_data->items;
 }
 
-thread_runner_t make_thread_runner(thread_data_t* thread_data, unsigned threads)
+thread_runner_t make_thread_runner(tagged_dr_data_t* tagged_dr_data, unsigned threads)
 {
     thread_runner_t runner =
-    {.thread_data = thread_data, .threads = get_number_of_threads(thread_data, threads)};
+    {.tagged_dr_data = tagged_dr_data, .threads = get_number_of_threads(tagged_dr_data, threads)};
     runner.pids = malloc(runner.threads * sizeof(pthread_t));
     pthread_mutex_init(&runner.mutex, NULL);
     return runner;
@@ -18,7 +18,7 @@ thread_runner_t make_thread_runner(thread_data_t* thread_data, unsigned threads)
 
 static unsigned work_items(thread_runner_t* self)
 {
-    return self->thread_data->items;
+    return self->tagged_dr_data->items;
 }
 
 static void reset_next_data_id(thread_runner_t* self)
@@ -41,9 +41,9 @@ static unsigned pop_next_data_id(thread_runner_t* self)
     return self->next_data_id++;
 }
 
-static thread_datum_t* thread_data(thread_runner_t* self, unsigned data_id)
+static tagged_dr_datum_t* tagged_dr_data(thread_runner_t* self, unsigned data_id)
 {
-    return &self->thread_data->data[data_id];
+    return &self->tagged_dr_data->data[data_id];
 }
 
 static void* thread_work(void* runner_arg)
@@ -55,7 +55,7 @@ static void* thread_work(void* runner_arg)
         unsigned current_data_id = pop_next_data_id(runner);
         pthread_mutex_unlock(&runner->mutex);
         if(is_data_id_valid(runner, current_data_id))
-            runner->datum_work(thread_data(runner, current_data_id));
+            runner->datum_work(tagged_dr_data(runner, current_data_id));
     }
     return NULL;
 }
