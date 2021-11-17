@@ -26,7 +26,8 @@ tagged_dr_data_t make_tagged_dr_data(const selection_t* selection)
 tagged_dr_data_t* create_tagged_dr_data(const selection_t* selection)
 {
     tagged_dr_data_t* tagged_dr_data = malloc(sizeof(*tagged_dr_data));
-    copy_data(tagged_dr_data, selection);
+    if(tagged_dr_data) copy_data(tagged_dr_data, selection);
+    else fprintf(stderr, "Failed allocating tagged_dr_data\n");
     return tagged_dr_data;
 }
 
