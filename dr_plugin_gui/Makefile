@@ -21,7 +21,7 @@ GTKCFLAGS ?= $(shell pkg-config --cflags $(GTKLIBNAME))
 GTKLIBS ?= $(shell pkg-config --libs $(GTKLIBNAME))
 
 OPTFLAG := -O3 -flto -DNDEBUG
-CFLAGS += $(OPTFLAG) -std=c99 -Wall -Wextra -fPIC
+CFLAGS += $(OPTFLAG) -std=c99 -Wall -Wextra -Wpedantic -fPIC
 CFLAGS += $(GTKCFLAGS)
 CPPFLAGS += -I./$(INCLDIR)
 CPPFLAGS += -I$(DRPLUGDIR)/include

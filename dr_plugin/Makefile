@@ -10,7 +10,7 @@ endif
 PLUGIN := ddb_dr_meter.$(EXT)
 
 OPTFLAG := -O3 -flto -DNDEBUG
-CFLAGS += $(OPTFLAG) -std=c99 -Wall -Wextra -fPIC
+CFLAGS += $(OPTFLAG) -std=c99 -Wall -Wextra -Wpedantic -fPIC
 CPPFLAGS += -I./$(INCLDIR)
 ifdef DRMETER_DIR
 	CPPFLAGS += -I$(DRMETER_DIR)/include

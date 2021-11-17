@@ -11,7 +11,7 @@ endif
 LIBRARY := $(LIBDIR)/libdrmeter.$(EXT)
 
 OPTFLAG := -O3 -flto -DNDEBUG
-CFLAGS += $(OPTFLAG) -std=c99 -Wall -Wextra -fPIC -pthread
+CFLAGS += $(OPTFLAG) -std=c99 -Wall -Wextra -Wpedantic -fPIC -pthread
 CPPFLAGS += -I./$(INCLDIR)
 LDFLAGS += -flto -Wl,-O1,--sort-common -lm -lpthread
 
