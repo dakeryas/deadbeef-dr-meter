@@ -20,13 +20,13 @@ static unsigned sprintl_line(unsigned line_length, char* begin)
     return sprintl_n('-', line_length, begin);
 }
 
-static int sprint_dr_stats(dr_log_printer_t* self, dr_stats_t* dr_stats, char* buffer)
+static int sprint_dr_stats(const dr_log_printer_t* self, dr_stats_t* dr_stats, char* buffer)
 {
     dr_stats_t stats = make_dB_dr_stats(dr_stats);
     return sprintf(buffer, self->dr_format, stats.dr, stats.peak, stats.rms);
 }
 
-unsigned sprint_item_dr_log_printer(dr_log_printer_t* self, thread_datum_t* datum, char* begin, char endline)
+unsigned sprint_item_dr_log_printer(const dr_log_printer_t* self, thread_datum_t* datum, char* begin, char endline)
 {
     char* end = begin;
     end += sprint_dr_stats(self, &datum->dr_stats, end);
@@ -36,12 +36,12 @@ unsigned sprint_item_dr_log_printer(dr_log_printer_t* self, thread_datum_t* datu
     return end - begin;
 }
 
-unsigned sprintl_item_dr_log_printer(dr_log_printer_t* self, thread_datum_t* datum, char* begin)
+unsigned sprintl_item_dr_log_printer(const dr_log_printer_t* self, thread_datum_t* datum, char* begin)
 {
     return sprint_item_dr_log_printer(self, datum, begin, '\n');
 }
 
-static unsigned sprint_album_info(dr_log_printer_t* self, thread_data_t* data, char* begin, char endline)
+static unsigned sprint_album_info(const dr_log_printer_t* self, thread_data_t* data, char* begin, char endline)
 {
     char* end = begin;
     void* first_track = data->data[0].item;
@@ -50,23 +50,23 @@ static unsigned sprint_album_info(dr_log_printer_t* self, thread_data_t* data, c
     return end - begin;
 }
 
-static unsigned sprintl_album_info(dr_log_printer_t* self, thread_data_t* data, char* begin)
+static unsigned sprintl_album_info(const dr_log_printer_t* self, thread_data_t* data, char* begin)
 {
     return sprint_album_info(self, data, begin, '\n');
 }
 
-unsigned sprint_col_headers_dr_log_printer(dr_log_printer_t* self, char* begin, char endline)
+unsigned sprint_col_headers_dr_log_printer(const dr_log_printer_t* self, char* begin, char endline)
 {
     (void) self;
     return sprintf(begin, "DR         Peak         RMS     Duration Track%c", endline);
 }
 
-unsigned sprintl_col_headers_dr_log_printer(dr_log_printer_t* self, char* begin)
+unsigned sprintl_col_headers_dr_log_printer(const dr_log_printer_t* self, char* begin)
 {
     return sprint_col_headers_dr_log_printer(self, begin, '\n');
 }
 
-unsigned sprint_summary_info(dr_log_printer_t* self, unsigned items, double avg_dr, char* begin, char endline)
+unsigned sprint_summary_info(const dr_log_printer_t* self, unsigned items, double avg_dr, char* begin, char endline)
 {
     (void) self;
     char* end = begin;
@@ -75,12 +75,12 @@ unsigned sprint_summary_info(dr_log_printer_t* self, unsigned items, double avg_
     return end - begin;
 }
 
-unsigned sprintl_summary_info(dr_log_printer_t* self, unsigned items, double avg_dr, char* begin)
+unsigned sprintl_summary_info(const dr_log_printer_t* self, unsigned items, double avg_dr, char* begin)
 {
     return sprint_summary_info(self, items, avg_dr, begin, '\n');
 }
 
-unsigned sprint_log_dr_log_printer(dr_log_printer_t* self, thread_data_t* thread_data, char* begin)
+unsigned sprint_log_dr_log_printer(const dr_log_printer_t* self, thread_data_t* thread_data, char* begin)
 {
     char* end = begin;
     unsigned line_length = 80;
