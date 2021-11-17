@@ -69,7 +69,7 @@ static int get_number_of_threads()
     return number_of_threads;
 }
 
-static void display_dr_results(dr_meter_plugin_t* dr_meter_plugin, thread_data_t* thread_data)
+static void display_dr_results(thread_data_t* thread_data)
 {
     dr_display_data_t* display_data = create_dr_display_data(thread_data->items);
     if(display_data)
