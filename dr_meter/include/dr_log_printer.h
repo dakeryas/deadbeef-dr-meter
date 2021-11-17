@@ -26,6 +26,6 @@ unsigned sprint_col_headers_dr_log_printer(const dr_log_printer_t* self, char* b
 unsigned sprintl_col_headers_dr_log_printer(const dr_log_printer_t* self, char* begin);
 unsigned sprint_summary_info(const dr_log_printer_t* self, unsigned items, double avg_dr, char* begin, char endline);
 unsigned sprintl_summary_info(const dr_log_printer_t* self, unsigned items, double avg_dr, char* begin);
-unsigned sprint_log_dr_log_printer(const dr_log_printer_t* self, struct thread_data_s* thread_data, char* begin);
+unsigned sprint_log_dr_log_printer(const dr_log_printer_t* self, const struct thread_data_s* thread_data, char* begin);
 
 #endif /* DR_LOG_PRINTER_H */

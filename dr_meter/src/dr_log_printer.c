@@ -41,7 +41,7 @@ unsigned sprintl_item_dr_log_printer(const dr_log_printer_t* self, thread_datum_
     return sprint_item_dr_log_printer(self, datum, begin, '\n');
 }
 
-static unsigned sprint_album_info(const dr_log_printer_t* self, thread_data_t* data, char* begin, char endline)
+static unsigned sprint_album_info(const dr_log_printer_t* self, const thread_data_t* data, char* begin, char endline)
 {
     char* end = begin;
     void* first_track = data->data[0].item;
@@ -50,7 +50,7 @@ static unsigned sprint_album_info(const dr_log_printer_t* self, thread_data_t* d
     return end - begin;
 }
 
-static unsigned sprintl_album_info(const dr_log_printer_t* self, thread_data_t* data, char* begin)
+static unsigned sprintl_album_info(const dr_log_printer_t* self, const thread_data_t* data, char* begin)
 {
     return sprint_album_info(self, data, begin, '\n');
 }
@@ -80,7 +80,7 @@ unsigned sprintl_summary_info(const dr_log_printer_t* self, unsigned items, doub
     return sprint_summary_info(self, items, avg_dr, begin, '\n');
 }
 
-unsigned sprint_log_dr_log_printer(const dr_log_printer_t* self, thread_data_t* thread_data, char* begin)
+unsigned sprint_log_dr_log_printer(const dr_log_printer_t* self, const thread_data_t* thread_data, char* begin)
 {
     char* end = begin;
     unsigned line_length = 80;

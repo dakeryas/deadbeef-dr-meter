@@ -170,7 +170,7 @@ static unsigned sprint_album_info(void* track, char* begin)
     return end - begin;
 }
 
-unsigned sprint_dr_log_impl(thread_data_t* thread_data, char* buffer)
+unsigned sprint_dr_log_impl(const thread_data_t* thread_data, char* buffer)
 {
     char dr_format[32];
     ddb_api->conf_get_str("dr_meter.format", DEFAULT_DR_FORMAT, dr_format, sizeof(dr_format));
