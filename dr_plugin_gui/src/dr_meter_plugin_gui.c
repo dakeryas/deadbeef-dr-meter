@@ -86,27 +86,27 @@ static int display_dr_results_and_free_thread_data(void* thread_data)
     return 0;
 }
 
-
-static gboolean run_meter_job(void* data)
+static void* meter_job(void* data)
 {
     int context = (intptr_t)data;
     if(context == DDB_ACTION_CTX_SELECTION)
     {
         selection_t selection;
         retrieve_current_selection(&selection);
-        thread_data_t thread_data = make_thread_data(&selection);
-        dr_meter_plugin->compute_dr(&thread_data, get_number_of_threads());
-        display_dr_results(dr_meter_plugin, &thread_data);
-        free_thread_data(&thread_data);
+        thread_data_t* thread_data = create_thread_data(&selection);
+        dr_meter_plugin->compute_dr(thread_data, get_number_of_threads());
+        g_idle_add(display_dr_results_and_free_thread_data, thread_data);
         unreference_selection(&selection);
     }
-    return FALSE;
+    return NULL;
 }
 
 static int run_meter(DB_plugin_action_t* self, ddb_action_context_t context)
 {
     (void) self;
-    gdk_threads_add_idle(run_meter_job, (void*)(intptr_t)context);
+    pthread_t pid;
+    pthread_create(&pid, NULL, meter_job, (void*)(intptr_t)context);
+    pthread_detach(pid);
     return 0;
 }
 
