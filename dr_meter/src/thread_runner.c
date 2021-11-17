@@ -2,10 +2,15 @@
 #include "thread_runner.h"
 #include "thread_data.h"
 
+static unsigned get_number_of_threads(thread_data_t* thread_data, unsigned threads)
+{
+    return threads < thread_data->items ? threads : thread_data->items;
+}
+
 thread_runner_t make_thread_runner(thread_data_t* thread_data, unsigned threads)
 {
     thread_runner_t runner =
-    {.thread_data = thread_data, .threads = threads};
+    {.thread_data = thread_data, .threads = get_number_of_threads(thread_data, threads)};
     runner.pids = malloc(runner.threads * sizeof(pthread_t));
     pthread_mutex_init(&runner.mutex, NULL);
     return runner;
