@@ -78,6 +78,14 @@ static void display_dr_results(thread_data_t* thread_data)
         show_dr_dialog(display_data, GTK_WINDOW(gtk_ui_plugin->get_mainwin()));
     }
 }
+static int display_dr_results_and_free_thread_data(void* thread_data)
+{
+    display_dr_results((thread_data_t*)thread_data);
+    free_thread_data((thread_data_t*)thread_data);
+    free(thread_data);
+    return 0;
+}
+
 
 static gboolean run_meter_job(void* data)
 {
