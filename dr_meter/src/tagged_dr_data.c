@@ -6,6 +6,8 @@ static void update_data_size(tagged_dr_data_t* self)
 {
     free_tagged_dr_data(self);
     self->data = malloc(self->items * sizeof(tagged_dr_datum_t));
+    if(!self->data) fprintf(stderr, "Failed allocating tagged_dr_data->data\n");
+
 }
 
 static void copy_data(tagged_dr_data_t* self, const selection_t* selection)
