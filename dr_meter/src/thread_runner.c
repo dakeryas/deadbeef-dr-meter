@@ -2,7 +2,7 @@
 #include "thread_runner.h"
 #include "thread_data.h"
 
-static unsigned get_number_of_threads(thread_data_t* thread_data, unsigned threads)
+static unsigned get_number_of_threads(const thread_data_t* thread_data, unsigned threads)
 {
     return threads < thread_data->items ? threads : thread_data->items;
 }
@@ -72,7 +72,7 @@ static void join_pool_threads(thread_runner_t* self)
         pthread_join(self->pids[k], NULL);
 }
 
-void run_work(thread_runner_t* self, datum_work_t datum_work)
+void run_work(thread_runner_t* self, const datum_work_t datum_work)
 {
     if(datum_work)
     {

@@ -32,7 +32,7 @@ static int filled(dr_meter_t* self)
     return self->_ana_blocks > 0 && self->_ana_samples > 0;
 }
 
-static void fill_dr_peaks(dr_meter_t* self, block_analyser_t* analyser, unsigned channel_id)
+static void fill_dr_peaks(dr_meter_t* self, const block_analyser_t* analyser, unsigned channel_id)
 {
     double block_peak = analyser->peak[channel_id];
     double* first = &self->peaks[channel_id];
@@ -45,31 +45,31 @@ static void fill_dr_peaks(dr_meter_t* self, block_analyser_t* analyser, unsigned
     else if(block_peak > *second) *second = block_peak;
 }
 
-static void fill_sum2(dr_meter_t* self, block_analyser_t* analyser, unsigned channel_id)
+static void fill_sum2(dr_meter_t* self, const block_analyser_t* analyser, unsigned channel_id)
 {
     self->sum2[channel_id][self->_ana_blocks] = get_avg_sum_squares(analyser, channel_id);
 }
 
-static void fill_channel(dr_meter_t* self, block_analyser_t* analyser, unsigned channel_id)
+static void fill_channel(dr_meter_t* self, const block_analyser_t* analyser, unsigned channel_id)
 {
     fill_dr_peaks(self, analyser, channel_id);
     fill_sum2(self, analyser, channel_id);
 }
 
-static void fill_channels(dr_meter_t* self, block_analyser_t* analyser)
+static void fill_channels(dr_meter_t* self, const block_analyser_t* analyser)
 {
     for(unsigned channel_id = 0; channel_id < self->channels; ++channel_id)
         fill_channel(self, analyser, channel_id);
 }
 
-static void fill_dr_meter_nocheck(dr_meter_t* self, block_analyser_t* analyser)
+static void fill_dr_meter_nocheck(dr_meter_t* self, const block_analyser_t* analyser)
 {
     fill_channels(self, analyser);
     self->_ana_samples += analyser->samples;
     ++self->_ana_blocks;
 }
 
-void fill_dr_meter(dr_meter_t* self, block_analyser_t* analyser)
+void fill_dr_meter(dr_meter_t* self, const block_analyser_t* analyser)
 {
     assert((self->_ana_blocks < self->blocks));
     assert((analyser->channels == self->channels));

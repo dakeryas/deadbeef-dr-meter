@@ -73,17 +73,17 @@ void analyse_block(block_analyser_t* self, char* bytes_begin, unsigned read_byte
     }
 }
 
-int filled_block_analyser(block_analyser_t* self)
+int filled_block_analyser(const block_analyser_t* self)
 {
     return self->samples > 0;
 }
 
-double get_avg_sum_squares(block_analyser_t* self, unsigned channel)
+double get_avg_sum_squares(const block_analyser_t* self, unsigned channel)
 {
     return self->sum2[channel] / self->samples;
 }
 
-double get_rms_analyser(block_analyser_t* self, unsigned channel)
+double get_rms_analyser(const block_analyser_t* self, unsigned channel)
 {
     return get_audio_rms(self->sum2[channel], self->samples);
 }
@@ -94,7 +94,7 @@ void free_block_analyser(block_analyser_t* self)
     free(self->sum2);
 }
 
-void print_block_analyser(block_analyser_t* self, FILE* output)
+void print_block_analyser(const block_analyser_t* self, FILE* output)
 {
     if(filled_block_analyser(self))
     {
