@@ -28,7 +28,7 @@ typedef struct dr_meter_s dr_meter_t;
 
 dr_meter_t make_dr_meter(unsigned channels, unsigned blocks);
 void fill_dr_meter(dr_meter_t* dr_meter, const struct block_analyser_s* analyser);
-double get_rms_dr_meter(dr_meter_t* dr_meter, unsigned channel);
+double get_rms_dr_meter(const dr_meter_t* dr_meter, unsigned channel);
 dr_stats_t get_dr_stats_dr_meter(dr_meter_t* dr_meter, unsigned channel);
 void fill_avg_dr_stats_dr_meter(dr_meter_t* dr_meter, dr_stats_t* dr_stats);
 dr_stats_t get_avg_dr_stats_dr_meter(dr_meter_t* dr_meter);

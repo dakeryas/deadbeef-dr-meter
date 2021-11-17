@@ -27,12 +27,12 @@ dr_meter_t make_dr_meter(unsigned channels, unsigned blocks)
     return dr_meter;
 }
 
-static int filled(dr_meter_t* self)
+static int filled(const dr_meter_t* self)
 {
     return self->_ana_blocks > 0 && self->_ana_samples > 0;
 }
 
-static void fill_dr_peaks(dr_meter_t* self, const block_analyser_t* analyser, unsigned channel_id)
+static void fill_dr_peaks(const dr_meter_t* self, const block_analyser_t* analyser, unsigned channel_id)
 {
     double block_peak = analyser->peak[channel_id];
     double* first = &self->peaks[channel_id];
@@ -78,7 +78,6 @@ void fill_dr_meter(dr_meter_t* self, const block_analyser_t* analyser)
 
 static int reverse_comp_samples(const void* s1, const void* s2)
 {
-
     double diff = *(const double*)s1 - *(const double*)s2;//abs(diff) may be smaller than 1
     if(diff > 0) return -1;
     else if(diff < 0) return 1;
@@ -90,7 +89,7 @@ static void sort_sum2(dr_meter_t* self, unsigned channel)
     qsort(self->sum2[channel], self->_ana_blocks, sizeof(double), reverse_comp_samples);
 }
 
-static double get_sum2(dr_meter_t* self, unsigned channel, unsigned last_block)
+static double get_sum2(const dr_meter_t* self, unsigned channel, unsigned last_block)
 {
     double sum2 = 0.;
     for(unsigned block_index = 0; block_index < last_block; ++block_index)
@@ -98,12 +97,12 @@ static double get_sum2(dr_meter_t* self, unsigned channel, unsigned last_block)
     return sum2;
 }
 
-static double get_tot_sum2(dr_meter_t* self, unsigned channel)
+static double get_tot_sum2(const dr_meter_t* self, unsigned channel)
 {
     return get_sum2(self, channel, self->_ana_blocks);
 }
 
-static double get_sum2_quantile(dr_meter_t* self, unsigned channel, double quantile)
+static double get_sum2_quantile(const dr_meter_t* self, unsigned channel, double quantile)
 {
     unsigned last_block = quantile * self->_ana_blocks;
     if(!last_block) last_block = 1; //not enough blocks analysed
@@ -111,7 +110,7 @@ static double get_sum2_quantile(dr_meter_t* self, unsigned channel, double quant
 }
 
 
-double get_rms_dr_meter(dr_meter_t* self, unsigned channel)
+double get_rms_dr_meter(const dr_meter_t* self, unsigned channel)
 {
     double sum2 = get_tot_sum2(self, channel);
     return get_audio_rms(sum2, self->_ana_blocks);
