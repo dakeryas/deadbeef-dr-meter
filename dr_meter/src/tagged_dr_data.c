@@ -6,7 +6,6 @@ static void update_data_size(tagged_dr_data_t* self)
 {
     free_tagged_dr_data(self);
     self->data = malloc(self->items * sizeof(tagged_dr_datum_t));
-    if(!self->data) fprintf(stderr, "Failed allocating tagged_dr_data->data\n");
 
 }
 
@@ -28,8 +27,8 @@ tagged_dr_data_t make_tagged_dr_data(const selection_t* selection)
 tagged_dr_data_t* create_tagged_dr_data(const selection_t* selection)
 {
     tagged_dr_data_t* tagged_dr_data = malloc(sizeof(*tagged_dr_data));
-    if(tagged_dr_data) copy_data(tagged_dr_data, selection);
-    else fprintf(stderr, "Failed allocating tagged_dr_data\n");
+    tagged_dr_data->data = NULL;//malloc randomly encounters valid address which segfault on free_tagged_dr_data
+    copy_data(tagged_dr_data, selection);
     return tagged_dr_data;
 }
 
