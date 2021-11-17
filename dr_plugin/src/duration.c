@@ -10,7 +10,7 @@ duration_t make_duration(double track_length)
     return duration;
 }
 
-int sprint_duration(duration_t* dur, char* buffer)
+int sprint_duration(const duration_t* dur, char* buffer)
 {
     char* format = "%.0s%2d:%02d";
     if(dur->hours) format = "%2d:%02d:%02d";

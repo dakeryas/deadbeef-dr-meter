@@ -18,6 +18,6 @@ struct duration_s
 typedef struct duration_s duration_t;
 
 duration_t make_duration(double length_seconds);
-int sprint_duration(duration_t* dur, char* buffer);
+int sprint_duration(const duration_t* dur, char* buffer);
 
 #endif /* DURATION_H */
