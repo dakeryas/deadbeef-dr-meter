@@ -75,7 +75,7 @@ jobs:
       - name: Define release
         id: define_release
         run: |
-          echo "::set-output name=TAG::v$(date +'%Y%m%d')"
+          echo "::set-output name=TAG::v$(date +'%Y%m%d_%H%M')"
           echo "::set-output name=NAME::deadbeef_dr_meter_${RUNNER_OS}_$(echo $GITHUB_SHA | cut -c1-7)"
       - name: Pack Ubuntu release
         if: matrix.os == 'ubuntu'
