@@ -61,8 +61,9 @@ make install GTK=2
 
 ## Runtime configuration
 ### DR value formatting
-The printing of the dynamic range values can be customised by changing the default
-formatting string in "Plugins/Dynamic Range Meter", e.g.
+The printing of the dynamic range values can be customised by changing the
+default formatting string `dr_meter.format` in the DeaDBeeF config file (or
+graphically under "Plugins/Dynamic Range Meter"), e.g.
 ```
 DR%-5.2f %10.2f dB %8.2f dB
 ```
@@ -71,4 +72,5 @@ the decimal point.
 
 ### Number of parallel threads
 The maximum number of DR computing threads in the pool can be changed via the
-`dr_meter.threads` variable.
+`dr_meter.threads` variable in the DeaDBeeF config file (or graphically under
+"Plugins/Dynamic Range Meter").
