@@ -27,7 +27,7 @@ tagged_dr_data_t make_tagged_dr_data(const selection_t* selection)
 tagged_dr_data_t* create_tagged_dr_data(const selection_t* selection)
 {
     tagged_dr_data_t* tagged_dr_data = malloc(sizeof(*tagged_dr_data));
-    tagged_dr_data->data = NULL;//malloc randomly encounters valid address which segfault on free_tagged_dr_data
+    tagged_dr_data->data = NULL;
     copy_data(tagged_dr_data, selection);
     return tagged_dr_data;
 }
