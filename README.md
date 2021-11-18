@@ -60,6 +60,7 @@ make install GTK=2
 ```
 
 ## Runtime configuration
+### DR value formatting
 The printing of the dynamic range values can be customised by changing the default
 formatting string in "Plugins/Dynamic Range Meter", e.g.
 ```
@@ -68,5 +69,6 @@ DR%-5.2f %10.2f dB %8.2f dB
 would print a left-justified five-character wide DR value with two digits after
 the decimal point.
 
-The number of DR computing threads can be changed via the `dr_meter.threads`
-variable.
+### Number of parallel threads
+The maximum number of DR computing threads in the pool can be changed via the
+`dr_meter.threads` variable.
