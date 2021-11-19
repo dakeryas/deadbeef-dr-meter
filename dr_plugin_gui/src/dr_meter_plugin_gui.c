@@ -71,7 +71,7 @@ static int get_number_of_threads()
 
 static GdkWindowTypeHint get_window_hint()
 {
-    int focus_dialogue = ddb_api->conf_get_int("dr_meter.focus_dialogue", 0);
+    int focus_dialogue = ddb_api->conf_get_int("dr_meter_gui.focus_dialogue", 0);
     return focus_dialogue ? GDK_WINDOW_TYPE_HINT_DIALOG : GDK_WINDOW_TYPE_HINT_UTILITY;
 }
 
@@ -142,6 +142,10 @@ int dr_meter_gui_connect()
     else return 0;
 }
 
+static const char settings_dialog[] =
+    "property \"Suggest desktop to focus DR dialogue\" checkbox dr_meter_gui.focus_dialogue 0;\n"
+;
+
 #if GTK_CHECK_VERSION(3,0,0)
 #define DR_METER_GUI_PLUGIN_ID "dynamic-range-meter-gtk3"
 DB_plugin_t* ddb_dr_meter_gtk3_load(DB_functions_t* api)
@@ -167,6 +171,7 @@ DB_plugin_t* ddb_dr_meter_gtk2_load(DB_functions_t* api)
         .plugin.start           = dr_meter_gui_start,
         .plugin.connect         = dr_meter_gui_connect,
         .plugin.get_actions     = dr_meter_gui_get_actions,
+        .plugin.configdialog    = settings_dialog,
     };
     return &dr_plugin.plugin;
 }
