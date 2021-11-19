@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "dr_meter_plugin.h"
 #include "block_analyser.h"
@@ -177,11 +178,31 @@ static unsigned sprint_album_info(void* track, char* begin)
     return end - begin;
 }
 
+static int same_album(void* track1, void* track2)
+{
+    DB_playItem_t* item1 = track1;
+    DB_playItem_t* item2 = track2;
+    ddb_api->pl_lock();
+    const char* artist1 = ddb_api->pl_find_meta_raw(item1, "artist");
+    const char* album1 = ddb_api->pl_find_meta_raw(item1, "album");
+    const char* artist2 = ddb_api->pl_find_meta_raw(item2, "artist");
+    const char* album2 = ddb_api->pl_find_meta_raw(item2, "album");
+    ddb_api->pl_unlock();
+    int found_all = artist1 && album1 && artist2 && album2;
+    return found_all && !(strcmp(artist1, artist2) || strcmp(album1, album2));
+}
+
 unsigned sprint_dr_log_impl(const tagged_dr_data_t* tagged_dr_data, char* buffer)
 {
     char dr_format[32];
     ddb_api->conf_get_str("dr_meter.format", DEFAULT_DR_FORMAT, dr_format, sizeof(dr_format));
-    dr_log_printer_t log_printer = {.dr_format = dr_format, .sprint_track_info = sprint_track_info, .sprint_album_info = sprint_album_info};
+    dr_log_printer_t log_printer = {
+        .dr_format = dr_format,
+        .line_length = 80,
+        .sprint_track_info = sprint_track_info,
+        .sprint_album_info = sprint_album_info,
+        .same_album = same_album,
+    };
     return sprint_log_dr_log_printer(&log_printer, tagged_dr_data, buffer);
 }
 
