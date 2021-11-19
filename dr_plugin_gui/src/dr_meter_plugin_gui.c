@@ -69,9 +69,15 @@ static int get_number_of_threads()
     return number_of_threads;
 }
 
+static GdkWindowTypeHint get_window_hint()
+{
+    int focus_dialogue = ddb_api->conf_get_int("dr_meter.focus_dialogue", 0);
+    return focus_dialogue ? GDK_WINDOW_TYPE_HINT_DIALOG : GDK_WINDOW_TYPE_HINT_UTILITY;
+}
+
 static void display_dr_results(const tagged_dr_data_t* tagged_dr_data)
 {
-    dr_display_data_t* display_data = create_dr_display_data(tagged_dr_data->items);
+    dr_display_data_t* display_data = create_dr_display_data(tagged_dr_data->items, get_window_hint());
     if(display_data)
     {
         dr_meter_plugin->sprint_dr_log(tagged_dr_data, display_data->log);

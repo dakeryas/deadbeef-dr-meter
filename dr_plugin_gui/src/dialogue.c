@@ -21,7 +21,7 @@ static GtkWindow* create_dr_dialog(GtkWindow* parent)
     gtk_window_set_position(dialog, GTK_WIN_POS_MOUSE);
     gtk_window_set_modal(dialog, FALSE);
     gtk_window_set_destroy_with_parent(dialog, TRUE);
-    gtk_window_set_type_hint(dialog, GDK_WINDOW_TYPE_HINT_DIALOG);
+    gtk_window_set_type_hint(dialog, GDK_WINDOW_TYPE_HINT_UTILITY);
     gtk_window_set_transient_for(dialog, parent);
     return dialog;
 }
