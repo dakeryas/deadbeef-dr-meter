@@ -62,13 +62,6 @@ static void retrieve_current_selection(selection_t* selection)
     ddb_api->pl_unlock();
 }
 
-static int get_number_of_threads()
-{
-    int number_of_threads = ddb_api->conf_get_int("dr_meter.threads", 0);
-    if(number_of_threads <= 0) number_of_threads = 1;//against negative user value
-    return number_of_threads;
-}
-
 static GdkWindowTypeHint get_window_hint()
 {
     int focus_dialogue = ddb_api->conf_get_int("dr_meter_gui.focus_dialogue", 0);
@@ -100,7 +93,7 @@ static void* meter_job(void* data)
         selection_t selection;
         retrieve_current_selection(&selection);
         tagged_dr_data_t* tagged_dr_data = create_tagged_dr_data(&selection);
-        dr_meter_plugin->compute_dr(tagged_dr_data, get_number_of_threads());
+        dr_meter_plugin->compute_dr(tagged_dr_data);
         g_idle_add(display_dr_results_and_free_tagged_dr_data, tagged_dr_data);
         unreference_selection(&selection);
     }

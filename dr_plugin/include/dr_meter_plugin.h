@@ -15,7 +15,7 @@ struct tagged_dr_data_s;
 typedef struct
 {
     DB_misc_t info;
-    int (*compute_dr)(struct tagged_dr_data_s* tagged_dr_data, unsigned max_threads);
+    int (*compute_dr)(struct tagged_dr_data_s* tagged_dr_data);
     unsigned (*sprint_dr_log)(const struct tagged_dr_data_s* tagged_dr_data, char* buffer);
 } dr_meter_plugin_t;
 

@@ -96,9 +96,16 @@ static void datum_work(tagged_dr_datum_t* datum)
     compute_single_dr(datum->item, &datum->dr_stats);
 }
 
-static int compute_dr_impl(tagged_dr_data_t* tagged_dr_data, unsigned threads)
+static int get_number_of_threads()
 {
-    thread_runner_t thread_runner = make_thread_runner(tagged_dr_data, threads);
+    int number_of_threads = ddb_api->conf_get_int("dr_meter.threads", 0);
+    if(number_of_threads <= 0) number_of_threads = 1;//against negative user value
+    return number_of_threads;
+}
+
+static int compute_dr_impl(tagged_dr_data_t* tagged_dr_data)
+{
+    thread_runner_t thread_runner = make_thread_runner(tagged_dr_data, get_number_of_threads());
     run_work(&thread_runner, datum_work);
     free_thread_runner(&thread_runner);
     return 0;
