@@ -13,7 +13,7 @@ static void free_display_data(GtkWindow* unused, gpointer data)
     free(display_data);
 }
 
-static GtkWindow* create_dr_dialog(GtkWindow* parent)
+static GtkWindow* create_dr_dialog(GtkWindow* parent, GdkWindowTypeHint window_hint)
 {
     GtkWindow* dialog = GTK_WINDOW(gtk_dialog_new());
     gtk_widget_set_size_request(GTK_WIDGET(dialog), 600, 420);
@@ -21,7 +21,7 @@ static GtkWindow* create_dr_dialog(GtkWindow* parent)
     gtk_window_set_position(dialog, GTK_WIN_POS_MOUSE);
     gtk_window_set_modal(dialog, FALSE);
     gtk_window_set_destroy_with_parent(dialog, TRUE);
-    gtk_window_set_type_hint(dialog, GDK_WINDOW_TYPE_HINT_UTILITY);
+    gtk_window_set_type_hint(dialog, window_hint);
     gtk_window_set_transient_for(dialog, parent);
     return dialog;
 }
@@ -51,7 +51,7 @@ static GtkLabel* create_selectable_mono_label(const char* log_buffer)
 
 int show_dr_dialog(dr_display_data_t* display_data, GtkWindow* main_window)
 {
-    display_data->dr_dialog = create_dr_dialog(main_window);
+    display_data->dr_dialog = create_dr_dialog(main_window, display_data->window_hint);
     g_signal_connect(display_data->dr_dialog, "destroy", G_CALLBACK(free_display_data), display_data);
     GtkWidget* content_area = gtk_dialog_get_content_area(GTK_DIALOG(display_data->dr_dialog));
     GtkLabel* log_label = create_selectable_mono_label(display_data->log);
