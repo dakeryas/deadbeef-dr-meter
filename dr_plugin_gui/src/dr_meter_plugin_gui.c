@@ -146,6 +146,7 @@ static const char settings_dialog[] =
     "property \"Suggest desktop to focus DR dialogue\" checkbox dr_meter_gui.focus_dialogue 0;\n"
 ;
 
+
 #if GTK_CHECK_VERSION(3,0,0)
 #define DR_METER_GUI_PLUGIN_ID "dynamic-range-meter-gtk3"
 DB_plugin_t* ddb_dr_meter_gtk3_load(DB_functions_t* api)
@@ -160,7 +161,7 @@ DB_plugin_t* ddb_dr_meter_gtk2_load(DB_functions_t* api)
         .plugin.api_vmajor      = 1,
         .plugin.api_vminor      = 10,
         .plugin.version_major   = 1,
-        .plugin.version_minor   = 0,
+        .plugin.version_minor   = 1,
         .plugin.id              = DR_METER_GUI_PLUGIN_ID,
         .plugin.name            = "Dynamic Range Meter GUI",
         .plugin.descr           = "Shows Dynamic Range log",
