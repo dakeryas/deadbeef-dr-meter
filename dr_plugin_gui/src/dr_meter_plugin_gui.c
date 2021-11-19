@@ -143,7 +143,7 @@ int dr_meter_gui_connect()
 }
 
 static const char settings_dialog[] =
-    "property \"Suggest desktop to focus DR dialogue\" checkbox dr_meter_gui.focus_dialogue 0;\n"
+    "property \"Suggest desktop focus DR dialogue\" checkbox dr_meter_gui.focus_dialogue 0;\n"
 ;
 
 
