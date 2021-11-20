@@ -10,9 +10,12 @@
 
 #include "dr_stats.h"
 
+struct track_s;
+typedef struct track_s track_t;
+
 struct tagged_dr_datum_s
 {
-    void* item;
+    track_t* item;
     dr_stats_t dr_stats;
 };
 

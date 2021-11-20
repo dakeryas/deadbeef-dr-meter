@@ -8,6 +8,7 @@
 #ifndef DR_LOG_PRINTER_H
 #define DR_LOG_PRINTER_H
 
+struct track_s;
 struct tagged_dr_datum_s;
 struct tagged_dr_data_s;
 
@@ -15,9 +16,9 @@ struct dr_log_printer_s
 {
     const char* dr_format;
     unsigned line_length;
-    unsigned (*sprint_track_info)(void* track, char* begin);
-    unsigned (*sprint_album_info)(void* first_track, char* begin);
-    int (*same_album)(void* track1, void* track2);
+    unsigned (*sprint_track_info)(struct track_s* track, char* begin);
+    unsigned (*sprint_album_info)(struct track_s* track, char* begin);
+    int (*same_album)(struct track_s* track1, struct track_s* track2);
 };
 
 typedef struct dr_log_printer_s dr_log_printer_t;

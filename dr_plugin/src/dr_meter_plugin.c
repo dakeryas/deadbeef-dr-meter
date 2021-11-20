@@ -94,7 +94,7 @@ static void compute_single_dr(DB_playItem_t* selection_item, dr_stats_t* dr_stat
 
 static void datum_work(tagged_dr_datum_t* datum)
 {
-    compute_single_dr(datum->item, &datum->dr_stats);
+    compute_single_dr((DB_playItem_t*)datum->item, &datum->dr_stats);
 }
 
 static int get_number_of_threads()
@@ -112,26 +112,24 @@ static int compute_dr_impl(tagged_dr_data_t* tagged_dr_data)
     return 0;
 }
 
-static const char* get_track_filename(void* track)
+static const char* get_track_filename(DB_playItem_t* item)
 {
-    DB_playItem_t* item = track;
     ddb_api->pl_lock();
     const char* path = ddb_api->pl_find_meta_raw(item, ":URI");
     ddb_api->pl_unlock();
     return get_filename(path);
 }
 
-static unsigned sprint_filename(void* track, char* begin)
+static unsigned sprint_filename(DB_playItem_t* item, char* begin)
 {
     char* end = begin;
-    const char* filename = get_track_filename(track);
+    const char* filename = get_track_filename(item);
     end += sprintf(end, " %.83s", filename);
     return end - begin;
 }
 
-static unsigned sprint_tagged_track_info(void* track, int track_number, char* begin)
+static unsigned sprint_tagged_track_info(DB_playItem_t* item, int track_number, char* begin)
 {
-    DB_playItem_t* item = track;
     char* end = begin;
     ddb_api->pl_lock();
     const char* title = ddb_api->pl_find_meta_raw(item, "title");
@@ -140,9 +138,9 @@ static unsigned sprint_tagged_track_info(void* track, int track_number, char* be
     return end - begin;
 }
 
-static unsigned sprint_track_info(void* track, char* begin)
+static unsigned sprint_track_info(track_t* track, char* begin)
 {
-    DB_playItem_t* item = track;
+    DB_playItem_t* item = (DB_playItem_t*)track;
     char* end = begin;
     duration_t duration = make_duration(ddb_api->pl_get_item_duration(item));
     end += sprint_duration(&duration, end);
@@ -152,9 +150,8 @@ static unsigned sprint_track_info(void* track, char* begin)
     return end - begin;
 }
 
-static unsigned sprint_folder_info(void* track, char* begin)
+static unsigned sprint_folder_info(DB_playItem_t* item, char* begin)
 {
-    DB_playItem_t* item = track;
     char* end = begin;
     ddb_api->pl_lock();
     const char* path = ddb_api->pl_find_meta_raw(item, ":URI");
@@ -165,9 +162,9 @@ static unsigned sprint_folder_info(void* track, char* begin)
     return end - begin;
 }
 
-static unsigned sprint_album_info(void* track, char* begin)
+static unsigned sprint_album_info(track_t* track, char* begin)
 {
-    DB_playItem_t* item = track;
+    DB_playItem_t* item = (DB_playItem_t*)track;
     char* end = begin;
     ddb_api->pl_lock();
     const char* artist = ddb_api->pl_find_meta_raw(item, "artist");
@@ -178,10 +175,10 @@ static unsigned sprint_album_info(void* track, char* begin)
     return end - begin;
 }
 
-static int same_album(void* track1, void* track2)
+static int same_album(track_t* track1, track_t* track2)
 {
-    DB_playItem_t* item1 = track1;
-    DB_playItem_t* item2 = track2;
+    DB_playItem_t* item1 = (DB_playItem_t*) track1;
+    DB_playItem_t* item2 = (DB_playItem_t*) track2;
     ddb_api->pl_lock();
     const char* artist1 = ddb_api->pl_find_meta_raw(item1, "artist");
     const char* album1 = ddb_api->pl_find_meta_raw(item1, "album");
