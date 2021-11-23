@@ -40,5 +40,6 @@ dr_display_data_t* create_dr_display_data(unsigned selected_items, GdkWindowType
 
 void free_dr_display_data(dr_display_data_t* self)
 {
+    gtk_widget_destroy(GTK_WIDGET(self->dr_dialog));
     free(self->log);
 }
