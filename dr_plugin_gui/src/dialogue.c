@@ -26,7 +26,7 @@ static GtkWindow* create_dr_dialog(GtkWindow* parent, GdkWindowTypeHint window_h
     return dialog;
 }
 
-void set_monospace(GtkLabel* label)
+static void set_monospace(GtkLabel* label)
 {
 #if GTK_CHECK_VERSION(3,0,0)
     GtkStyleContext *context = gtk_widget_get_style_context(GTK_WIDGET(label));
