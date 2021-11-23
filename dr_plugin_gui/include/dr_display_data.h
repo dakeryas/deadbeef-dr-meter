@@ -14,7 +14,7 @@ struct GtkWindow;
 
 struct dr_display_data_s
 {
-    GtkWindow* dr_dialog;
+    GtkDialog* dr_dialog;
     GdkWindowTypeHint window_hint;
     char* log;
 };

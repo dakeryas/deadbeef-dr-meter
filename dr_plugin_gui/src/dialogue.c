@@ -13,16 +13,14 @@ static void free_display_data(GtkWindow* unused, gpointer data)
     free(display_data);
 }
 
-static GtkWindow* create_dr_dialog(GtkWindow* parent, GdkWindowTypeHint window_hint)
+static GtkDialog* create_dr_dialog(GtkWindow* parent, GdkWindowTypeHint window_hint)
 {
-    GtkWindow* dialog = GTK_WINDOW(gtk_dialog_new());
+    GtkDialog* dialog = GTK_DIALOG(gtk_dialog_new_with_buttons("Dynamic Range", parent, GTK_DIALOG_DESTROY_WITH_PARENT, NULL, NULL));
     gtk_widget_set_size_request(GTK_WIDGET(dialog), 600, 420);
-    gtk_window_set_title(dialog, "Dynamic Range");
-    gtk_window_set_position(dialog, GTK_WIN_POS_MOUSE);
-    gtk_window_set_modal(dialog, FALSE);
-    gtk_window_set_destroy_with_parent(dialog, TRUE);
-    gtk_window_set_type_hint(dialog, window_hint);
-    gtk_window_set_transient_for(dialog, parent);
+    gtk_container_set_border_width(GTK_CONTAINER(dialog), 6);
+    gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_MOUSE);
+    gtk_window_set_type_hint(GTK_WINDOW(dialog), window_hint);
+    gtk_window_set_transient_for(GTK_WINDOW(dialog), parent);
     return dialog;
 }
 
@@ -56,8 +54,7 @@ int show_dr_dialog(dr_display_data_t* display_data, GtkWindow* main_window)
     GtkWidget* content_area = gtk_dialog_get_content_area(GTK_DIALOG(display_data->dr_dialog));
     GtkLabel* log_label = create_selectable_mono_label(display_data->log);
     gtk_container_add(GTK_CONTAINER(content_area), GTK_WIDGET(log_label));
-    GtkWidget* save_button = create_save_button(display_data);
-    gtk_container_add(GTK_CONTAINER(content_area), save_button);
+    add_save_button(display_data->dr_dialog, display_data);
     gtk_widget_show_all(GTK_WIDGET(display_data->dr_dialog));
     return 0;
 }
