@@ -13,10 +13,14 @@ static unsigned get_header_footer_size(unsigned selected_items)
     return (header_length + footer_length) * number_of_albums;
 }
 
+static unsigned item_length()
+{
+    return 40 + 5 + 5 + 1 + 3 + 80 + 2;//DR info, space, duration, space, track number, title, newline
+}
+
 static unsigned get_log_size(unsigned selected_items)
 {
-    const unsigned item_length = 40 + 5 + 5 + 1 + 3 + 80 + 2;//DR info, space, duration, space, track number, title, newline
-    return selected_items * item_length + get_header_footer_size(selected_items);
+    return selected_items * item_length() + get_header_footer_size(selected_items);
 }
 
 static void update_log_size(dr_display_data_t* self, unsigned selected_items)
