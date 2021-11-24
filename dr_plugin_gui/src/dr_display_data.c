@@ -46,6 +46,7 @@ static void create_dr_dialog(dr_display_data_t* self, GtkWindow* parent, GdkWind
     gtk_window_set_position(GTK_WINDOW(self->dialog), GTK_WIN_POS_MOUSE);
     gtk_window_set_type_hint(GTK_WINDOW(self->dialog), window_hint);
     gtk_window_set_transient_for(GTK_WINDOW(self->dialog), parent);
+    add_save_button(self->dialog, self);
     g_signal_connect(self->dialog, "destroy", G_CALLBACK(free_display_data_cb), self);
 }
 
@@ -66,7 +67,6 @@ dr_display_data_t* create_dr_display_data(GtkWindow* parent, GdkWindowTypeHint w
 void show_dr_dialog(dr_display_data_t* self)
 {
     add_scrolled_mono_text(self->dialog, self->log, self->log_length);
-    add_save_button(self->dialog, self);
     gtk_widget_show_all(GTK_WIDGET(self->dialog));
 }
 
