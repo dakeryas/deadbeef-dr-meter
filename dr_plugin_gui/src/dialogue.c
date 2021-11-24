@@ -24,36 +24,36 @@ static GtkDialog* create_dr_dialog(GtkWindow* parent, GdkWindowTypeHint window_h
     return dialog;
 }
 
-static void set_monospace(GtkLabel* label)
+static void set_monospace(GtkTextView* text)
 {
 #if GTK_CHECK_VERSION(3,0,0)
-    GtkStyleContext *context = gtk_widget_get_style_context(GTK_WIDGET(label));
+    GtkStyleContext *context = gtk_widget_get_style_context(GTK_WIDGET(text));
     GtkCssProvider *provider = gtk_css_provider_new();
-    char css[] = "label {font-family: \"monospace\";}";
+    char css[] = "textview {font-family: \"monospace\";}";
     gtk_css_provider_load_from_data(provider, css, sizeof(css), NULL);
     gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 #else
     PangoFontDescription *descr = pango_font_description_from_string("monospace");
-    gtk_widget_modify_font(GTK_WIDGET(label), descr);
+    gtk_widget_modify_font(GTK_WIDGET(text), descr);
     pango_font_description_free(descr);
 #endif
 }
 
-static GtkLabel* create_selectable_mono_label(const char* log_buffer)
+static GtkTextView* create_selectable_mono_text(const char* log_buffer)
 {
-    GtkLabel* label = GTK_LABEL(gtk_label_new(log_buffer));
-    set_monospace(label);
-    gtk_label_set_selectable(label, TRUE);
-    return label;
+    GtkTextView* text = GTK_TEXT_VIEW(gtk_text_view_new());
+    gtk_text_buffer_set_text(gtk_text_view_get_buffer(text), log_buffer, -1);
+    set_monospace(text);
+    gtk_text_view_set_editable(text, FALSE);
+    return text;
 }
 
 int show_dr_dialog(dr_display_data_t* display_data, GtkWindow* main_window)
 {
     display_data->dr_dialog = create_dr_dialog(main_window, display_data->window_hint);
     g_signal_connect(display_data->dr_dialog, "destroy", G_CALLBACK(free_display_data), display_data);
-    GtkWidget* content_area = gtk_dialog_get_content_area(GTK_DIALOG(display_data->dr_dialog));
-    GtkLabel* log_label = create_selectable_mono_label(display_data->log);
-    gtk_container_add(GTK_CONTAINER(content_area), GTK_WIDGET(log_label));
+    GtkTextView* log_text = create_selectable_mono_text(display_data->log);
+    gtk_container_add(GTK_CONTAINER(gtk_dialog_get_content_area(display_data->dr_dialog)), GTK_WIDGET(log_text)));
     add_save_button(display_data->dr_dialog, display_data);
     gtk_widget_show_all(GTK_WIDGET(display_data->dr_dialog));
     return 0;
