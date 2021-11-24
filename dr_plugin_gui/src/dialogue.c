@@ -18,7 +18,7 @@ static GtkDialog* create_dr_dialog(GtkWindow* parent, GdkWindowTypeHint window_h
 {
     GtkDialog* dialog = GTK_DIALOG(gtk_dialog_new_with_buttons("Dynamic Range", parent, GTK_DIALOG_DESTROY_WITH_PARENT, NULL, NULL));
     gtk_widget_set_size_request(GTK_WIDGET(dialog), 600, 420);
-    gtk_container_set_border_width(GTK_CONTAINER(dialog), 6);
+    gtk_container_set_border_width(GTK_CONTAINER(dialog), 5);
     gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_MOUSE);
     gtk_window_set_type_hint(GTK_WINDOW(dialog), window_hint);
     gtk_window_set_transient_for(GTK_WINDOW(dialog), parent);
@@ -29,7 +29,7 @@ static GtkScrolledWindow* add_scrolled_mono_text(GtkDialog* dialog, char* text, 
 {
     GtkScrolledWindow* scrolled_window = GTK_SCROLLED_WINDOW(gtk_scrolled_window_new(NULL, NULL));
     GtkTextView* text_view = create_mono_text(text, text_length);
-    gtk_widget_set_size_request(GTK_WIDGET(scrolled_window), -1, 200);
+    gtk_widget_set_size_request(GTK_WIDGET(scrolled_window), -1, 370);
     gtk_container_add(GTK_CONTAINER(scrolled_window), GTK_WIDGET(text_view));
     gtk_container_add(GTK_CONTAINER(gtk_dialog_get_content_area(dialog)), GTK_WIDGET(scrolled_window));
     return scrolled_window;
