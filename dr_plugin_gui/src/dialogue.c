@@ -48,12 +48,21 @@ static GtkTextView* create_mono_text(char* log_buffer, unsigned log_length)
     return text;
 }
 
+static GtkScrolledWindow* add_scrolled_mono_text(GtkDialog* dialog, char* text, unsigned text_length)
+{
+    GtkScrolledWindow* scrolled_window = GTK_SCROLLED_WINDOW(gtk_scrolled_window_new(NULL, NULL));
+    GtkTextView* text_view = create_mono_text(text, text_length);
+    gtk_widget_set_size_request(GTK_WIDGET(scrolled_window), -1, 200);
+    gtk_container_add(GTK_CONTAINER(scrolled_window), GTK_WIDGET(text_view));
+    gtk_container_add(GTK_CONTAINER(gtk_dialog_get_content_area(dialog)), GTK_WIDGET(scrolled_window));
+    return scrolled_window;
+}
+
 int show_dr_dialog(dr_display_data_t* display_data, GtkWindow* main_window)
 {
     display_data->dr_dialog = create_dr_dialog(main_window, display_data->window_hint);
     g_signal_connect(display_data->dr_dialog, "destroy", G_CALLBACK(free_display_data), display_data);
-    GtkTextView* log_text = create_mono_text(display_data->log, display_data->log_length);
-    gtk_container_add(GTK_CONTAINER(gtk_dialog_get_content_area(display_data->dr_dialog)), GTK_WIDGET(log_text)));
+    add_scrolled_mono_text(display_data->dr_dialog, display_data->log, display_data->log_length);
     add_save_button(display_data->dr_dialog, display_data);
     gtk_widget_show_all(GTK_WIDGET(display_data->dr_dialog));
     return 0;
