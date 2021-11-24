@@ -8,7 +8,7 @@
 #ifndef DR_METER_GUI_DR_DISPLAY_DATA_H
 #define DR_METER_GUI_DR_DISPLAY_DATA_H
 
-#include <gdk/gdktypes.h>
+#include <gdk/gdk.h>
 
 struct dr_display_data_s
 {
