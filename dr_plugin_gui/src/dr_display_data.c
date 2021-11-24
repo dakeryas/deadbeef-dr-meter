@@ -23,17 +23,17 @@ static unsigned get_log_size(unsigned selected_items)
     return selected_items * item_length() + get_header_footer_size(selected_items);
 }
 
-static void update_log_size(dr_display_data_t* self, unsigned selected_items)
+static void update_log_size(dr_display_data_t* self)
 {
     free(self->log);
     self->log_length = 0;
-    self->log = malloc(get_log_size(selected_items));
+    self->log = malloc(get_log_size(self->items));
 }
 
-static void init_log(dr_display_data_t* self, unsigned selected_items)
+static void init_log(dr_display_data_t* self)
 {
     self->log = NULL;
-    update_log_size(self, selected_items);
+    update_log_size(self);
 }
 
 static void free_display_data_cb(GtkDialog* unused, gpointer data)
@@ -62,7 +62,8 @@ static void create_dr_dialog(dr_display_data_t* self, GtkWindow* parent, GdkWind
 dr_display_data_t* create_dr_display_data(GtkWindow* parent, GdkWindowTypeHint window_hint, unsigned selected_items)
 {
     dr_display_data_t* self = malloc(sizeof(*self));
-    init_log(self, selected_items);
+    self->items = selected_items;
+    init_log(self);
     create_dr_dialog(self, parent, window_hint);
     if(!self->log)
     {

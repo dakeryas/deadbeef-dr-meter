@@ -12,6 +12,7 @@
 
 struct dr_display_data_s
 {
+    unsigned items;
     char* log;
     unsigned log_length;
     GtkDialog* dialog;
