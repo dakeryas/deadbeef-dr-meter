@@ -7,7 +7,7 @@ static unsigned get_header_footer_size(unsigned selected_items)
 {
     const unsigned header_length = 135 + 48 + 5 * 80;
     const unsigned footer_length = 21 + 23;
-    const unsigned number_of_albums = lround(.5 + selected_items / 8.);
+    const unsigned number_of_albums = selected_items;//would need to check tags otherwise
     return (header_length + footer_length) * number_of_albums;
 }
 
