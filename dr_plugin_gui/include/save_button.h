@@ -12,6 +12,6 @@
 struct dr_display_data_s;
 struct GtkWidget;
 
-GtkWidget* add_save_button(struct dr_display_data_s* display_data);
+GtkWidget* add_save_button(struct dr_display_data_s* display_data, const char* button_label);
 
 #endif /* DR_PLUGIN_GUI_SAVE_BUTTON_H */

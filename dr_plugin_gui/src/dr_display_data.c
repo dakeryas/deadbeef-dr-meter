@@ -51,7 +51,7 @@ static void create_dr_dialog(dr_display_data_t* self, GtkWindow* parent, GdkWind
 {
     self->dialog = GTK_DIALOG(gtk_dialog_new_with_buttons("Dynamic Range", parent, GTK_DIALOG_DESTROY_WITH_PARENT, NULL, NULL));
     set_dr_dialog_properties(GTK_WINDOW(self->dialog), parent, window_hint);
-    add_save_button(self);
+    add_save_button(self, "Save DR log");
     g_signal_connect(self->dialog, "destroy", G_CALLBACK(free_display_data_cb), self);
 }
 
