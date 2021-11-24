@@ -49,11 +49,11 @@ static void create_dr_dialog(dr_display_data_t* self, GtkWindow* parent, GdkWind
     gtk_window_set_transient_for(GTK_WINDOW(self->dialog), parent);
 }
 
-dr_display_data_t* create_dr_display_data(GtkWindow* main_window, GdkWindowTypeHint window_hint, unsigned selected_items)
+dr_display_data_t* create_dr_display_data(GtkWindow* parent, GdkWindowTypeHint window_hint, unsigned selected_items)
 {
     dr_display_data_t* self = malloc(sizeof(*self));
     init_log(self, selected_items);
-    create_dr_dialog(self, main_window, window_hint);
+    create_dr_dialog(self, parent, window_hint);
     g_signal_connect(self->dialog, "destroy", G_CALLBACK(free_display_data_cb), self);
     if(!self->log)
     {
