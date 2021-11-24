@@ -28,6 +28,7 @@ dr_display_data_t* create_dr_display_data(unsigned selected_items, GdkWindowType
     dr_display_data_t* display_data = malloc(sizeof(*display_data));
     display_data->window_hint = window_hint;
     display_data->log = NULL;
+    display_data->log_length = 0;
     update_log_size(display_data, selected_items);
     if(!display_data->log)
     {

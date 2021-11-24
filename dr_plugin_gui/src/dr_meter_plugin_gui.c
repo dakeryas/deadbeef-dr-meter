@@ -73,7 +73,7 @@ static void display_dr_results(const tagged_dr_data_t* tagged_dr_data)
     dr_display_data_t* display_data = create_dr_display_data(tagged_dr_data->items, get_window_hint());
     if(display_data)
     {
-        dr_meter_plugin->sprint_dr_log(tagged_dr_data, display_data->log);
+        display_data->log_length = dr_meter_plugin->sprint_dr_log(tagged_dr_data, display_data->log);
         show_dr_dialog(display_data, GTK_WINDOW(gtk_ui_plugin->get_mainwin()));
     }
 }
