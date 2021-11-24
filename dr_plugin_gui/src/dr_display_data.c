@@ -45,7 +45,6 @@ static void free_display_data_cb(GtkDialog* unused, gpointer data)
 
 static void set_dr_dialog_properties(GtkWindow* dialog, GtkWindow* parent, GdkWindowTypeHint window_hint)
 {
-    gtk_window_set_default_size(GTK_WINDOW(dialog), 600, 420);
     gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_MOUSE);
     gtk_window_set_type_hint(GTK_WINDOW(dialog), window_hint);
     gtk_window_set_transient_for(GTK_WINDOW(dialog), parent);
@@ -74,9 +73,23 @@ dr_display_data_t* create_dr_display_data(GtkWindow* parent, GdkWindowTypeHint w
     return self;
 }
 
+static unsigned guess_needed_dr_dialog_height(dr_display_data_t* self)
+{
+    return 230 + 15 * self->items;
+}
+
+static void adapt_dialog_height(dr_display_data_t* self)
+{
+    unsigned height = guess_needed_dr_dialog_height(self);
+    const unsigned max_height = 900;
+    if(height > max_height) height = max_height;
+    gtk_window_set_default_size(GTK_WINDOW(self->dialog), 600, height);
+}
+
 void show_dr_dialog(dr_display_data_t* self)
 {
     add_scrolled_mono_text(self->dialog, self->log, self->log_length);
+    adapt_dialog_height(self);
     gtk_widget_show_all(GTK_WIDGET(self->dialog));
 }
 
