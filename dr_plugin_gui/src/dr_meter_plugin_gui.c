@@ -153,7 +153,7 @@ DB_plugin_t* ddb_dr_meter_gtk2_load(DB_functions_t* api)
         .plugin.api_vmajor      = 1,
         .plugin.api_vminor      = 10,
         .plugin.version_major   = 1,
-        .plugin.version_minor   = 1,
+        .plugin.version_minor   = 2,
         .plugin.id              = DR_METER_GUI_PLUGIN_ID,
         .plugin.name            = "Dynamic Range Meter GUI",
         .plugin.descr           = "Shows Dynamic Range log",
