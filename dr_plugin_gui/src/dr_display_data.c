@@ -5,23 +5,6 @@
 #include "mono_text.h"
 #include "save_button.h"
 
-static void free_display_data_cb(GtkDialog* unused, gpointer data)
-{
-    (void) unused;
-    dr_display_data_t* display_data = (dr_display_data_t*)data;
-    free_dr_display_data(display_data);
-}
-
-static void create_dr_dialog(dr_display_data_t* self, GtkWindow* parent, GdkWindowTypeHint window_hint)
-{
-    self->dialog = GTK_DIALOG(gtk_dialog_new_with_buttons("Dynamic Range", parent, GTK_DIALOG_DESTROY_WITH_PARENT, NULL, NULL));
-    gtk_widget_set_size_request(GTK_WIDGET(self->dialog), 600, 420);
-    gtk_container_set_border_width(GTK_CONTAINER(self->dialog), 5);
-    gtk_window_set_position(GTK_WINDOW(self->dialog), GTK_WIN_POS_MOUSE);
-    gtk_window_set_type_hint(GTK_WINDOW(self->dialog), window_hint);
-    gtk_window_set_transient_for(GTK_WINDOW(self->dialog), parent);
-}
-
 static unsigned get_header_footer_size(unsigned selected_items)
 {
     const unsigned header_length = 135 + 48 + 5 * 80;
@@ -47,6 +30,23 @@ static void init_log(dr_display_data_t* self, unsigned selected_items)
 {
     self->log = NULL;
     update_log_size(self, selected_items);
+}
+
+static void free_display_data_cb(GtkDialog* unused, gpointer data)
+{
+    (void) unused;
+    dr_display_data_t* display_data = (dr_display_data_t*)data;
+    free_dr_display_data(display_data);
+}
+
+static void create_dr_dialog(dr_display_data_t* self, GtkWindow* parent, GdkWindowTypeHint window_hint)
+{
+    self->dialog = GTK_DIALOG(gtk_dialog_new_with_buttons("Dynamic Range", parent, GTK_DIALOG_DESTROY_WITH_PARENT, NULL, NULL));
+    gtk_widget_set_size_request(GTK_WIDGET(self->dialog), 600, 420);
+    gtk_container_set_border_width(GTK_CONTAINER(self->dialog), 5);
+    gtk_window_set_position(GTK_WINDOW(self->dialog), GTK_WIN_POS_MOUSE);
+    gtk_window_set_type_hint(GTK_WINDOW(self->dialog), window_hint);
+    gtk_window_set_transient_for(GTK_WINDOW(self->dialog), parent);
 }
 
 dr_display_data_t* create_dr_display_data(GtkWindow* main_window, GdkWindowTypeHint window_hint, unsigned selected_items)
