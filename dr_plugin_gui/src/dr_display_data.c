@@ -11,20 +11,19 @@ static unsigned get_log_size(unsigned selected_items)
     return selected_items * item_length + lrint((header_length + footer_length) * selected_items / 8.) ;
 }
 
-static unsigned allocate_log(dr_display_data_t* display_data, unsigned selected_items)
+static void update_log_size(dr_display_data_t* self, unsigned selected_items)
 {
-    unsigned log_size = get_log_size(selected_items);
-    display_data->log = malloc(log_size);
-    if(display_data->log) return log_size;
-    else return 0;
+    free(self->log);
+    self->log = malloc(get_log_size(selected_items));
 }
 
 dr_display_data_t* create_dr_display_data(unsigned selected_items, GdkWindowTypeHint window_hint)
 {
     dr_display_data_t* display_data = malloc(sizeof(*display_data));
     display_data->window_hint = window_hint;
-    unsigned log_size = allocate_log(display_data, selected_items);
-    if(!log_size)
+    display_data->log = NULL;
+    update_log_size(display_data, selected_items);
+    if(!display_data->log)
     {
         fprintf(stderr, "Failed allocating DR log buffer\n");
         free(display_data);
