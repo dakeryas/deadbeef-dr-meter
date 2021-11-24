@@ -43,7 +43,6 @@ static void create_dr_dialog(dr_display_data_t* self, GtkWindow* parent, GdkWind
 {
     self->dialog = GTK_DIALOG(gtk_dialog_new_with_buttons("Dynamic Range", parent, GTK_DIALOG_DESTROY_WITH_PARENT, NULL, NULL));
     gtk_widget_set_size_request(GTK_WIDGET(self->dialog), 600, 420);
-    gtk_container_set_border_width(GTK_CONTAINER(self->dialog), 5);
     gtk_window_set_position(GTK_WINDOW(self->dialog), GTK_WIN_POS_MOUSE);
     gtk_window_set_type_hint(GTK_WINDOW(self->dialog), window_hint);
     gtk_window_set_transient_for(GTK_WINDOW(self->dialog), parent);
