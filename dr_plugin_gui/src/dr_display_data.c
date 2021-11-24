@@ -20,6 +20,7 @@ static unsigned get_log_size(unsigned selected_items)
 static void update_log_size(dr_display_data_t* self, unsigned selected_items)
 {
     free(self->log);
+    self->log_length = 0;
     self->log = malloc(get_log_size(selected_items));
 }
 
@@ -28,7 +29,6 @@ dr_display_data_t* create_dr_display_data(unsigned selected_items, GdkWindowType
     dr_display_data_t* display_data = malloc(sizeof(*display_data));
     display_data->window_hint = window_hint;
     display_data->log = NULL;
-    display_data->log_length = 0;
     update_log_size(display_data, selected_items);
     if(!display_data->log)
     {
