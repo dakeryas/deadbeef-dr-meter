@@ -9,7 +9,6 @@
 #include "tagged_dr_data.h"
 #include "selection.h"
 #include "dr_display_data.h"
-#include "dialogue.h"
 
 DB_functions_t* ddb_api;
 dr_meter_plugin_t* dr_meter_plugin;
@@ -70,11 +69,11 @@ static GdkWindowTypeHint get_window_hint()
 
 static void display_dr_results(const tagged_dr_data_t* tagged_dr_data)
 {
-    dr_display_data_t* display_data = create_dr_display_data(tagged_dr_data->items, get_window_hint());
+    dr_display_data_t* display_data = create_dr_display_data(GTK_WINDOW(gtk_ui_plugin->get_mainwin()), get_window_hint(), tagged_dr_data->items);
     if(display_data)
     {
         display_data->log_length = dr_meter_plugin->sprint_dr_log(tagged_dr_data, display_data->log);
-        show_dr_dialog(display_data, GTK_WINDOW(gtk_ui_plugin->get_mainwin()));
+        show_dr_dialog(display_data);
     }
 }
 static int display_dr_results_and_free_tagged_dr_data(void* tagged_dr_data)

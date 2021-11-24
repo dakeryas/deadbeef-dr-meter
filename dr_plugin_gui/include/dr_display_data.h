@@ -14,15 +14,16 @@ struct GtkWindow;
 
 struct dr_display_data_s
 {
-    GtkDialog* dr_dialog;
-    GdkWindowTypeHint window_hint;
     char* log;
     unsigned log_length;
+    GtkDialog* dialog;
 };
 
 typedef struct dr_display_data_s dr_display_data_t;
 
-dr_display_data_t* create_dr_display_data(unsigned selected_items, GdkWindowTypeHint window_hint);
+dr_display_data_t* create_dr_display_data(GtkWindow* main_window, GdkWindowTypeHint window_hint, unsigned selected_items);
+void show_dr_dialog(dr_display_data_t* self);
+void free_dr_display_data_members(dr_display_data_t* self);
 void free_dr_display_data(dr_display_data_t* self);
 
 #endif /* DR_METER_GUI_DR_DISPLAY_DATA_H */

@@ -2,6 +2,25 @@
 #include <math.h>
 #include <gtk/gtk.h>
 #include "dr_display_data.h"
+#include "mono_text.h"
+#include "save_button.h"
+
+static void free_display_data_cb(GtkDialog* unused, gpointer data)
+{
+    (void) unused;
+    dr_display_data_t* display_data = (dr_display_data_t*)data;
+    free_dr_display_data(display_data);
+}
+
+static void create_dr_dialog(dr_display_data_t* self, GtkWindow* parent, GdkWindowTypeHint window_hint)
+{
+    self->dialog = GTK_DIALOG(gtk_dialog_new_with_buttons("Dynamic Range", parent, GTK_DIALOG_DESTROY_WITH_PARENT, NULL, NULL));
+    gtk_widget_set_size_request(GTK_WIDGET(self->dialog), 600, 420);
+    gtk_container_set_border_width(GTK_CONTAINER(self->dialog), 5);
+    gtk_window_set_position(GTK_WINDOW(self->dialog), GTK_WIN_POS_MOUSE);
+    gtk_window_set_type_hint(GTK_WINDOW(self->dialog), window_hint);
+    gtk_window_set_transient_for(GTK_WINDOW(self->dialog), parent);
+}
 
 static unsigned get_header_footer_size(unsigned selected_items)
 {
@@ -24,23 +43,52 @@ static void update_log_size(dr_display_data_t* self, unsigned selected_items)
     self->log = malloc(get_log_size(selected_items));
 }
 
-dr_display_data_t* create_dr_display_data(unsigned selected_items, GdkWindowTypeHint window_hint)
+static void init_log(dr_display_data_t* self, unsigned selected_items)
 {
-    dr_display_data_t* display_data = malloc(sizeof(*display_data));
-    display_data->window_hint = window_hint;
-    display_data->log = NULL;
-    update_log_size(display_data, selected_items);
-    if(!display_data->log)
+    self->log = NULL;
+    update_log_size(self, selected_items);
+}
+
+dr_display_data_t* create_dr_display_data(GtkWindow* main_window, GdkWindowTypeHint window_hint, unsigned selected_items)
+{
+    dr_display_data_t* self = malloc(sizeof(*self));
+    init_log(self, selected_items);
+    create_dr_dialog(self, main_window, window_hint);
+    g_signal_connect(self->dialog, "destroy", G_CALLBACK(free_display_data_cb), self);
+    if(!self->log)
     {
         fprintf(stderr, "Failed allocating DR log buffer\n");
-        free(display_data);
-        display_data = NULL;
+        free_dr_display_data(self);
+        self = NULL;
     }
-    return display_data;
+    return self;
+}
+
+static GtkScrolledWindow* add_scrolled_mono_text(GtkDialog* dialog, char* text, unsigned text_length)
+{
+    GtkScrolledWindow* scrolled_window = GTK_SCROLLED_WINDOW(gtk_scrolled_window_new(NULL, NULL));
+    GtkTextView* text_view = create_mono_text(text, text_length);
+    gtk_widget_set_size_request(GTK_WIDGET(scrolled_window), -1, 370);
+    gtk_container_add(GTK_CONTAINER(scrolled_window), GTK_WIDGET(text_view));
+    gtk_container_add(GTK_CONTAINER(gtk_dialog_get_content_area(dialog)), GTK_WIDGET(scrolled_window));
+    return scrolled_window;
+}
+
+void show_dr_dialog(dr_display_data_t* self)
+{
+    add_scrolled_mono_text(self->dialog, self->log, self->log_length);
+    add_save_button(self->dialog, self);
+    gtk_widget_show_all(GTK_WIDGET(self->dialog));
+}
+
+void free_dr_display_data_members(dr_display_data_t* self)
+{
+    gtk_widget_destroy(GTK_WIDGET(self->dialog));
+    free(self->log);
 }
 
 void free_dr_display_data(dr_display_data_t* self)
 {
-    gtk_widget_destroy(GTK_WIDGET(self->dr_dialog));
-    free(self->log);
+    free_dr_display_data_members(self);
+    free(self);
 }
