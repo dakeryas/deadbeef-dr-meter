@@ -3,12 +3,18 @@
 #include <gtk/gtk.h>
 #include "dr_display_data.h"
 
+static unsigned get_header_footer_size(unsigned selected_items)
+{
+    const unsigned header_length = 135 + 48 + 5 * 80;
+    const unsigned footer_length = 21 + 23;
+    const unsigned number_of_albums = lround(.5 + selected_items / 8.);
+    return (header_length + footer_length) * number_of_albums;
+}
+
 static unsigned get_log_size(unsigned selected_items)
 {
     const unsigned item_length = 40 + 5 + 5 + 1 + 3 + 80 + 2;//DR info, space, duration, space, track number, title, newline
-    const unsigned header_length = 135 + 48 + 5 * 80;
-    const unsigned footer_length = 21 + 23;
-    return selected_items * item_length + lrint((header_length + footer_length) * selected_items / 8.) ;
+    return selected_items * item_length + get_header_footer_size(selected_items);
 }
 
 static void update_log_size(dr_display_data_t* self, unsigned selected_items)
