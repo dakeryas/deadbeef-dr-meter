@@ -46,6 +46,7 @@ static void create_dr_dialog(dr_display_data_t* self, GtkWindow* parent, GdkWind
     gtk_window_set_position(GTK_WINDOW(self->dialog), GTK_WIN_POS_MOUSE);
     gtk_window_set_type_hint(GTK_WINDOW(self->dialog), window_hint);
     gtk_window_set_transient_for(GTK_WINDOW(self->dialog), parent);
+    g_signal_connect(self->dialog, "destroy", G_CALLBACK(free_display_data_cb), self);
 }
 
 dr_display_data_t* create_dr_display_data(GtkWindow* parent, GdkWindowTypeHint window_hint, unsigned selected_items)
@@ -53,7 +54,6 @@ dr_display_data_t* create_dr_display_data(GtkWindow* parent, GdkWindowTypeHint w
     dr_display_data_t* self = malloc(sizeof(*self));
     init_log(self, selected_items);
     create_dr_dialog(self, parent, window_hint);
-    g_signal_connect(self->dialog, "destroy", G_CALLBACK(free_display_data_cb), self);
     if(!self->log)
     {
         fprintf(stderr, "Failed allocating DR log buffer\n");
