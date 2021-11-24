@@ -68,9 +68,8 @@ static GtkScrolledWindow* add_scrolled_mono_text(GtkDialog* dialog, char* text, 
 {
     GtkScrolledWindow* scrolled_window = GTK_SCROLLED_WINDOW(gtk_scrolled_window_new(NULL, NULL));
     GtkTextView* text_view = create_mono_text(text, text_length);
-    gtk_widget_set_size_request(GTK_WIDGET(scrolled_window), -1, 370);
     gtk_container_add(GTK_CONTAINER(scrolled_window), GTK_WIDGET(text_view));
-    gtk_container_add(GTK_CONTAINER(gtk_dialog_get_content_area(dialog)), GTK_WIDGET(scrolled_window));
+    gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(dialog)), GTK_WIDGET(scrolled_window), TRUE, TRUE, 0);
     return scrolled_window;
 }
 
