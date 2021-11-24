@@ -11,8 +11,7 @@
 
 struct dr_display_data_s;
 struct GtkWidget;
-struct GtkDialog;
 
-GtkWidget* add_save_button(GtkDialog* dr_dialog, struct dr_display_data_s* display_data);
+GtkWidget* add_save_button(struct dr_display_data_s* display_data);
 
 #endif /* DR_PLUGIN_GUI_SAVE_BUTTON_H */

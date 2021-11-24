@@ -39,9 +39,9 @@ static void open_save_dialog(GtkButton* unused, gpointer data)
     gtk_widget_destroy(GTK_WIDGET(file_dialog));
 }
 
-GtkWidget* add_save_button(GtkDialog* dr_dialog, dr_display_data_t* display_data)
+GtkWidget* add_save_button(dr_display_data_t* display_data)
 {
-    GtkWidget* save_button = gtk_dialog_add_button(dr_dialog, "Save DR log", GTK_RESPONSE_NONE);
+    GtkWidget* save_button = gtk_dialog_add_button(display_data->dialog, "Save DR log", GTK_RESPONSE_NONE);
     g_signal_connect(save_button, "clicked", G_CALLBACK(open_save_dialog), display_data);
     return save_button;
 }

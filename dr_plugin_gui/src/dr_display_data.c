@@ -39,14 +39,19 @@ static void free_display_data_cb(GtkDialog* unused, gpointer data)
     free_dr_display_data(display_data);
 }
 
+static void set_dr_dialog_properties(GtkWindow* dialog, GtkWindow* parent, GdkWindowTypeHint window_hint)
+{
+    gtk_window_set_default_size(GTK_WINDOW(dialog), 600, 420);
+    gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_MOUSE);
+    gtk_window_set_type_hint(GTK_WINDOW(dialog), window_hint);
+    gtk_window_set_transient_for(GTK_WINDOW(dialog), parent);
+}
+
 static void create_dr_dialog(dr_display_data_t* self, GtkWindow* parent, GdkWindowTypeHint window_hint)
 {
     self->dialog = GTK_DIALOG(gtk_dialog_new_with_buttons("Dynamic Range", parent, GTK_DIALOG_DESTROY_WITH_PARENT, NULL, NULL));
-    gtk_window_set_default_size(GTK_WINDOW(self->dialog), 600, 420);
-    gtk_window_set_position(GTK_WINDOW(self->dialog), GTK_WIN_POS_MOUSE);
-    gtk_window_set_type_hint(GTK_WINDOW(self->dialog), window_hint);
-    gtk_window_set_transient_for(GTK_WINDOW(self->dialog), parent);
-    add_save_button(self->dialog, self);
+    set_dr_dialog_properties(GTK_WINDOW(self->dialog), parent, window_hint);
+    add_save_button(self);
     g_signal_connect(self->dialog, "destroy", G_CALLBACK(free_display_data_cb), self);
 }
 
