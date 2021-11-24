@@ -10,8 +10,6 @@
 
 #include <gdk/gdktypes.h>
 
-struct GtkWindow;
-
 struct dr_display_data_s
 {
     char* log;
