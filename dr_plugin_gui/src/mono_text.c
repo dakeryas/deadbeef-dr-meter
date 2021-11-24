@@ -19,6 +19,8 @@ GtkTextView* create_mono_text(char* text, unsigned text_length)
 {
     GtkTextView* text_view = GTK_TEXT_VIEW(gtk_text_view_new());
     gtk_text_buffer_set_text(gtk_text_view_get_buffer(text_view), text, text_length);
+    gtk_text_view_set_left_margin(text_view, 5);
+    gtk_text_view_set_right_margin(text_view, 5);
     set_monospace(text_view);
     gtk_text_view_set_editable(text_view, FALSE);
     return text_view;
