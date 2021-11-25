@@ -7,8 +7,8 @@ clicking, the dynamic range, peak, and total RMS for each selection item is
 computed and a GTK dialogue is opened with results. The log can be saved and is
 compatible with the DR online database.
 
-<img src="https://user-images.githubusercontent.com/10599557/130930047-c293d3a1-157c-41bb-bddd-1d75ad32ee6f.png" width="876">
-<img src="https://user-images.githubusercontent.com/10599557/130930091-6f2597f4-4936-4f13-b4c2-e1701b83bdb7.png" width="876">
+<img src="https://user-images.githubusercontent.com/10599557/143365459-0ed7e09d-96c6-477e-a554-9dbb3fe44abc.png" width="854">
+<img src="https://user-images.githubusercontent.com/10599557/143365465-95a9318a-914f-4a64-906b-b161b4a7581c.png" width="854">
 
 ## Installation
 ### Arch Linux
