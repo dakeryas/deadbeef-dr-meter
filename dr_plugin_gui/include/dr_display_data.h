@@ -5,8 +5,8 @@
 * @brief Struct to save the log data for the "save log" callback
 * ************************************************************************/
 
-#ifndef DR_METER_GUI_DR_DISPLAY_DATA_H
-#define DR_METER_GUI_DR_DISPLAY_DATA_H
+#ifndef DR_PLUGIN_GUI_DR_DISPLAY_DATA_H
+#define DR_PLUGIN_GUI_DR_DISPLAY_DATA_H
 
 #include <gdk/gdk.h>
 
@@ -25,4 +25,4 @@ void show_dr_dialog(dr_display_data_t* self);
 void free_dr_display_data_members(dr_display_data_t* self);
 void free_dr_display_data(dr_display_data_t* self);
 
-#endif /* DR_METER_GUI_DR_DISPLAY_DATA_H */
+#endif /* DR_PLUGIN_GUI_DR_DISPLAY_DATA_H */
