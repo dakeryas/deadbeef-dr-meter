@@ -205,16 +205,20 @@ static unsigned sprint_codec_info(track_t* track, char* begin)
 
 static int same_album(track_t* track1, track_t* track2)
 {
-    DB_playItem_t* item1 = (DB_playItem_t*) track1;
-    DB_playItem_t* item2 = (DB_playItem_t*) track2;
-    ddb_api->pl_lock();
-    const char* artist1 = ddb_api->pl_find_meta_raw(item1, "artist");
-    const char* album1 = ddb_api->pl_find_meta_raw(item1, "album");
-    const char* artist2 = ddb_api->pl_find_meta_raw(item2, "artist");
-    const char* album2 = ddb_api->pl_find_meta_raw(item2, "album");
-    ddb_api->pl_unlock();
-    int found_all = artist1 && album1 && artist2 && album2;
-    return found_all && !(strcmp(artist1, artist2) || strcmp(album1, album2));
+    if(track1 != track2)
+    {
+        DB_playItem_t* item1 = (DB_playItem_t*) track1;
+        DB_playItem_t* item2 = (DB_playItem_t*) track2;
+        ddb_api->pl_lock();
+        const char* artist1 = ddb_api->pl_find_meta_raw(item1, "artist");
+        const char* album1 = ddb_api->pl_find_meta_raw(item1, "album");
+        const char* artist2 = ddb_api->pl_find_meta_raw(item2, "artist");
+        const char* album2 = ddb_api->pl_find_meta_raw(item2, "album");
+        ddb_api->pl_unlock();
+        int found_all = artist1 && album1 && artist2 && album2;
+        return found_all && !(strcmp(artist1, artist2) || strcmp(album1, album2));
+    }
+    else return 1;
 }
 
 unsigned sprint_dr_log_impl(const tagged_dr_data_t* tagged_dr_data, char* buffer)
