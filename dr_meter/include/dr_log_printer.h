@@ -5,8 +5,8 @@
 * @brief String buffer printing functions to build DR logs
 * ************************************************************************/
 
-#ifndef DR_LOG_PRINTER_H
-#define DR_LOG_PRINTER_H
+#ifndef DR_METER_DR_LOG_PRINTER_H
+#define DR_METER_DR_LOG_PRINTER_H
 
 struct track_s;
 struct tagged_dr_datum_s;
@@ -31,4 +31,4 @@ unsigned sprint_summary_info(const dr_log_printer_t* self, unsigned items, doubl
 unsigned sprintl_summary_info(const dr_log_printer_t* self, unsigned items, double avg_dr, char* begin);
 unsigned sprint_log_dr_log_printer(const dr_log_printer_t* self, const struct tagged_dr_data_s* tagged_dr_data, char* begin);
 
-#endif /* DR_LOG_PRINTER_H */
+#endif /* DR_METER_DR_LOG_PRINTER_H */

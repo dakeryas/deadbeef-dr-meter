@@ -5,8 +5,8 @@
 * @brief Handles thread creation and fills tagged_dr_data, works as a pool
 * ************************************************************************/
 
-#ifndef THREAD_RUNNER_H
-#define THREAD_RUNNER_H
+#ifndef DR_METER_THREAD_RUNNER_H
+#define DR_METER_THREAD_RUNNER_H
 
 #include <pthread.h>
 
@@ -31,4 +31,4 @@ thread_runner_t make_thread_runner(struct tagged_dr_data_s* tagged_dr_data, unsi
 void run_work(thread_runner_t* runner, const datum_work_t datum_work);
 void free_thread_runner(thread_runner_t* runner);
 
-#endif /* THREAD_RUNNER_H */
+#endif /* DR_METER_THREAD_RUNNER_H */

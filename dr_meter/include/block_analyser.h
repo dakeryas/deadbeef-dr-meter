@@ -6,8 +6,8 @@
 * moment (sum of samples squared) for each channel
 * ************************************************************************/
 
-#ifndef BLOCK_ANALYSER_H
-#define BLOCK_ANALYSER_H
+#ifndef DR_METER_BLOCK_ANALYSER_H
+#define DR_METER_BLOCK_ANALYSER_H
 
 #include <stdio.h>
 
@@ -31,4 +31,4 @@ double get_rms_analyser(const block_analyser_t* analyser, unsigned channel);
 void free_block_analyser(block_analyser_t* analyser);
 void print_block_analyser(const block_analyser_t* analyser, FILE* output);
 
-#endif /* BLOCK_ANALYSER_H */
+#endif /* DR_METER_BLOCK_ANALYSER_H */

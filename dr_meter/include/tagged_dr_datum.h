@@ -5,8 +5,8 @@
 * @brief Hold track input and DR stats output for threads
 * ************************************************************************/
 
-#ifndef TAGGED_DR_DATUM_H
-#define TAGGED_DR_DATUM_H
+#ifndef DR_METER_TAGGED_DR_DATUM_H
+#define DR_METER_TAGGED_DR_DATUM_H
 
 #include "dr_stats.h"
 
@@ -21,4 +21,4 @@ struct tagged_dr_datum_s
 
 typedef struct tagged_dr_datum_s tagged_dr_datum_t;
 
-#endif /* TAGGED_DR_DATUM_H */
+#endif /* DR_METER_TAGGED_DR_DATUM_H */

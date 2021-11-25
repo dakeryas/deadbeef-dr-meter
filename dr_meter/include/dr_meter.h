@@ -5,8 +5,8 @@
 * @brief Object to save loudness stats of analysed audio blocks
 * ************************************************************************/
 
-#ifndef DR_METER_H
-#define DR_METER_H
+#ifndef DR_METER_DR_METER_H
+#define DR_METER_DR_METER_H
 
 #include <stdio.h>
 #include "dr_stats.h"
@@ -35,4 +35,4 @@ dr_stats_t get_avg_dr_stats_dr_meter(dr_meter_t* dr_meter);
 void free_dr_meter(dr_meter_t* dr_meter);
 void print_dr_meter(dr_meter_t* dr_meter, FILE* output);
 
-#endif /* DR_METER_H */
+#endif /* DR_METER_DR_METER_H */

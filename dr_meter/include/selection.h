@@ -5,8 +5,8 @@
 * @brief Hold selected playlist items
 * ************************************************************************/
 
-#ifndef SELECTION_H
-#define SELECTION_H
+#ifndef DR_METER_SELECTION_H
+#define DR_METER_SELECTION_H
 
 struct selection_s
 {
@@ -16,4 +16,4 @@ struct selection_s
 
 typedef struct selection_s selection_t;
 
-#endif /* SELECTION_H */
+#endif /* DR_METER_SELECTION_H */

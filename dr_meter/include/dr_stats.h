@@ -5,8 +5,8 @@
 * @brief Data structure to hold DR numbers
 * ************************************************************************/
 
-#ifndef DR_STATS_H
-#define DR_STATS_H
+#ifndef DR_METER_DR_STATS_H
+#define DR_METER_DR_STATS_H
 
 #include <stdio.h>
 
@@ -24,4 +24,4 @@ void zero_dr_stats(dr_stats_t* dr_stats);
 dr_stats_t make_zero_dr_stats();
 dr_stats_t make_dB_dr_stats(dr_stats_t* dr_stats);
 
-#endif /* DR_STATS_H */
+#endif /* DR_METER_DR_STATS_H */

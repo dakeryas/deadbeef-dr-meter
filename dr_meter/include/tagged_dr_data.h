@@ -5,8 +5,8 @@
 * @brief Fancier array of tagged_dr_datum for all selected tracks
 * ************************************************************************/
 
-#ifndef TAGGED_DR_DATA_H
-#define TAGGED_DR_DATA_H
+#ifndef DR_METER_TAGGED_DR_DATA_H
+#define DR_METER_TAGGED_DR_DATA_H
 
 #include <pthread.h>
 #include "tagged_dr_datum.h"
@@ -27,4 +27,4 @@ tagged_dr_data_t* create_tagged_dr_data(const struct selection_s* selection);//m
 struct dr_stats_s* get_dr_stats(tagged_dr_data_t* tagged_dr_data, unsigned item_id);
 void free_tagged_dr_data(tagged_dr_data_t* tagged_dr_data);
 
-#endif /* TAGGED_DR_DATA_H */
+#endif /* DR_METER_TAGGED_DR_DATA_H */
