@@ -32,9 +32,26 @@ static DB_decoder_t* get_decoder(DB_playItem_t* selection_item)
     return decoder;
 }
 
-static void decode_analyse_block(char* buffer, int buffer_size, DB_fileinfo_t* fileinfo, DB_decoder_t* decoder, block_analyser_t* analyser)
+static DB_fileinfo_t* get_fileinfo(DB_playItem_t* item)
 {
-    int decoded_bytes = decoder->read(fileinfo, buffer, buffer_size);
+    DB_fileinfo_t* fileinfo = NULL;
+    DB_decoder_t* decoder = get_decoder(item);
+    if(decoder)
+    {
+        fileinfo = decoder->open(DDB_DECODER_HINT_RAW_SIGNAL);
+        decoder->init(fileinfo, item);
+    }
+    return fileinfo;
+}
+
+static void free_fileinfo(DB_fileinfo_t* fileinfo)
+{
+    fileinfo->plugin->free(fileinfo);
+}
+
+static void decode_analyse_block(char* buffer, int buffer_size, DB_fileinfo_t* fileinfo, block_analyser_t* analyser)
+{
+    int decoded_bytes = fileinfo->plugin->read(fileinfo, buffer, buffer_size);
     analyse_block(analyser, buffer, decoded_bytes, fileinfo->fmt.channels, fileinfo->fmt.bps);
 }
 
@@ -59,9 +76,8 @@ static unsigned allocate_buffer(char** buffer, unsigned duration, const DB_filei
     else return 0;
 }
 
-static void process_item(DB_playItem_t* item, DB_fileinfo_t* fileinfo, DB_decoder_t* decoder, dr_stats_t* dr_stats)
+static void process_item(DB_playItem_t* item, DB_fileinfo_t* fileinfo, dr_stats_t* dr_stats)
 {
-    decoder->init(fileinfo, item);
     char* buffer = NULL;
     unsigned buffer_size = allocate_buffer(&buffer, DR_BLOCK_DURATION, fileinfo);
     if(buffer_size)
@@ -71,7 +87,7 @@ static void process_item(DB_playItem_t* item, DB_fileinfo_t* fileinfo, DB_decode
         dr_meter_t dr_meter = make_dr_meter(fileinfo->fmt.channels, nu_blocks);
         for(unsigned block_index = 0 ; block_index < nu_blocks; ++block_index)
         {
-            decode_analyse_block(buffer, buffer_size, fileinfo, decoder, &analyser);
+            decode_analyse_block(buffer, buffer_size, fileinfo, &analyser);
             fill_dr_meter(&dr_meter, &analyser);
         }
         fill_avg_dr_stats_dr_meter(&dr_meter, dr_stats);
@@ -83,12 +99,11 @@ static void process_item(DB_playItem_t* item, DB_fileinfo_t* fileinfo, DB_decode
 
 static void compute_single_dr(DB_playItem_t* selection_item, dr_stats_t* dr_stats)
 {
-    DB_decoder_t* decoder = get_decoder(selection_item);
-    if(decoder)
+    DB_fileinfo_t* fileinfo = get_fileinfo(selection_item);
+    if(fileinfo)
     {
-        DB_fileinfo_t* fileinfo = decoder->open(DDB_DECODER_HINT_RAW_SIGNAL);
-        if(fileinfo) process_item(selection_item, fileinfo, decoder, dr_stats);
-        decoder->free(fileinfo);
+        process_item(selection_item, fileinfo, dr_stats);
+        free_fileinfo(fileinfo);
     }
 }
 
