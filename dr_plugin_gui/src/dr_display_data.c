@@ -75,7 +75,7 @@ dr_display_data_t* create_dr_display_data(GtkWindow* parent, GdkWindowTypeHint w
 
 static unsigned guess_needed_dr_dialog_height(dr_display_data_t* self)
 {
-    return 230 + 15 * self->items;
+    return 290 + 15 * self->items;
 }
 
 static void adapt_dialog_height(dr_display_data_t* self)
