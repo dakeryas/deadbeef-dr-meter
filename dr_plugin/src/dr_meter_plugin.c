@@ -46,7 +46,7 @@ static DB_fileinfo_t* get_fileinfo(DB_playItem_t* item)
 
 static void free_fileinfo(DB_fileinfo_t* fileinfo)
 {
-    fileinfo->plugin->free(fileinfo);
+    if(fileinfo->plugin) fileinfo->plugin->free(fileinfo);
 }
 
 static void decode_analyse_block(char* buffer, int buffer_size, DB_fileinfo_t* fileinfo, block_analyser_t* analyser)
