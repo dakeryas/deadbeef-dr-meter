@@ -194,15 +194,12 @@ static unsigned sprint_codec_info(track_t* track, char* begin)
 {
     DB_playItem_t* item = (DB_playItem_t*)track;
     char* end = begin;
-    DB_fileinfo_t* fileinfo = get_fileinfo(item);
-    if(fileinfo)
-    {
-        end += sprintf(end, "Samplerate:        %d Hz\n", fileinfo->fmt.samplerate);
-        end += sprintf(end, "Channels:          %d\n", fileinfo->fmt.channels);
-        end += sprintf(end, "Bits per sample:   %d\n", fileinfo->fmt.bps);
-        end += sprintf(end, "Decoder:           %s", fileinfo->plugin->plugin.name);
-        free_fileinfo(fileinfo);
-    }
+    ddb_api->pl_lock();
+    end += sprintf(end, "Samplerate:        %s Hz\n", ddb_api->pl_find_meta_raw(item, ":SAMPLERATE"));
+    end += sprintf(end, "Channels:          %s\n", ddb_api->pl_find_meta_raw(item, ":CHANNELS"));
+    end += sprintf(end, "Bits per sample:   %s\n", ddb_api->pl_find_meta_raw(item, ":BPS"));
+    end += sprintf(end, "Codec:             %s", ddb_api->pl_find_meta_raw(item, ":FILETYPE"));
+    ddb_api->pl_unlock();
     return end - begin;
 }
 
