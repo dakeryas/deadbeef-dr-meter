@@ -78,26 +78,29 @@ unsigned sprintl_album_header_dr_log_printer(const dr_log_printer_t* self, track
     return end - begin;
 }
 
-unsigned sprint_summary_info(const dr_log_printer_t* self, unsigned items, double avg_dr, char* begin, char endline)
+unsigned sprint_summary_info(const dr_log_printer_t* self, unsigned items, double avg_dr, track_t* track, char* begin, char endline)
 {
     (void) self;
     char* end = begin;
     end += sprintf(end, "Number of tracks:  %i\n", items);
-    end += sprintf(end, "Official DR value: DR%.0f%c", avg_dr, endline);
+    end += sprintf(end, "Official DR value: DR%.0f\n", avg_dr);
+    end += sprintl_line(0, end);
+    end += self->sprint_codec_info(track, end);
+    end += sprintf(end, "%c", endline);
     return end - begin;
 }
 
-unsigned sprintl_summary_info(const dr_log_printer_t* self, unsigned items, double avg_dr, char* begin)
+unsigned sprintl_summary_info(const dr_log_printer_t* self, unsigned items, double avg_dr, track_t* track, char* begin)
 {
-    return sprint_summary_info(self, items, avg_dr, begin, '\n');
+    return sprint_summary_info(self, items, avg_dr, track, begin, '\n');
 }
 
-unsigned sprintl_album_footer_dr_log_printer(const dr_log_printer_t* self, sample_mean_t* dr_mean, char* begin)
+static unsigned sprintl_album_footer_dr_log_printer(const dr_log_printer_t* self, sample_mean_t* dr_mean, track_t* track, char* begin)
 {
     char* end = begin;
     end += sprintl_line(self->line_length, end);
     end += sprintl_line(0, end);
-    end += sprintl_summary_info(self, dr_mean->samples, get_sample_mean(dr_mean), end);
+    end += sprintl_summary_info(self, dr_mean->samples, get_sample_mean(dr_mean), track, end);
     end += sprintl_n('=', self->line_length, end);
     return end - begin;
 }
@@ -114,7 +117,7 @@ unsigned sprint_log_dr_log_printer(const dr_log_printer_t* self, const tagged_dr
         int new_album = !self->same_album(last_track, datum->item);
         if(new_album)
         {
-            end += sprintl_album_footer_dr_log_printer(self, &dr_mean, end);
+            end += sprintl_album_footer_dr_log_printer(self, &dr_mean, last_track, end);
             reset_sample_mean(&dr_mean);
             end += sprintl_album_header_dr_log_printer(self, datum->item, end);
         }
@@ -122,6 +125,6 @@ unsigned sprint_log_dr_log_printer(const dr_log_printer_t* self, const tagged_dr
         observe_sample_mean(&dr_mean, datum->dr_stats.dr);
         last_track = datum->item;
     }
-    end += sprintl_album_footer_dr_log_printer(self, &dr_mean, end);
+    end += sprintl_album_footer_dr_log_printer(self, &dr_mean, last_track, end);
     return end - begin;
 }

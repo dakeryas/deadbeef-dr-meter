@@ -190,6 +190,22 @@ static unsigned sprint_album_info(track_t* track, char* begin)
     return end - begin;
 }
 
+static unsigned sprint_codec_info(track_t* track, char* begin)
+{
+    DB_playItem_t* item = (DB_playItem_t*)track;
+    char* end = begin;
+    DB_fileinfo_t* fileinfo = get_fileinfo(item);
+    if(fileinfo)
+    {
+        end += sprintf(end, "Samplerate:        %d Hz\n", fileinfo->fmt.samplerate);
+        end += sprintf(end, "Channels:          %d\n", fileinfo->fmt.channels);
+        end += sprintf(end, "Bits per sample:   %d\n", fileinfo->fmt.bps);
+        end += sprintf(end, "Decoder:           %s", fileinfo->plugin->plugin.name);
+        free_fileinfo(fileinfo);
+    }
+    return end - begin;
+}
+
 static int same_album(track_t* track1, track_t* track2)
 {
     DB_playItem_t* item1 = (DB_playItem_t*) track1;
@@ -213,6 +229,7 @@ unsigned sprint_dr_log_impl(const tagged_dr_data_t* tagged_dr_data, char* buffer
         .line_length = 80,
         .sprint_track_info = sprint_track_info,
         .sprint_album_info = sprint_album_info,
+        .sprint_codec_info = sprint_codec_info,
         .same_album = same_album,
     };
     return sprint_log_dr_log_printer(&log_printer, tagged_dr_data, buffer);
@@ -241,7 +258,7 @@ DB_plugin_t* ddb_dr_meter_load(DB_functions_t* api)
         .info.plugin.api_vmajor      = 1,
         .info.plugin.api_vminor      = 10,
         .info.plugin.version_major   = 1,
-        .info.plugin.version_minor   = 0,
+        .info.plugin.version_minor   = 1,
         .info.plugin.id              = "dr_meter",
         .info.plugin.name            = "Dynamic Range Meter",
         .info.plugin.descr           = "Prints Dynamic Range log",

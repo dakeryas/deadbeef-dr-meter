@@ -18,6 +18,7 @@ struct dr_log_printer_s
     unsigned line_length;
     unsigned (*sprint_track_info)(struct track_s* track, char* begin);
     unsigned (*sprint_album_info)(struct track_s* track, char* begin);
+    unsigned (*sprint_codec_info)(struct track_s* track, char* begin);
     int (*same_album)(struct track_s* track1, struct track_s* track2);
 };
 
@@ -27,8 +28,8 @@ unsigned sprint_item_dr_log_printer(const dr_log_printer_t* self, struct tagged_
 unsigned sprintl_item_dr_log_printer(const dr_log_printer_t* self, struct tagged_dr_datum_s* datum, char* begin);
 unsigned sprint_col_headers_dr_log_printer(const dr_log_printer_t* self, char* begin, char endline);
 unsigned sprintl_col_headers_dr_log_printer(const dr_log_printer_t* self, char* begin);
-unsigned sprint_summary_info(const dr_log_printer_t* self, unsigned items, double avg_dr, char* begin, char endline);
-unsigned sprintl_summary_info(const dr_log_printer_t* self, unsigned items, double avg_dr, char* begin);
+unsigned sprint_summary_info(const dr_log_printer_t* self, unsigned items, double avg_dr, struct track_s* track, char* begin, char endline);
+unsigned sprintl_summary_info(const dr_log_printer_t* self, unsigned items, double avg_dr, struct track_s* track, char* begin);
 unsigned sprint_log_dr_log_printer(const dr_log_printer_t* self, const struct tagged_dr_data_s* tagged_dr_data, char* begin);
 
 #endif /* DR_METER_DR_LOG_PRINTER_H */
