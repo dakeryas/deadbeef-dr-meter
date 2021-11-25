@@ -5,8 +5,8 @@
 * @brief struct to split time in seconds into hours, minutes, seconds
 * ************************************************************************/
 
-#ifndef DURATION_H
-#define DURATION_H
+#ifndef DR_PLUGIN_DURATION_H
+#define DR_PLUGIN_DURATION_H
 
 struct duration_s
 {
@@ -20,4 +20,4 @@ typedef struct duration_s duration_t;
 duration_t make_duration(double length_seconds);
 int sprint_duration(const duration_t* dur, char* buffer);
 
-#endif /* DURATION_H */
+#endif /* DR_PLUGIN_DURATION_H */

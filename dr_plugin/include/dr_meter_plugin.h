@@ -5,8 +5,8 @@
 * @brief Plugin has generic DeaDBeeF plugin info and compute_dr 'method'
 * ************************************************************************/
 
-#ifndef DR_METER_PLUGIN_H
-#define DR_METER_PLUGIN_H
+#ifndef DR_PLUGIN_DR_METER_PLUGIN_H
+#define DR_PLUGIN_DR_METER_PLUGIN_H
 
 #include <deadbeef/deadbeef.h>
 
@@ -19,4 +19,4 @@ typedef struct
     unsigned (*sprint_dr_log)(const struct tagged_dr_data_s* tagged_dr_data, char* buffer);
 } dr_meter_plugin_t;
 
-#endif /* DR_METER_PLUGIN_H */
+#endif /* DR_PLUGIN_DR_METER_PLUGIN_H */
