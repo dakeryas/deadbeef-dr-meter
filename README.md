@@ -7,7 +7,7 @@ clicking, the dynamic range, peak, and total RMS for each selection item is
 computed and a GTK dialogue is opened with results. The log can be saved and is
 compatible with the DR online database.
 
-<img src="https://user-images.githubusercontent.com/10599557/143365459-0ed7e09d-96c6-477e-a554-9dbb3fe44abc.png" width="849">
+<img src="https://user-images.githubusercontent.com/10599557/143366416-70b3f115-8719-46ee-9172-73241f92b7a1.png" width="849">
 <img src="https://user-images.githubusercontent.com/10599557/143365933-f47ead8b-b492-41df-8f72-f49813caf028.png" width="849">
 
 ## Installation
