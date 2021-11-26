@@ -9,13 +9,14 @@ const char* get_filename(const char* path)
     return filename ? filename+1 : path;
 }
 
-int sprint_dirname(char* dirname, const char* path)
+int snprint_dirname(char* dirname, unsigned dirname_size, const char* path)
 {
     const char* filename = strrchr(path, '/');
     if(filename)
     {
         size_t dir_length = filename - path + 1;
-        return snprintf(dirname, dir_length, "%s", path);
+        size_t length = dir_length < dirname_size ? dir_length : dirname_size;
+        return snprintf(dirname, length, "%s", path);
     }
     else return sprintf(dirname, "%s", path);
 }

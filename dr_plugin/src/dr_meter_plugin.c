@@ -171,9 +171,9 @@ static unsigned sprint_folder_info(DB_playItem_t* item, char* begin)
     ddb_api->pl_lock();
     const char* path = ddb_api->pl_find_meta_raw(item, ":URI");
     ddb_api->pl_unlock();
-    char dirname[120];
-    sprint_dirname(dirname, path);
-    end += sprintf(end, "Analyzed folder: %.120s", dirname);
+    char dirname[200];
+    snprint_dirname(dirname, sizeof(dirname), path);
+    end += sprintf(end, "Analyzed folder: %.200s", dirname);
     return end - begin;
 }
 
