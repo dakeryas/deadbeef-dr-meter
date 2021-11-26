@@ -10,5 +10,6 @@
 
 const char* get_filename(const char* path);
 unsigned get_folder_length(const char* path);
+unsigned sprint_dirname(const char* path, char* begin);
 
 #endif /* DR_PLUGIN_FILEPATH_H */
