@@ -202,6 +202,22 @@ static unsigned sprint_codec_info(track_t* track, char* begin)
     return end - begin;
 }
 
+static int same_folder(track_t* track1, track_t* track2)
+{
+    if(track1 != track2)
+    {
+        DB_playItem_t* item1 = (DB_playItem_t*) track1;
+        DB_playItem_t* item2 = (DB_playItem_t*) track2;
+        ddb_api->pl_lock();
+        const char* path1 = ddb_api->pl_find_meta_raw(item1, ":URI");
+        const char* path2 = ddb_api->pl_find_meta_raw(item2, ":URI");
+        ddb_api->pl_unlock();
+        unsigned folder_length = get_folder_length(path1);
+        return !strncmp(path1, path2, folder_length);
+    }
+    else return 1;
+}
+
 static int same_album(track_t* track1, track_t* track2)
 {
     if(track1 != track2)
@@ -215,7 +231,8 @@ static int same_album(track_t* track1, track_t* track2)
         const char* album2 = ddb_api->pl_find_meta_raw(item2, "album");
         ddb_api->pl_unlock();
         int found_all = artist1 && album1 && artist2 && album2;
-        return found_all && !(strcmp(artist1, artist2) || strcmp(album1, album2));
+        if(found_all) return !(strcmp(artist1, artist2) || strcmp(album1, album2));
+        else return same_folder(track1, track2);
     }
     else return 1;
 }
