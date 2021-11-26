@@ -80,7 +80,6 @@ static int display_dr_results_and_free_tagged_dr_data(void* tagged_dr_data)
 {
     display_dr_results((tagged_dr_data_t*)tagged_dr_data);
     free_tagged_dr_data((tagged_dr_data_t*)tagged_dr_data);
-    free(tagged_dr_data);
     return 0;
 }
 

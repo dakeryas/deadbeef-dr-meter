@@ -22,9 +22,10 @@ struct tagged_dr_data_s
 
 typedef struct tagged_dr_data_s tagged_dr_data_t;
 
-tagged_dr_data_t make_tagged_dr_data(const struct selection_s* selection);//must free_tagged_dr_data struct
-tagged_dr_data_t* create_tagged_dr_data(const struct selection_s* selection);//must free_tagged_dr_data struct and free pointer
+tagged_dr_data_t make_tagged_dr_data(const struct selection_s* selection);//must free_tagged_dr_data_members
+tagged_dr_data_t* create_tagged_dr_data(const struct selection_s* selection);//must free_tagged_dr_data
 struct dr_stats_s* get_dr_stats(tagged_dr_data_t* tagged_dr_data, unsigned item_id);
+void free_tagged_dr_data_members(tagged_dr_data_t* tagged_dr_data);
 void free_tagged_dr_data(tagged_dr_data_t* tagged_dr_data);
 
 #endif /* DR_METER_TAGGED_DR_DATA_H */

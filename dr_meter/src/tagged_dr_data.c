@@ -4,7 +4,7 @@
 
 static void update_data_size(tagged_dr_data_t* self)
 {
-    free_tagged_dr_data(self);
+    free_tagged_dr_data_members(self);
     self->data = malloc(self->items * sizeof(tagged_dr_datum_t));
 
 }
@@ -37,7 +37,13 @@ dr_stats_t* get_dr_stats(tagged_dr_data_t* self, unsigned item_id)
     return &self->data[item_id].dr_stats;
 }
 
-void free_tagged_dr_data(tagged_dr_data_t* self)
+void free_tagged_dr_data_members(tagged_dr_data_t* self)
 {
     free(self->data);
+}
+
+void free_tagged_dr_data(tagged_dr_data_t* self)
+{
+    free_tagged_dr_data_members(self);
+    free(self);
 }
