@@ -83,9 +83,13 @@ unsigned sprint_summary_info(const dr_log_printer_t* self, unsigned items, doubl
     (void) self;
     char* end = begin;
     end += sprintf(end, "Number of tracks:  %i\n", items);
-    end += sprintf(end, "Official DR value: DR%.0f\n", avg_dr);
-    end += sprintl_line(0, end);
-    end += self->sprint_codec_info(track, end);
+    end += sprintf(end, "Official DR value: DR%.0f", avg_dr);
+    if(self->sprint_codec_info)
+    {
+        end += sprintl_line(0, end);
+        end += sprintl_line(0, end);
+        end += self->sprint_codec_info(track, end);
+    }
     end += sprintf(end, "%c", endline);
     return end - begin;
 }

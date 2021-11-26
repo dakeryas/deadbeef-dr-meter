@@ -241,12 +241,13 @@ unsigned sprint_dr_log_impl(const tagged_dr_data_t* tagged_dr_data, char* buffer
 {
     char dr_format[32];
     ddb_api->conf_get_str("dr_meter.format", DEFAULT_DR_FORMAT, dr_format, sizeof(dr_format));
+    int show_codec = ddb_api->conf_get_int("dr_meter.show_codec", 1);
     dr_log_printer_t log_printer = {
         .dr_format = dr_format,
         .line_length = 80,
         .sprint_track_info = sprint_track_info,
         .sprint_album_info = sprint_album_info,
-        .sprint_codec_info = sprint_codec_info,
+        .sprint_codec_info = show_codec ? sprint_codec_info : NULL,
         .same_album = same_album,
     };
     return sprint_log_dr_log_printer(&log_printer, tagged_dr_data, buffer);
@@ -264,6 +265,7 @@ int dr_meter_stop()
 
 static const char settings_dialog[] =
     "property \"(DR, Peak, RMS) printf formatting\" entry dr_meter.format \"" DEFAULT_DR_FORMAT "\";\n"
+    "property \"Print codec info\" checkbox dr_meter.show_codec 1;\n"
     "property \"Number of threads\" entry dr_meter.threads 4;\n"
 ;
 
