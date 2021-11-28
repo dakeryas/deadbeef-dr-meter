@@ -67,20 +67,20 @@ static GdkWindowTypeHint get_window_hint()
     return focus_dialogue ? GDK_WINDOW_TYPE_HINT_DIALOG : GDK_WINDOW_TYPE_HINT_UTILITY;
 }
 
+static int _show_dr_dialog(void* display_data)
+{
+    show_dr_dialog((dr_display_data_t*)display_data);
+    return 0;
+}
+
 static void display_dr_results(const tagged_dr_data_t* tagged_dr_data)
 {
     dr_display_data_t* display_data = create_dr_display_data(GTK_WINDOW(gtk_ui_plugin->get_mainwin()), get_window_hint(), tagged_dr_data->items);
     if(display_data)
     {
         display_data->log_length = dr_meter_plugin->sprint_dr_log(tagged_dr_data, display_data->log);
-        show_dr_dialog(display_data);
+        g_idle_add(_show_dr_dialog, display_data);
     }
-}
-static int display_dr_results_and_free_tagged_dr_data(void* tagged_dr_data)
-{
-    display_dr_results((tagged_dr_data_t*)tagged_dr_data);
-    free_tagged_dr_data((tagged_dr_data_t*)tagged_dr_data);
-    return 0;
 }
 
 static void* meter_job(void* data)
@@ -90,9 +90,10 @@ static void* meter_job(void* data)
     {
         selection_t selection;
         retrieve_current_selection(&selection);
-        tagged_dr_data_t* tagged_dr_data = create_tagged_dr_data(&selection);
-        dr_meter_plugin->compute_dr(tagged_dr_data);
-        g_idle_add(display_dr_results_and_free_tagged_dr_data, tagged_dr_data);
+        tagged_dr_data_t tagged_dr_data = make_tagged_dr_data(&selection);
+        dr_meter_plugin->compute_dr(&tagged_dr_data);
+        display_dr_results(&tagged_dr_data);
+        free_tagged_dr_data_members(&tagged_dr_data);
         unreference_selection(&selection);
     }
     return NULL;

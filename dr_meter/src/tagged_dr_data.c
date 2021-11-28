@@ -19,7 +19,7 @@ static void copy_data(tagged_dr_data_t* self, const selection_t* selection)
 
 tagged_dr_data_t make_tagged_dr_data(const selection_t* selection)
 {
-    tagged_dr_data_t tagged_dr_data;
+    tagged_dr_data_t tagged_dr_data = {.data = NULL};
     copy_data(&tagged_dr_data, selection);
     return tagged_dr_data;
 }
