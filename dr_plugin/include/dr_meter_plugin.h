@@ -12,11 +12,13 @@
 
 struct tagged_dr_data_s;
 
-typedef struct
+struct dr_meter_plugin_s
 {
     DB_misc_t info;
     int (*compute_dr)(struct tagged_dr_data_s* tagged_dr_data);
     unsigned (*sprint_dr_log)(const struct tagged_dr_data_s* tagged_dr_data, char* buffer);
-} dr_meter_plugin_t;
+};
+
+typedef struct dr_meter_plugin_s dr_meter_plugin_t;
 
 #endif /* DR_PLUGIN_DR_METER_PLUGIN_H */
