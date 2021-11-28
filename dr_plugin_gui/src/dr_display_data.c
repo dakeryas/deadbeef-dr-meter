@@ -87,7 +87,12 @@ static void adapt_dialog_height(dr_display_data_t* self)
     gtk_window_set_default_size(GTK_WINDOW(self->dialog), 600, height);
 }
 
-void show_dr_dialog(dr_display_data_t* self)
+void fill_log_dr_display(dr_display_data_t* self, sprint_dr_log_t sprint_dr_log, const struct tagged_dr_data_s* tagged_dr_data)
+{
+    self->log_length = sprint_dr_log(tagged_dr_data, self->log);
+}
+
+void show_dr_dialog_dr_display(dr_display_data_t* self)
 {
     add_scrolled_mono_text(self->dialog, self->log, self->log_length);
     adapt_dialog_height(self);

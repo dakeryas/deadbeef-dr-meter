@@ -9,6 +9,7 @@
 #define DR_PLUGIN_GUI_DR_DISPLAY_DATA_H
 
 #include <gdk/gdk.h>
+#include "sprint_dr_log.h"
 
 struct dr_display_data_s
 {
@@ -21,7 +22,8 @@ struct dr_display_data_s
 typedef struct dr_display_data_s dr_display_data_t;
 
 dr_display_data_t* create_dr_display_data(GtkWindow* parent, GdkWindowTypeHint window_hint, unsigned selected_items);
-void show_dr_dialog(dr_display_data_t* self);
+void fill_log_dr_display(dr_display_data_t* self, sprint_dr_log_t sprint_dr_log, const struct tagged_dr_data_s* tagged_dr_data);
+void show_dr_dialog_dr_display(dr_display_data_t* self);
 void free_dr_display_data_members(dr_display_data_t* self);
 void free_dr_display_data(dr_display_data_t* self);
 
