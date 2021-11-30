@@ -75,7 +75,7 @@ dr_display_data_t* create_dr_display_data(GtkWindow* parent, GdkWindowTypeHint w
 
 static unsigned guess_needed_dr_dialog_height(dr_display_data_t* self)
 {
-    unsigned number_of_albums = self->items < 18 ? 1 : lround(self->items / 10.);
+    unsigned number_of_albums = self->items < 19 ? 1 : lround(self->items / 10.);
     return 287 * number_of_albums + 15 * self->items;
 }
 
