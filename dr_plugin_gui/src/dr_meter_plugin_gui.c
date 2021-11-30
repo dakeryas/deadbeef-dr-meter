@@ -92,10 +92,16 @@ static void* meter_job(void* data)
         selection_t selection;
         retrieve_current_selection(&selection);
         tagged_dr_data_t tagged_dr_data = make_tagged_dr_data(&selection);
-        time_t before = time(NULL);
+        struct timespec before;
+        clock_gettime(CLOCK_MONOTONIC, &before);
         dr_meter_plugin->compute_dr(&tagged_dr_data);
-        time_t duration = time(NULL) - before;
-        fprintf(stderr, "compute_dr ran in %ld seconds\n", duration);
+        struct timespec after;
+        clock_gettime(CLOCK_MONOTONIC, &after);
+        struct timespec duration = {
+            .tv_sec = after.tv_sec - before.tv_sec,
+            .tv_nsec = after.tv_nsec - before.tv_nsec,
+        };
+        fprintf(stderr, "compute_dr ran in %f seconds\n", duration.tv_sec + 1e-9*duration.tv_nsec);
         display_dr_results(dr_meter_plugin->sprint_dr_log, &tagged_dr_data);
         free_tagged_dr_data_members(&tagged_dr_data);
         unreference_selection(&selection);
