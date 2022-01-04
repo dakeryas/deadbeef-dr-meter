@@ -102,14 +102,6 @@ static double get_tot_sum2(const dr_meter_t* self, unsigned channel)
     return get_sum2(self, channel, self->_ana_blocks);
 }
 
-static double get_sum2_quantile(const dr_meter_t* self, unsigned channel, double quantile)
-{
-    unsigned last_block = quantile * self->_ana_blocks;
-    if(!last_block) last_block = 1; //not enough blocks analysed
-    return get_sum2(self, channel, last_block);
-}
-
-
 double get_rms_dr_meter(const dr_meter_t* self, unsigned channel)
 {
     double sum2 = get_tot_sum2(self, channel);
@@ -119,8 +111,9 @@ double get_rms_dr_meter(const dr_meter_t* self, unsigned channel)
 static double get_dr_dr_meter(dr_meter_t* self, unsigned channel)
 {
     sort_sum2(self, channel);
-    double loud_sum2 = get_sum2_quantile(self, channel, DR_LOUD_FRACTION);
-    double loud_rms = get_audio_rms(loud_sum2, DR_LOUD_FRACTION * self->_ana_blocks);
+    unsigned loud_blocks = lround(DR_LOUD_FRACTION * self->_ana_blocks + .5);
+    double loud_sum2 = get_sum2(self, channel, loud_blocks);
+    double loud_rms = get_audio_rms(loud_sum2, loud_blocks);
     double second_max = true_peak(self->second_peaks[channel]);
     return decibels(second_max / loud_rms);
 }
