@@ -107,7 +107,7 @@ double get_rms_dr_meter(const dr_meter_t* self, unsigned channel)
 
 static unsigned get_loud_blocks(dr_meter_t* self)
 {
-    unsigned loud_blocks = lround(self->loud_fraction * self->_ana_blocks);
+    unsigned loud_blocks = self->loud_fraction * self->_ana_blocks;
     return loud_blocks > 0 ? loud_blocks : 1;
 }
 
