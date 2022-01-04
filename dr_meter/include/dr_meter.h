@@ -17,6 +17,7 @@ struct dr_meter_s
 {
     unsigned channels;
     unsigned blocks; // expected blocks to analyse
+    double loud_fraction;//fraction of loud blocks for DR calculation
     double* peaks; // maximum per channel
     double* second_peaks; // second maximum per channel
     double** sum2; // sum of squared sample values per block per channel
@@ -26,7 +27,7 @@ struct dr_meter_s
 
 typedef struct dr_meter_s dr_meter_t;
 
-dr_meter_t make_dr_meter(unsigned channels, unsigned blocks);
+dr_meter_t make_dr_meter(unsigned channels, unsigned blocks, double loud_fraction);
 void fill_dr_meter(dr_meter_t* dr_meter, const struct block_analyser_s* analyser);
 double get_rms_dr_meter(const dr_meter_t* dr_meter, unsigned channel);
 dr_stats_t get_dr_stats_dr_meter(dr_meter_t* dr_meter, unsigned channel);

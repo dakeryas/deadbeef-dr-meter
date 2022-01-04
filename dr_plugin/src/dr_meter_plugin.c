@@ -14,6 +14,7 @@
 
 // constants according to DR standard
 static const unsigned DR_BLOCK_DURATION = 3;
+static const double DR_LOUD_FRACTION = 0.2;
 #define DEFAULT_DR_FORMAT "DR%-2.0f %10.2f dB %8.2f dB"
 
 DB_functions_t* ddb_api;
@@ -84,7 +85,7 @@ static void process_item(DB_playItem_t* item, DB_fileinfo_t* fileinfo, dr_stats_
     {
         block_analyser_t analyser = make_block_analyser(fileinfo->fmt.channels);
         unsigned nu_blocks = number_of_blocks(item);
-        dr_meter_t dr_meter = make_dr_meter(fileinfo->fmt.channels, nu_blocks);
+        dr_meter_t dr_meter = make_dr_meter(fileinfo->fmt.channels, nu_blocks, DR_LOUD_FRACTION);
         for(unsigned block_index = 0 ; block_index < nu_blocks; ++block_index)
         {
             decode_analyse_block(buffer, buffer_size, fileinfo, &analyser);

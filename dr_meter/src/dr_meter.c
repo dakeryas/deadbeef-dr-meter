@@ -6,9 +6,6 @@
 #include "block_analyser.h"
 #include "print_dr_meter.h"
 
-// constants according to DR standard
-static const double DR_LOUD_FRACTION = 0.2;
-
 static void init_dr_meter(dr_meter_t* self)
 {
     self->_ana_blocks = 0;
@@ -20,9 +17,9 @@ static void init_dr_meter(dr_meter_t* self)
         self->sum2[cha] = malloc(self->blocks * sizeof(double));//allocate self->blocks 1D arrays
 }
 
-dr_meter_t make_dr_meter(unsigned channels, unsigned blocks)
+dr_meter_t make_dr_meter(unsigned channels, unsigned blocks, double loud_fraction)
 {
-    dr_meter_t dr_meter = {.channels = channels, .blocks = blocks};
+    dr_meter_t dr_meter = {.channels = channels, .blocks = blocks, .loud_fraction = loud_fraction};
     init_dr_meter(&dr_meter);
     return dr_meter;
 }
@@ -108,10 +105,16 @@ double get_rms_dr_meter(const dr_meter_t* self, unsigned channel)
     return get_audio_rms(sum2, self->_ana_blocks);
 }
 
+static unsigned get_loud_blocks(dr_meter_t* self)
+{
+    unsigned loud_blocks = lround(self->loud_fraction * self->_ana_blocks);
+    return loud_blocks > 0 ? loud_blocks : 1;
+}
+
 static double get_dr_dr_meter(dr_meter_t* self, unsigned channel)
 {
     sort_sum2(self, channel);
-    unsigned loud_blocks = lround(DR_LOUD_FRACTION * self->_ana_blocks + .5);
+    unsigned loud_blocks = get_loud_blocks(self);
     double loud_sum2 = get_sum2(self, channel, loud_blocks);
     double loud_rms = get_audio_rms(loud_sum2, loud_blocks);
     double second_max = true_peak(self->second_peaks[channel]);
