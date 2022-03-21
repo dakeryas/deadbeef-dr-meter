@@ -31,14 +31,17 @@ static int is_data_id_valid(thread_runner_t* self, unsigned data_id)
     return data_id < work_items(self);
 }
 
-static int is_next_data_id_valid(thread_runner_t* self)
-{
-    return is_data_id_valid(self, self->next_data_id);
-}
-
 static unsigned pop_next_data_id(thread_runner_t* self)
 {
     return self->next_data_id++;
+}
+
+static unsigned pop_next_data_id_lock(thread_runner_t* self)
+{
+    pthread_mutex_lock(&self->mutex);
+    unsigned id = pop_next_data_id(self);
+    pthread_mutex_unlock(&self->mutex);
+    return id;
 }
 
 static tagged_dr_datum_t* tagged_dr_data(thread_runner_t* self, unsigned data_id)
@@ -49,13 +52,11 @@ static tagged_dr_datum_t* tagged_dr_data(thread_runner_t* self, unsigned data_id
 static void* thread_work(void* runner_arg)
 {
     thread_runner_t* runner = (thread_runner_t*)runner_arg;
-    while(is_next_data_id_valid(runner))
+    unsigned current_data_id = pop_next_data_id_lock(runner);
+    while(is_data_id_valid(runner, current_data_id))
     {
-        pthread_mutex_lock(&runner->mutex);
-        unsigned current_data_id = pop_next_data_id(runner);
-        pthread_mutex_unlock(&runner->mutex);
-        if(is_data_id_valid(runner, current_data_id))
-            runner->datum_work(tagged_dr_data(runner, current_data_id));
+        runner->datum_work(tagged_dr_data(runner, current_data_id));
+        current_data_id = pop_next_data_id_lock(runner);
     }
     return NULL;
 }
