@@ -278,7 +278,7 @@ DB_plugin_t* ddb_dr_meter_load(DB_functions_t* api)
         .info.plugin.api_vmajor      = 1,
         .info.plugin.api_vminor      = 10,
         .info.plugin.version_major   = 1,
-        .info.plugin.version_minor   = 1,
+        .info.plugin.version_minor   = 2,
         .info.plugin.id              = "dr_meter",
         .info.plugin.name            = "Dynamic Range Meter",
         .info.plugin.descr           = "Prints Dynamic Range log",
