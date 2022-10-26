@@ -5,9 +5,8 @@
 Adds a "Dynamic Range" context menu to the selected playlist items. Upon
 clicking, the dynamic range, peak, and total RMS for each selection item is
 computed and a GTK dialogue is opened with results. The computation for each
-item is made in parallel (see [Runtime configuration]
-(#number-of-parallel-threads)) The log can be saved and is compatible with the
-DR online database.
+item is made in parallel (see [Runtime configuration](#number-of-parallel-threads)).
+The log can be saved and is compatible with the DR online database.
 
 <img src="https://user-images.githubusercontent.com/10599557/143535008-d35afa30-465c-4953-9db3-bbf06e29d9a8.png" width="844">
 <img src="https://user-images.githubusercontent.com/10599557/143535009-f35d4ad7-3ca3-4ad9-aed0-b459e931b3d5.png" width="844">
