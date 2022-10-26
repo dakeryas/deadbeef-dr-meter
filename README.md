@@ -73,5 +73,6 @@ the decimal point.
 
 ### Number of parallel threads
 The maximum number of DR computing threads in the pool can be changed via the
-`dr_meter.threads` variable in the DeaDBeeF config file (or graphically under
-"Plugins/Dynamic Range Meter").
+`dr_meter.threads` variable in the DeaDBeeF config file
+`~/.config/deadbeef/config` (or graphically under "Plugins/Dynamic Range
+Meter").
