@@ -18,12 +18,15 @@ See the [Arch User Repository](https://aur.archlinux.org/packages/deadbeef-dr-me
 Download the latest Ubuntu builds from
 [Releases](https://github.com/dakeryas/deadbeef-dr-meter/releases) or from the
 slightly out-of-sync [DeaDBeeF sourceforge](https://deadbeef.sourceforge.io/plugins.html),
-or build from source.
+and uncompress the plugin archive to `~/.local/lib/deadbeef/`. Alternatively
+build from source (see [Building from source](#building-from-source)).
+
 ### Windows
 Download the latest builds from
 [Releases](https://github.com/dakeryas/deadbeef-dr-meter/releases) or from the
 slightly out-of-sync [DeaDBeeF sourceforge](https://deadbeef.sourceforge.io/plugins.html),
-or build from source.
+and uncompress the plugin archive to `%APPDATA%/deadbeef/`. Alternatively,
+build from source using `mingw-w64`.
 
 ## Building from source
 ### Requirements
