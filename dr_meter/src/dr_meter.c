@@ -118,7 +118,7 @@ static double get_dr_dr_meter(dr_meter_t* self, unsigned channel)
     double loud_sum2 = get_sum2(self, channel, loud_blocks);
     double loud_rms = get_audio_rms(loud_sum2, loud_blocks);
     double second_max = true_peak(self->second_peaks[channel]);
-    double dr = decibels(second_max / loud_rms);
+    double dr = loud_rms > 0 ? decibels(second_max / loud_rms) : 0;
     return dr;
 }
 
