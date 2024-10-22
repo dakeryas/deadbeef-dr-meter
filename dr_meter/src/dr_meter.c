@@ -141,15 +141,17 @@ void fill_avg_dr_stats_dr_meter(dr_meter_t* self, dr_stats_t* result)
     zero_dr_stats(result);
     if(filled(self))
     {
+        unsigned active_channels = self->channels;
         for(unsigned cha = 0; cha < self->channels; ++cha)
         {
             dr_stats_t current = get_dr_stats_filled(self, cha);
             if(current.peak > result->peak) result->peak = current.peak;
+            if(current.dr == 0.) --active_channels; //DR=0.0 only happens for empty channels
             result->rms += current.rms;
             result->dr += current.dr;
         }
-        result->rms /= self->channels;
-        result->dr /= self->channels;
+        result->rms /= self->channels; //empty channels do define absolute output levels
+        result->dr /= active_channels; //DR has meaning only for non-empty chanels
     }
 }
 
