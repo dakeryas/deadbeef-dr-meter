@@ -21,7 +21,7 @@ typedef struct dr_stats_s dr_stats_t;
 
 dr_stats_t make_dr_stats(double dr, double peak, double rms);
 void zero_dr_stats(dr_stats_t* dr_stats);
-dr_stats_t make_zero_dr_stats();
+dr_stats_t make_zero_dr_stats(void);
 dr_stats_t make_dB_dr_stats(dr_stats_t* dr_stats);
 
 #endif /* DR_METER_DR_STATS_H */

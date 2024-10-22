@@ -16,7 +16,7 @@ struct sample_mean_s
 
 typedef struct sample_mean_s sample_mean_t;
 
-sample_mean_t make_sample_mean();
+sample_mean_t make_sample_mean(void);
 void reset_sample_mean(sample_mean_t* self);
 void observe_sample_mean(sample_mean_t* self, double sample_value);
 double get_sample_mean(sample_mean_t* self);
