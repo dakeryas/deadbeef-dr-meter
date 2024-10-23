@@ -15,7 +15,7 @@ void zero_dr_stats(dr_stats_t* dr_stats)
     dr_stats->rms = 0.;
 }
 
-dr_stats_t make_zero_dr_stats()
+dr_stats_t make_zero_dr_stats(void)
 {
     dr_stats_t dr_stats;
     zero_dr_stats(&dr_stats);

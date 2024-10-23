@@ -1,6 +1,6 @@
 #include "sample_mean.h"
 
-sample_mean_t make_sample_mean()
+sample_mean_t make_sample_mean(void)
 {
     sample_mean_t sample_mean;
     reset_sample_mean(&sample_mean);

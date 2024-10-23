@@ -13,7 +13,7 @@ static unsigned get_header_footer_size(unsigned selected_items)
     return (header_length + footer_length) * number_of_albums;
 }
 
-static unsigned item_length()
+static unsigned item_length(void)
 {
     return 40 + 5 + 5 + 1 + 3 + 80 + 2;//DR info, space, duration, space, track number, title, newline
 }

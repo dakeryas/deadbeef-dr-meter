@@ -14,7 +14,7 @@ DB_functions_t* ddb_api;
 dr_meter_plugin_t* dr_meter_plugin;
 ddb_gtkui_t* gtk_ui_plugin;
 
-int dr_meter_gui_start()
+int dr_meter_gui_start(void)
 {
     return 0;
 }
@@ -61,7 +61,7 @@ static void retrieve_current_selection(selection_t* selection)
     ddb_api->pl_unlock();
 }
 
-static GdkWindowTypeHint get_window_hint()
+static GdkWindowTypeHint get_window_hint(void)
 {
     int focus_dialogue = ddb_api->conf_get_int("dr_meter_gui.focus_dialogue", 0);
     return focus_dialogue ? GDK_WINDOW_TYPE_HINT_DIALOG : GDK_WINDOW_TYPE_HINT_UTILITY;
@@ -121,7 +121,7 @@ DB_plugin_action_t* dr_meter_gui_get_actions(DB_playItem_t* unused)
     return &dr_meter_action;
 }
 
-int dr_meter_gui_connect()
+int dr_meter_gui_connect(void)
 {
     gtk_ui_plugin =(ddb_gtkui_t*)ddb_api->plug_get_for_id(DDB_GTKUI_PLUGIN_ID);
     dr_meter_plugin = (dr_meter_plugin_t*)ddb_api->plug_get_for_id ("dr_meter");

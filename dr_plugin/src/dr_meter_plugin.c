@@ -113,7 +113,7 @@ static void datum_work(tagged_dr_datum_t* datum)
     compute_single_dr((DB_playItem_t*)datum->item, &datum->dr_stats);
 }
 
-static int get_number_of_threads()
+static int get_number_of_threads(void)
 {
     int number_of_threads = ddb_api->conf_get_int("dr_meter.threads", 0);
     if(number_of_threads <= 0) number_of_threads = 1;//against negative user value
@@ -254,12 +254,12 @@ unsigned sprint_dr_log_impl(const tagged_dr_data_t* tagged_dr_data, char* buffer
     return sprint_log_dr_log_printer(&log_printer, tagged_dr_data, buffer);
 }
 
-int dr_meter_start()
+int dr_meter_start(void)
 {
     return 0;
 }
 
-int dr_meter_stop()
+int dr_meter_stop(void)
 {
     return 0;
 }
